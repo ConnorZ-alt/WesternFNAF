@@ -37,12 +37,23 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        if (SceneManagement.isPaused)
+        {
+            canMove = false;
+            moveDirection = Vector3.zero;
+            return;
+        }
+        else
+        {
+            canMove = true;
+        }
+        
         Vector3 forward = transform.TransformDirection(Vector3.forward);
         Vector3 right = transform.TransformDirection(Vector3.right);
 
         // bool isRunning = Input.GetKey(KeyCode.LeftShift);
-        float curSpeedX = canMove ? (walkSpeed) * Input.GetAxis("Vertical") : 0;
-        float curSpeedY = canMove ? (walkSpeed) * Input.GetAxis("Horizontal") : 0;
+        float curSpeedX = canMove ? (walkSpeed) * Input.GetAxis("Vertical") : 0f;
+        float curSpeedY = canMove ? (walkSpeed) * Input.GetAxis("Horizontal") : 0f;
         float movementDirectionY = moveDirection.y;
         moveDirection = (forward * curSpeedX) + (right * curSpeedY);
 
@@ -68,20 +79,20 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKey(KeyCode.LeftShift) && canMove)
         {
             
-            characterController.height = crouchHeight / 2;
-            characterController.center = new Vector3(defaultCenter.x, -1 * (crouchHeight / 2f), defaultCenter.z);
+            characterController.height = crouchHeight / 2f;
+            characterController.center = new Vector3(defaultCenter.x, -1f * (crouchHeight / 2f), defaultCenter.z);
             walkSpeed = crouchSpeed;
             //playerCamera.transform.position.y = 1f;
             // runSpeed = crouchSpeed;
 
-            Vector3 crouchCamPos = cameraDefaultPos - new Vector3(0, crouchCameraOffset, 0);
+            Vector3 crouchCamPos = cameraDefaultPos - new Vector3(0f, crouchCameraOffset, 0f);
             playerCamera.transform.localPosition = Vector3.Lerp(playerCamera.transform.localPosition, crouchCamPos, Time.deltaTime * 8f);
         }
         else
         {
             characterController.height = defaultHeight;
             
-            characterController.center = new Vector3(defaultCenter.x, 0, defaultCenter.z);
+            characterController.center = new Vector3(defaultCenter.x, 0f, defaultCenter.z);
             //characterController.center = defaultCenter; 
             
             walkSpeed = 6f;
