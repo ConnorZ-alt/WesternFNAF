@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(CharacterController))]
+// [RequireComponent(typeof(CharacterController))]
 public class PlayerController : MonoBehaviour
 {
     public Camera playerCamera;
