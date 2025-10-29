@@ -2,11 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// [RequireComponent(typeof(CharacterController))]
+[RequireComponent(typeof(CharacterController))]
 public class PlayerController : MonoBehaviour
 {
     public Camera playerCamera;
+
     public float walkSpeed = 6f;
+
     // public float runSpeed = 12f;
     // public float jumpPower = 7f;
     // public float gravity = 10f;
@@ -30,13 +32,14 @@ public class PlayerController : MonoBehaviour
         characterController = GetComponent<CharacterController>();
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-        
+
         cameraDefaultPos = playerCamera.transform.localPosition;
         defaultCenter = characterController.center;
     }
 
     void Update()
     {
+        
         if (SceneManagement.isPaused)
         {
             canMove = false;
@@ -50,13 +53,13 @@ public class PlayerController : MonoBehaviour
         
         Vector3 forward = transform.TransformDirection(Vector3.forward);
         Vector3 right = transform.TransformDirection(Vector3.right);
-
+    
         // bool isRunning = Input.GetKey(KeyCode.LeftShift);
         float curSpeedX = canMove ? (walkSpeed) * Input.GetAxis("Vertical") : 0f;
         float curSpeedY = canMove ? (walkSpeed) * Input.GetAxis("Horizontal") : 0f;
         float movementDirectionY = moveDirection.y;
         moveDirection = (forward * curSpeedX) + (right * curSpeedY);
-
+    
         // if (Input.GetButton("Jump") && canMove && characterController.isGrounded)
         // {
         //     moveDirection.y = jumpPower;
@@ -65,26 +68,25 @@ public class PlayerController : MonoBehaviour
         // {
         //     moveDirection.y = movementDirectionY;
         // }
-
+    
         // if (!characterController.isGrounded)
         // {
         //     moveDirection.y -= gravity * Time.deltaTime;
         // }
-
-        if (moveDirection.z != 0 || moveDirection.x != 0)
-        {
-            print("breakiug");
-        }
-
+    
+        // if (moveDirection.z != 0 || moveDirection.x != 0)
+        // {
+        //     print("breakiug");
+        // }
+    
         if (Input.GetKey(KeyCode.LeftShift) && canMove)
         {
-            
             characterController.height = crouchHeight / 2f;
             characterController.center = new Vector3(defaultCenter.x, -1f * (crouchHeight / 2f), defaultCenter.z);
             walkSpeed = crouchSpeed;
             //playerCamera.transform.position.y = 1f;
             // runSpeed = crouchSpeed;
-
+    
             Vector3 crouchCamPos = cameraDefaultPos - new Vector3(0f, crouchCameraOffset, 0f);
             playerCamera.transform.localPosition = Vector3.Lerp(playerCamera.transform.localPosition, crouchCamPos, Time.deltaTime * 8f);
         }
@@ -100,9 +102,9 @@ public class PlayerController : MonoBehaviour
             
             playerCamera.transform.localPosition = Vector3.Lerp(playerCamera.transform.localPosition, cameraDefaultPos, Time.deltaTime * 8f);
         }
-
+    
         characterController.Move(moveDirection * Time.deltaTime);
-
+    
         if (canMove)
         {
             rotationX += -Input.GetAxis("Mouse Y") * lookSpeed;

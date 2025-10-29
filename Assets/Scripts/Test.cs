@@ -11,7 +11,7 @@ public class Test : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKey(KeyCode.R))
+        if (Input.GetKey(KeyCode.Q))
         {
             SceneManager.LoadScene(1);
             // print("Reloaded");
