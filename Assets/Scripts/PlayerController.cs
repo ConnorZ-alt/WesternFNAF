@@ -27,6 +27,13 @@ public class PlayerController : MonoBehaviour
 
     private bool canMove = true;
 
+    [Header("Moving Train")] 
+    [SerializeField] private Transform trainRoot;
+    [SerializeField] private LayerMask trainFloorMask;
+    [SerializeField] private float groundProbeDistance = 0.3f;
+    private Vector3 lastTrainPosition;
+    private bool onTrainThisFrame;
+
     void Start()
     {
         characterController = GetComponent<CharacterController>();
@@ -50,6 +57,10 @@ public class PlayerController : MonoBehaviour
         {
             canMove = true;
         }
+
+        onTrainThisFrame = IsStandingOnTrain();
+
+        ApplyPlatformMotion();
         
         Vector3 forward = transform.TransformDirection(Vector3.forward);
         Vector3 right = transform.TransformDirection(Vector3.right);
@@ -59,6 +70,7 @@ public class PlayerController : MonoBehaviour
         float curSpeedY = canMove ? (walkSpeed) * Input.GetAxis("Horizontal") : 0f;
         float movementDirectionY = moveDirection.y;
         moveDirection = (forward * curSpeedX) + (right * curSpeedY);
+        moveDirection.y = movementDirectionY;
     
         // if (Input.GetButton("Jump") && canMove && characterController.isGrounded)
         // {
@@ -112,5 +124,41 @@ public class PlayerController : MonoBehaviour
             playerCamera.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);
             transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * lookSpeed, 0);
         }
+    }
+
+    private void ApplyPlatformMotion()
+    {
+        if (!trainRoot)
+        {
+            return;
+        }
+        
+        Vector3 trainDelta = trainRoot.position - lastTrainPosition;
+        lastTrainPosition = trainRoot.position;
+
+        if (onTrainThisFrame && trainDelta != Vector3.zero)
+        {
+            characterController.Move(trainDelta);
+        }
+    }
+
+    private bool IsStandingOnTrain()
+    {
+        if (!characterController)
+        {
+            return false;
+        }
+        
+        Vector3 origin = transform.position + Vector3.up * 0.1f;
+        float radius = characterController.radius * 0.9f;
+        
+        if (Physics.SphereCast(origin, radius, Vector3.down, out RaycastHit hit, groundProbeDistance, trainFloorMask, QueryTriggerInteraction.Ignore))
+        {
+            if (Vector3.Angle(hit.normal, Vector3.up) <= characterController.slopeLimit + 5f)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }
