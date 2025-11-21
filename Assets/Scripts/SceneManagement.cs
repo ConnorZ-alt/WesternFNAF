@@ -5,15 +5,28 @@ using System.Collections.Generic;
 
 public class SceneManagement : MonoBehaviour
 {
-    [Header ("PauseMenu")]
+    [Header("PauseMenu")]
     [SerializeField] private GameObject PauseMenu;
-    
+
+    [Header("Game Over")]
+    [Tooltip("If set, this name will be used; otherwise the index is used.")]
+    [SerializeField] private string gameOverSceneName = "";   // e.g., "Scenes/GameOverScreen"
+    [SerializeField] private int    gameOverSceneIndex = 3;   // matches your build list
+    private bool gameOver;
+
+    [Header("Results")]
+    [Tooltip("If set, this name will be used; otherwise the index is used.")]
+    [SerializeField] private string resultsSceneName = "";    // e.g., "Scenes/ResultsScreen"
+    [SerializeField] private int    resultsSceneIndex  = 4;   // matches your build list
+
     public static bool isPaused;
 
     private void Awake()
     {
         Time.timeScale = 1f;
         isPaused = false;
+        gameOver = false;
+
         if (PauseMenu != null)
         {
             PauseMenu.SetActive(false);
@@ -28,38 +41,32 @@ public class SceneManagement : MonoBehaviour
             AudioListener.pause = false;
         }
     }
-    
+
     private void Update()
     {
+        // Block pause/resume after game over/results
+        if (gameOver) return;
+
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if (isPaused)
-            {
-                OnResumeGame();
-            }
-            else
-            {
-                OnPauseGame();
-            }
+            if (isPaused) OnResumeGame();
+            else          OnPauseGame();
         }
     }
-    
+
     void Start()
     {
-        PauseMenu.SetActive(false);
+        if (PauseMenu != null) PauseMenu.SetActive(false);
     }
 
     public void OnPauseGame()
     {
-        // PauseMenu.SetActive(true);
-        // Time.timeScale = 0f;
-        // isPaused = true;
         if (PauseMenu != null)
         {
             PauseMenu.SetActive(true);
             Time.timeScale = 0f;
             isPaused = true;
-            
+
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
             AudioListener.pause = true;
@@ -73,19 +80,16 @@ public class SceneManagement : MonoBehaviour
             PauseMenu.SetActive(false);
             Time.timeScale = 1f;
             isPaused = false;
-            
+
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
             AudioListener.pause = false;
         }
     }
 
-    public void OnResumeButton()
-    {
-        OnResumeGame();
-    }
-    
-    // LOADS TO TITLE SCREEN WHEN BUTTON IS CLICKED
+    public void OnResumeButton() => OnResumeGame();
+
+    // Title Screen
     public void OnReturnToMenuButton()
     {
         Time.timeScale = 1f;
@@ -93,22 +97,15 @@ public class SceneManagement : MonoBehaviour
         Cursor.visible = true;
         SceneManager.LoadScene(0);
     }
-    
-    // LOADS HOUR 1/LEVEL 1 WHEN CLICKING NEW GAME
+
+    // Start Level 1
     public void OnNewGameButton()
     {
         Time.timeScale = 1f;
         SceneManager.LoadScene(1);
     }
 
-    // COME BACK TO THIS FOR SAVING PLAYER SPOT WHEN CONTINUING A PLAYTHROUGH!!!
-    
-    // public void OnContinueGameButton()
-    // {
-    //     SceneManager.LoadScene(1);
-    // }
-
-    // LOADS TO OPTIONS MENU (CHANGE LATER WHEN ADDING NEW LEVELS)
+    // Options
     public void OnOptionsButton()
     {
         Time.timeScale = 1f;
@@ -117,35 +114,77 @@ public class SceneManagement : MonoBehaviour
         SceneManager.LoadScene(2);
     }
 
-    // QUITS THE GAME WHEN CLICKED
+    // Quit
     public void OnQuitGameButton()
     {
         Application.Quit();
-        
-        // CODE GIVEN BY IRENE TO QUIT THE GAME (LIKE IN 245 PROJECT)
-// #if UNITY_EDITOR
-//         UnityEditor.EditorApplication.isPlaying = false;
-// #endif
     }
 
-    // COME BACK TO THESE WHEN ADDING NEW LEVELS!!!
-    
-    // public void OnNextHourButton()
-    // {
-    //     SceneManager.LoadScene(2);
-    // }
-    
+    // Retry current level (your build uses HourOne at index 1)
     public void OnRetryButton()
     {
         Time.timeScale = 1f;
         OnResumeGame();
         SceneManager.LoadScene(1);
     }
-    // SEE ABOVE!!!
 
-    // HELPS RUN SCENE MANAGEMENT!!!
-    internal static void LoadScene(int sceneName)
+    // ======== Game flow hooks you can call from other scripts ========
+
+    // Called when the player dies (e.g., Dynamite.OnExplode -> UnityEvent)
+    public void OnGameOver()
     {
-        UnityEngine.SceneManagement.SceneManager.LoadScene(sceneName);
+        if (gameOver) return;
+        gameOver = true;
+
+        Time.timeScale = 1f;
+        isPaused = true;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        AudioListener.pause = false;
+
+        if (!string.IsNullOrEmpty(gameOverSceneName))
+        {
+            SceneManager.LoadScene(gameOverSceneName);
+        }
+        else if (gameOverSceneIndex >= 0)
+        {
+            SceneManager.LoadScene(gameOverSceneIndex);
+        }
+        else
+        {
+            Debug.LogError("[SceneManagement] No GameOver scene set (name or index).");
+        }
+    }
+
+    // Called when train reaches goal (e.g., TrainController → this)
+    public void OnShowResults()
+    {
+        if (gameOver) return;
+        gameOver = true;
+
+        Time.timeScale = 1f;
+        isPaused = true;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        AudioListener.pause = false;
+
+        if (!string.IsNullOrEmpty(resultsSceneName))
+        {
+            SceneManager.LoadScene(resultsSceneName);
+        }
+        else if (resultsSceneIndex >= 0)
+        {
+            SceneManager.LoadScene(resultsSceneIndex);
+        }
+        else
+        {
+            Debug.LogError("[SceneManagement] No Results scene set (name or index).");
+        }
+    }
+
+    // Utility
+    internal static void LoadScene(int sceneIndex)
+    {
+        SceneManager.LoadScene(sceneIndex);
     }
 }

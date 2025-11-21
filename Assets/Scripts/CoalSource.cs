@@ -8,62 +8,62 @@ public class CoalSource : MonoBehaviour
     [SerializeField] private string playerTag = "Player";
 
     [Header("Optional: a small UI prompt to show when the player is in range")]
-    [SerializeField] private GameObject promptUI;
+    [SerializeField] private GameObject promptUserInterfaceObject;
 
-    private Collider col;
-    private Rigidbody rb;
+    private Collider sourceCollider;
+    private Rigidbody sourceRigidbody;
 
     private void Reset()
     {
         // Ensure trigger collider + kinematic rigidbody (so triggers work with CharacterController players)
-        col = GetComponent<Collider>();
-        col.isTrigger = true;
+        sourceCollider = GetComponent<Collider>();
+        sourceCollider.isTrigger = true;
 
-        rb = GetComponent<Rigidbody>();
-        if (!rb) rb = gameObject.AddComponent<Rigidbody>();
-        rb.isKinematic = true;
-        rb.useGravity = false;
+        sourceRigidbody = GetComponent<Rigidbody>();
+        if (!sourceRigidbody) sourceRigidbody = gameObject.AddComponent<Rigidbody>();
+        sourceRigidbody.isKinematic = true;
+        sourceRigidbody.useGravity = false;
     }
 
     private void Awake()
     {
         // Re-enforce at runtime in case something changed in the Inspector
-        col = GetComponent<Collider>();
-        col.isTrigger = true;
+        sourceCollider = GetComponent<Collider>();
+        sourceCollider.isTrigger = true;
 
-        rb = GetComponent<Rigidbody>();
-        if (!rb) rb = gameObject.AddComponent<Rigidbody>();
-        rb.isKinematic = true;
-        rb.useGravity = false;
+        sourceRigidbody = GetComponent<Rigidbody>();
+        if (!sourceRigidbody) sourceRigidbody = gameObject.AddComponent<Rigidbody>();
+        sourceRigidbody.isKinematic = true;
+        sourceRigidbody.useGravity = false;
 
-        if (promptUI) promptUI.SetActive(false);
+        if (promptUserInterfaceObject) promptUserInterfaceObject.SetActive(false);
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider otherCollider)
     {
-        if (!other.CompareTag(playerTag)) return;
-        if (promptUI) promptUI.SetActive(true);
+        if (!otherCollider.CompareTag(playerTag)) return;
+        if (promptUserInterfaceObject) promptUserInterfaceObject.SetActive(true);
         // PlayerCoalThrower already checks GetComponent<CoalSource>() in its OnTriggerEnter,
         // so this object just needs to exist as a tagged trigger. No extra calls needed here.
     }
 
-    private void OnTriggerExit(Collider other)
+    private void OnTriggerExit(Collider otherCollider)
     {
-        if (!other.CompareTag(playerTag)) return;
-        if (promptUI) promptUI.SetActive(false);
+        if (!otherCollider.CompareTag(playerTag)) return;
+        if (promptUserInterfaceObject) promptUserInterfaceObject.SetActive(false);
     }
 
     // Nice to have: visualize the trigger area in the editor
     private void OnDrawGizmos()
     {
         Gizmos.color = new Color(0f, 0f, 0f, 0.15f);
-        var box = GetComponent<Collider>() as BoxCollider;
-        if (box)
+        var boxCollider = GetComponent<Collider>() as BoxCollider;
+        if (boxCollider)
         {
             Gizmos.matrix = transform.localToWorldMatrix;
-            Gizmos.DrawCube(box.center, box.size);
+            Gizmos.DrawCube(boxCollider.center, boxCollider.size);
             Gizmos.color = new Color(0f, 0f, 0f, 0.35f);
-            Gizmos.DrawWireCube(box.center, box.size);
+            Gizmos.DrawWireCube(boxCollider.center, boxCollider.size);
         }
         else
         {

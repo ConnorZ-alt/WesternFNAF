@@ -3,26 +3,26 @@ using UnityEngine;
 public class BulletProjectile : MonoBehaviour
 {
     [SerializeField] private float speed = 50f;
-    [SerializeField] private float lifeTime = 2f;
+    [SerializeField] private float lifetimeSeconds = 2f;
 
-    private Rigidbody rb;
+    private Rigidbody projectileRigidbody;
 
     void Awake()
     {
-        rb = GetComponent<Rigidbody>();
+        projectileRigidbody = GetComponent<Rigidbody>();
     }
 
     void Start()
     {
         // Launch forward
-        rb.linearVelocity = transform.forward * speed;
+        projectileRigidbody.linearVelocity = transform.forward * speed;
 
         // Delete after a short time so scene doesn't fill with bullets
-        Destroy(gameObject, lifeTime);
+        Destroy(gameObject, lifetimeSeconds);
     }
 
     // Optional: basic hit feedback
-    private void OnCollisionEnter(Collision other)
+    private void OnCollisionEnter(Collision collision)
     {
         Destroy(gameObject);
     }

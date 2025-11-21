@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 3
   tags:
   - Coal
+  - Dynamite
+  - Enemy
   layers:
   - Default
   - TransparentFX
@@ -14,10 +16,10 @@ TagManager:
   - UI
   - TrainBounds
   - TrainFloor
-  - 
-  - 
-  - 
-  - 
+  - Enemy
+  - Player
+  - Dynamite
+  - Coal
   - 
   - 
   - 

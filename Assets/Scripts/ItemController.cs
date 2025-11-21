@@ -12,48 +12,54 @@ public class ItemController : MonoBehaviour
     [Tooltip("Capacity of the cylinder")]
     [SerializeField] private int totalAmmoCapacity = 6;
     public int GetTotalAmmoCapacity() => totalAmmoCapacity;
+
     [Tooltip("Max shoot distance for raycast (debug only)")]
-    [SerializeField] private float shotRange = 100f;
+    [SerializeField] private float shotRaycastRange = 100f;
+
     [Tooltip("LayerMask for what the debug raycast can hit")]
-    [SerializeField] private LayerMask hitMask = ~0;
+    [SerializeField] private LayerMask shotHitMask = ~0;
 
     [Header("Input")]
-    [SerializeField] private bool holdToAim = true;
-    [SerializeField] private KeyCode aimKey = KeyCode.Mouse1;   // RMB
-    [SerializeField] private KeyCode shootKey = KeyCode.Mouse0; // LMB
-    [SerializeField] private KeyCode reloadKey = KeyCode.R;
+    [SerializeField] private bool holdToAimDownSights = true;
+    [SerializeField] private KeyCode aimKeyCode = KeyCode.Mouse1;   // RMB
+    [SerializeField] private KeyCode shootKeyCode = KeyCode.Mouse0; // LMB
+    [SerializeField] private KeyCode reloadKeyCode = KeyCode.R;
 
     [Header("Aiming Visual (optional)")]
-    [SerializeField] private bool useAimFov = true;
-    [SerializeField] private float normalFov = 60f;
-    [SerializeField] private float aimFov = 45f;
-    [SerializeField] private float fovLerpSpeed = 10f;
+    [SerializeField] private bool useAimFieldOfView = true;
+    [SerializeField] private float normalFieldOfView = 60f;
+    [SerializeField] private float aimFieldOfView = 45f;
+    [SerializeField] private float fieldOfViewLerpSpeed = 10f;
 
     [Header("Ammo State (read-only at runtime)")]
     [SerializeField] private int roundsInCylinder = 0; // starts empty
-    [SerializeField] private int reserveAmmo = 0; // filled by pickups
+    [SerializeField] private int reserveAmmo = 0;       // filled by pickups
 
     [Header("Bullet Visual")] 
-    [SerializeField] private Transform muzzlePoint;
+    [SerializeField] private Transform muzzleTransform;
     [SerializeField] private GameObject bulletPrefab;
-    [SerializeField] private float bulletRecoilKick = 0.03f;
+    [SerializeField] private float bulletRecoilKickDistance = 0.03f;
+    
+    [Header("Damage")]
+    [Tooltip("Damage dealt to IDamageable targets when a raycast shot hits")]
+    [SerializeField] private float shotDamage = 25f;
     
     [SerializeField] private bool debugForceAim = false;
-    private bool lastAiming = false;
+    private bool lastAimingState = false;
 
-    [SerializeField] private bool externalShootBlock = false;
+    [SerializeField] private bool externalShootBlockEnabled = false;
 
-    public void SetExternalShootBlock(bool value)
+    public void SetExternalShootBlock(bool isBlocked)
     {
-        externalShootBlock = value;
+        externalShootBlockEnabled = isBlocked;
     }
     
     // Events (for HUD later)
     public event Action<int, int> OnAmmoChanged; // (roundsInCylinder, reserveAmmo)
 
     // Internals
-    [SerializeField] private bool isAiming = false;
-    public bool IsAiming => isAiming;
+    [SerializeField] private bool isAimingDownSights = false;
+    public bool IsAiming => isAimingDownSights;
 
     void Awake()
     {
@@ -64,13 +70,13 @@ public class ItemController : MonoBehaviour
         }
 
         // Ensure this never behaves like a loose physics item
-        var rb = GetComponent<Rigidbody>();
-        if (rb) rb.isKinematic = true;
+        var rigidbodyComponent = GetComponent<Rigidbody>();
+        if (rigidbodyComponent) rigidbodyComponent.isKinematic = true;
     }
 
     void Start()
     {
-        if (playerCamera && useAimFov) playerCamera.fieldOfView = normalFov;
+        if (playerCamera && useAimFieldOfView) playerCamera.fieldOfView = normalFieldOfView;
         RaiseAmmoChanged();
     }
 
@@ -79,7 +85,7 @@ public class ItemController : MonoBehaviour
         HandleAimInput();
         HandleReloadInput();
         HandleShootInput();
-        UpdateAimFov();
+        UpdateAimFieldOfView();
     }
 
     // ---------- Input ----------
@@ -87,64 +93,66 @@ public class ItemController : MonoBehaviour
     {
         if (!playerCamera) return;
 
-        // Show what input we're getting this frame
-        bool aimKeyDown = Input.GetKeyDown(aimKey);
-        bool aimKeyHeld = Input.GetKey(aimKey);
-
-        // This is just logging so we can see in the Console during Play
-        if (aimKeyDown)
+        // Safety: drop ADS if empty
+        if (roundsInCylinder <= 0 && isAimingDownSights)
         {
-            Debug.Log("[GUN DEBUG] aimKeyDown fired for " + aimKey + " this frame");
+            isAimingDownSights = false;
+            Debug.Log("[GUN] ADS off (empty).");
         }
 
-        if (holdToAim)
+        bool pressedAimThisFrame = Input.GetKeyDown(aimKeyCode);
+        bool holdingAim          = Input.GetKey(aimKeyCode);
+
+        if (holdToAimDownSights)
         {
-            // hold-to-aim mode: stay aiming only while holding button
-            isAiming = aimKeyHeld;
+            // HOLD-TO-AIM: active only while the key is held, and only if we have rounds
+            bool newAim = holdingAim && roundsInCylinder > 0;
+            if (newAim != isAimingDownSights)
+            {
+                isAimingDownSights = newAim;
+                Debug.Log("[GUN] ADS " + (isAimingDownSights ? "ON" : "OFF") + " (hold mode)");
+            }
         }
         else
         {
-            // toggle-to-aim mode: flip aiming when we press the button
-            if (aimKeyDown)
+            // TOGGLE-TO-AIM: flip on press, but only allow turning on if we have rounds
+            if (pressedAimThisFrame)
             {
-                isAiming = !isAiming;
-                Debug.Log("[GUN DEBUG] Toggled isAiming to: " + isAiming);
+                if (!isAimingDownSights && roundsInCylinder <= 0)
+                {
+                    // Can't enter ADS if empty
+                    Debug.Log("[GUN] Ignored ADS toggle (no rounds).");
+                }
+                else
+                {
+                    isAimingDownSights = !isAimingDownSights;
+                    Debug.Log("[GUN] ADS " + (isAimingDownSights ? "ON" : "OFF") + " (toggle mode)");
+                }
             }
         }
 
-        // safety override: if debugForceAim is checked in the Inspector,
-        // we force aiming on no matter what
-        if (debugForceAim)
-        {
-            isAiming = true;
-        }
-
-        // only print when the aim state actually changes, to reduce spam
-        if (isAiming != lastAiming)
-        {
-            Debug.Log("[GUN] Aim state now = " + (isAiming ? "AIMING" : "NOT AIMING"));
-            lastAiming = isAiming;
-        }
+        // Optional: force-aim debug overrides *only* the FOV later; do not change isAiming here.
     }
+
 
     private void HandleReloadInput()
     {
-        if (Input.GetKeyDown(reloadKey))
+        if (Input.GetKeyDown(reloadKeyCode))
             Reload();
     }
 
     private void HandleShootInput()
     {
-        if (Input.GetKeyDown(shootKey))
+        if (Input.GetKeyDown(shootKeyCode))
             Shoot();
     }
 
-    private void UpdateAimFov()
+    private void UpdateAimFieldOfView()
     {
-        if (!playerCamera || !useAimFov) return;
-        bool aimingForFov = debugForceAim ? true : isAiming;
-        float target = aimingForFov ? aimFov : normalFov;
-        playerCamera.fieldOfView = Mathf.Lerp(playerCamera.fieldOfView, target, Time.deltaTime * fovLerpSpeed);
+        if (!playerCamera || !useAimFieldOfView) return;
+        bool aimingForFieldOfView = debugForceAim ? true : isAimingDownSights;
+        float targetFieldOfView = aimingForFieldOfView ? aimFieldOfView : normalFieldOfView;
+        playerCamera.fieldOfView = Mathf.Lerp(playerCamera.fieldOfView, targetFieldOfView, Time.deltaTime * fieldOfViewLerpSpeed);
     }
 
     // ---------- Public API ----------
@@ -158,8 +166,8 @@ public class ItemController : MonoBehaviour
 
     public void Reload()
     {
-        int space = totalAmmoCapacity - roundsInCylinder;
-        if (space <= 0)
+        int spaceInCylinder = totalAmmoCapacity - roundsInCylinder;
+        if (spaceInCylinder <= 0)
         {
             Debug.Log("[GUN] Reload: cylinder already full.");
             return;
@@ -170,19 +178,18 @@ public class ItemController : MonoBehaviour
             return;
         }
 
-        int toLoad = Mathf.Min(space, reserveAmmo);
-        roundsInCylinder += toLoad;
-        reserveAmmo -= toLoad;
+        int roundsToLoad = Mathf.Min(spaceInCylinder, reserveAmmo);
+        roundsInCylinder += roundsToLoad;
+        reserveAmmo -= roundsToLoad;
 
-        Debug.Log("[GUN] Reloaded " + toLoad + " rounds. Cylinder = " 
+        Debug.Log("[GUN] Reloaded " + roundsToLoad + " rounds. Cylinder = " 
                   + roundsInCylinder + "/" + totalAmmoCapacity 
                   + " | Reserve = " + reserveAmmo);
 
         RaiseAmmoChanged();
     }
 
-
-    public bool CanShoot() => roundsInCylinder > 0 && isAiming && !externalShootBlock;
+    public bool CanShoot() => roundsInCylinder > 0 && isAimingDownSights && !externalShootBlockEnabled;
 
     public void Shoot()
     {
@@ -197,41 +204,39 @@ public class ItemController : MonoBehaviour
 
         RaiseAmmoChanged();
 
-        // Visual for Bullet Projectile
-        if (muzzlePoint && bulletPrefab)
+        // Visual for Bullet Projectile (optional)
+        if (muzzleTransform && bulletPrefab)
         {
-            GameObject bullet = Instantiate(bulletPrefab, muzzlePoint.position, muzzlePoint.rotation);
+            GameObject spawnedBullet = Instantiate(bulletPrefab, muzzleTransform.position, muzzleTransform.rotation);
         }
         else
         {
-            Debug.LogWarning("[GUN] No muzzlePoint or bulletPrefab assigned, can't spawn bullets.");
+            Debug.LogWarning("[GUN] No muzzleTransform or bulletPrefab assigned, can't spawn bullets.");
         }
         
-        // Debug raycast
+        // Debug raycast damage
         if (playerCamera)
         {
-            Ray ray = new Ray(playerCamera.transform.position, playerCamera.transform.forward);
-            if (Physics.Raycast(ray, out RaycastHit hit, shotRange, hitMask, QueryTriggerInteraction.Ignore))
+            Ray shotRay = new Ray(playerCamera.transform.position, playerCamera.transform.forward);
+            if (Physics.Raycast(shotRay, out RaycastHit raycastHit, shotRaycastRange, shotHitMask, QueryTriggerInteraction.Ignore))
             {
-                Debug.Log("[GUN] Hit " + hit.collider.name);
-                Debug.DrawLine(ray.origin, hit.point, Color.red, 0.25f);
-            }
-            else
-            {
-                Debug.Log("[GUN] Missed (raycast hit nothing).");
-                Debug.DrawRay(ray.origin, ray.direction * 10f, Color.gray, 0.25f);
+                var damageable = raycastHit.collider.GetComponentInParent<IDamageable>();
+                if (damageable != null)
+                {
+                    damageable.TakeDamage(shotDamage);
+                }
             }
         }
         
-        // Tiny recoil kick for the camera to shake (adding slight realism)
+        // Tiny recoil kick for the camera to shake
         if (playerCamera)
         {
-            playerCamera.transform.localPosition += -playerCamera.transform.forward * bulletRecoilKick;
+            playerCamera.transform.localPosition += -playerCamera.transform.forward * bulletRecoilKickDistance;
         }
 
         if (roundsInCylinder == 0)
         {
-            isAiming = false;
+            isAimingDownSights = false;
             Debug.Log("[GUN] Cylinder empty. Aim auto-canceled.");
         }
     }
