@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b625b87690d740ca81b890c87509449, type: 3}
+  m_Name: SneakBanditStats
+  m_EditorClassIdentifier: Assembly-CSharp::SneakBanditStats
+  maxHealth: 40
+  walkSpeed: 2.2
+  sneakSpeed: 1.4
+  dashSpeed: 6
+  acceleration: 6
+  fovDegrees: 95
+  hearRadius: 6
+  minLOSSecondsBeforeAbort: 2
+  hideTimeMin: 1
+  hideTimeMax: 2
+  peekTime: 0.35
+  reacquireDelay: 0.75
+  jumpscareWindup: 0.35
+  killDistance: 1.8
+  respawnDelay: 5
+  spawnYOffset: 0.5
+  allowTwo: 1
+  timeUntilSecondSpawn: 35

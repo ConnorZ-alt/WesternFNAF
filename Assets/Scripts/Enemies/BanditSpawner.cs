@@ -1,20 +1,21 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class BanditSpawner : MonoBehaviour
 {
     [Header("References")]
-    [SerializeField] private Transform    trainRoot;       // drag Train root
-    [SerializeField] private BoxCollider  playerBounds;    // Train/PlayerBounds (landing area)
-    [SerializeField] private GameObject   banditPrefab;    // your Bandit prefab (has DynamiteBandit)
-    [SerializeField] private BanditStats  defaultStats;    // a BanditStats asset (Easy/Normal/Hard)
+    [SerializeField] private Transform   trainRoot;
+    [SerializeField] private BoxCollider playerBounds;
+    [SerializeField] private GameObject  banditPrefab;
+    [SerializeField] private BanditStats defaultStats;
 
     [Header("Spawning")]
     [SerializeField] private float minRespawnDelay = 4f;
     [SerializeField] private float maxRespawnDelay = 9f;
     [SerializeField] private int   maxAlive       = 1;
-    [SerializeField] private bool  alternateSides = true;   // L/R/L/R...
-    [SerializeField] private bool  randomizeSide  = true;   // ignore alternate; pick random each spawn
+    [SerializeField] private bool  alternateSides = true;
+    [SerializeField] private bool  randomizeSide  = true;
 
     [SerializeField] private float lateralOffset  = 6f;
     [SerializeField] private float backOffset     = 3f;
@@ -24,66 +25,86 @@ public class BanditSpawner : MonoBehaviour
     [SerializeField] private Transform container;
 
     private readonly List<GameObject> aliveInstances = new();
-    private bool  spawnOnRightNext = true; // for alternating
+    private bool  spawnOnRightNext   = true;
     private float nextSpawnTimeSeconds;
+    private bool  spawnWindowArmed   = false;     // prevents stacking windows
+    private bool  stopSpawning       = false;     // set when the run ends
 
-    void Awake()
+    // ---------------- Lifecycle ----------------
+    private void Awake()
     {
         if (!trainRoot || !playerBounds || !banditPrefab || !defaultStats)
         {
-            Debug.LogError("[BanditSpawner] Missing references.");
+            Debug.LogError("[Spawner] Missing references.");
             enabled = false;
             return;
         }
     }
 
-    void Start()
+    private void OnEnable()
     {
-        // First spawn after a random delay
-        nextSpawnTimeSeconds = Time.time + Random.Range(minRespawnDelay, maxRespawnDelay);
+        // Stop all future spawns when the game ends (game over or results)
+        SceneManagement.GameEnded += StopSpawningForever;
+        // If this component enabled after the game already ended, respect it
+        if (SceneManagement.HasGameEnded) stopSpawning = true;
     }
 
-    void Update()
+    private void OnDisable()
+    {
+        SceneManagement.GameEnded -= StopSpawningForever;
+    }
+
+    private void Start()
+    {
+        ArmNextSpawnWindow();
+    }
+
+    private void Update()
     {
         if (!enabled) return;
+        if (stopSpawning) return;
 
-        // Prune destroyed instances
+        // prune destroyed
         for (int index = aliveInstances.Count - 1; index >= 0; index--)
         {
-            if (aliveInstances[index] == null) aliveInstances.RemoveAt(index);
+            if (aliveInstances[index] == null)
+                aliveInstances.RemoveAt(index);
         }
 
         if (aliveInstances.Count >= maxAlive) return;
 
-        if (Time.time >= nextSpawnTimeSeconds)
+        if (spawnWindowArmed && Time.time >= nextSpawnTimeSeconds)
         {
+            spawnWindowArmed = false; // consume window
             SpawnOne();
-            // Schedule next attempt after a random delay
-            nextSpawnTimeSeconds = Time.time + Random.Range(minRespawnDelay, maxRespawnDelay);
         }
+    }
+
+    // ---------------- Spawning core ----------------
+    private void ArmNextSpawnWindow()
+    {
+        if (stopSpawning) return;           // do not arm after run ends
+        if (spawnWindowArmed) return;       // no stacking
+        if (aliveInstances.Count >= maxAlive) return;
+
+        spawnWindowArmed = true;
+        nextSpawnTimeSeconds = Time.time + UnityEngine.Random.Range(minRespawnDelay, maxRespawnDelay);
+        // Debug.Log($"[Spawner] Next window armed for t={nextSpawnTimeSeconds:0.00}");
     }
 
     private void SpawnOne()
     {
+        if (stopSpawning) return;
         if (!trainRoot || !playerBounds || !banditPrefab || !defaultStats) return;
 
-        // Decide spawn side
+        // Decide side
         bool spawnOnRight;
-        if (randomizeSide)
-        {
-            spawnOnRight = (Random.value > 0.5f);
-        }
-        else if (alternateSides)
-        {
-            spawnOnRight = spawnOnRightNext;
-            spawnOnRightNext = !spawnOnRightNext;
-        }
-        else
-        {
-            spawnOnRight = true;
-        }
+        if (randomizeSide)             spawnOnRight = (UnityEngine.Random.value > 0.5f);
+        else if (alternateSides)       spawnOnRight = spawnOnRightNext;
+        else                           spawnOnRight = true;
+        spawnOnRightNext = !spawnOnRight && alternateSides ? true : spawnOnRightNext;
 
-        // Compute spawn position beside the train (local → world)
+        // Compute spawn position
         Vector3 localOffset = new Vector3(
             (spawnOnRight ? +1f : -1f) * Mathf.Abs(lateralOffset),
             0f,
@@ -109,42 +130,59 @@ public class BanditSpawner : MonoBehaviour
             container ? container : null
         );
 
-        aliveInstances.Add(spawnedBandit);
-
         // Wire up bandit instance
-        DynamiteBandit bandit = spawnedBandit.GetComponent<DynamiteBandit>();
+        var bandit = spawnedBandit.GetComponent<DynamiteBandit>();
         if (!bandit)
         {
-            Debug.LogError("[BanditSpawner] Bandit prefab is missing DynamiteBandit.");
+            Debug.LogError("[Spawner] Prefab is missing DynamiteBandit.");
+            Destroy(spawnedBandit);
+            ArmNextSpawnWindow();
             return;
         }
 
-        // Call the 4-arg version (compatible with older signature)
-        bandit.SetupForSpawner(trainRoot, playerBounds, defaultStats, spawnOnRight);
-
-        // Then assign the completion callback via the public field
-        bandit.onFinished = () =>
+        // Subscribe BEFORE setup so we don’t miss the callback
+        bandit.onFinished += () =>
         {
-            // Remove this specific instance from the 'aliveInstances' list
-            for (int index = aliveInstances.Count - 1; index >= 0; index--)
+            // remove this instance
+            for (int i = aliveInstances.Count - 1; i >= 0; i--)
             {
-                if (aliveInstances[index] == null) { aliveInstances.RemoveAt(index); continue; }
-                if (aliveInstances[index] == spawnedBandit) { aliveInstances.RemoveAt(index); break; }
+                if (aliveInstances[i] == null || aliveInstances[i] == spawnedBandit)
+                    aliveInstances.RemoveAt(i);
             }
 
-            // Schedule a new spawn window
-            nextSpawnTimeSeconds = Time.time + Random.Range(minRespawnDelay, maxRespawnDelay);
+            // Only arm a new window if the run is still active
+            if (!stopSpawning) ArmNextSpawnWindow();
+        };
+
+        // Setup from spawner
+        bandit.SetupForSpawner(trainRoot, playerBounds, defaultStats, spawnOnRight);
+
+        // Count it alive AFTER bandit confirms setup (prevents “idle statues”)
+        bandit.SignalReady += () =>
+        {
+            if (stopSpawning) return;
+            if (!aliveInstances.Contains(spawnedBandit))
+                aliveInstances.Add(spawnedBandit);
         };
     }
 
-    // Optional gizmo to see where the first spawn would be
+    // ---------------- Helpers ----------------
+    private void StopSpawningForever()
+    {
+        stopSpawning = true;
+        spawnWindowArmed = false; // cancel any window that was armed
+        // Optional: you can also clean up existing bandits here if desired.
+        // foreach (var go in aliveInstances) if (go) Destroy(go);
+        // aliveInstances.Clear();
+    }
+
+    // Debug gizmo
     private void OnDrawGizmosSelected()
     {
         if (!trainRoot || playerBounds == null) return;
 
         float deckY = playerBounds.bounds.min.y + yOffset;
 
-        // Left/right gizmos
         Vector3 leftLocal  = new Vector3(-Mathf.Abs(lateralOffset), 0f, -Mathf.Abs(backOffset));
         Vector3 rightLocal = new Vector3(+Mathf.Abs(lateralOffset), 0f, -Mathf.Abs(backOffset));
 
@@ -154,7 +192,7 @@ public class BanditSpawner : MonoBehaviour
         Gizmos.color = Color.cyan;
         Gizmos.DrawSphere(leftWorld, 0.2f);
         Gizmos.DrawSphere(rightWorld, 0.2f);
-        Gizmos.DrawLine(leftWorld, trainRoot.position);
+        Gizmos.DrawLine(leftWorld,  trainRoot.position);
         Gizmos.DrawLine(rightWorld, trainRoot.position);
     }
 }

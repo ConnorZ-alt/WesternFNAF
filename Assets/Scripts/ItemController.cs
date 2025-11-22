@@ -143,6 +143,7 @@ public class ItemController : MonoBehaviour
 
     private void HandleShootInput()
     {
+        if (externalShootBlockEnabled) return;
         if (Input.GetKeyDown(shootKeyCode))
             Shoot();
     }

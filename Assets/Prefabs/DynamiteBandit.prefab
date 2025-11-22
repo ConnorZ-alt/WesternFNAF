@@ -41,7 +41,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5079860900826153066}
   - component: {fileID: 1102485853316973289}
-  - component: {fileID: 6404641104513541827}
   m_Layer: 8
   m_Name: DynamiteBandit
   m_TagString: Enemy
@@ -92,22 +91,10 @@ MonoBehaviour:
   spawnOnRight: 1
   autoRespawnEnabled: 1
   spawnYOffsetMeters: 1
+  maxHealth: 100
+  destroyOnFinish: 1
   debugPaceForever: 1
   skipApproach: 0
---- !u!114 &6404641104513541827
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4944856894899047177}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ddc9ef63734a4424cb276e7004a97477, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemyHealth
-  maxHP: 1
-  destroyOnDeath: 1
 --- !u!1 &7263708836891397264
 GameObject:
   m_ObjectHideFlags: 0
