@@ -19,7 +19,7 @@
             {
                 "type": "System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
                 "key": "buildOutputDirList",
-                "value": "{\"m_Value\":\"/Users/student/C# Projects/Games/Western FNAF/WebGL Builds/GAME340;;;;;;;;;\"}"
+                "value": "{\"m_Value\":\"/Users/student/C# Projects/Games/Western FNAF/WebGL Builds/Endless_1.1;/Users/student/C# Projects/Games/Western FNAF/WebGL Builds/Endless_1.0;/Users/student/C# Projects/Games/Western FNAF/WebGL Builds/GAME340;;;;;;;\"}"
             }
         ]
     }
