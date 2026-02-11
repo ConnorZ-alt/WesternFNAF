@@ -7,7 +7,6 @@ public class CylinderUI : MonoBehaviour
     [Header("References")]
     [SerializeField] private RectTransform cogTransform;
     [SerializeField] private ChamberSlot[] chambers;
-    [SerializeField] private GameObject bulletPrefab;
     
     [Header("Animation Settings")]
     [SerializeField] private float rotationDuration = 0.25f;
@@ -16,22 +15,25 @@ public class CylinderUI : MonoBehaviour
     private int currentChamberIndex;
     private float degreesPerChamber;
 
-    public void Initialize(int chamberCount)
+    public void Initialize(int chamberCount, int startingBullets)
     {
         degreesPerChamber = 360f / chamberCount;
         currentChamberIndex = 0;
         
-        // Fill all chambers
-        foreach (var chamber in chambers)
+        // Load bullets up to startingBullets count
+        for (int i = 0; i < chambers.Length; i++)
         {
-            chamber.LoadBullet();
+            if (i < startingBullets)
+                chambers[i].LoadBullet();
+            else
+                chambers[i].Clear();
         }
     }
 
     public IEnumerator RotateToNext()
     {
         float startRotation = cogTransform.localEulerAngles.z;
-        float endRotation = startRotation - degreesPerChamber; // Negative for clockwise
+        float endRotation = startRotation - degreesPerChamber;
         
         float elapsed = 0f;
         while (elapsed < rotationDuration)
@@ -54,7 +56,6 @@ public class CylinderUI : MonoBehaviour
 
     public IEnumerator LoadBulletFromPosition(Vector3 worldStartPos)
     {
-        // Find first empty chamber
         int emptyIndex = FindEmptyChamber();
         if (emptyIndex < 0) yield break;
         

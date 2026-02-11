@@ -16,12 +16,15 @@ public class ChamberSlot : MonoBehaviour
         bulletImage.transform.localScale = Vector3.one;
     }
 
+    public void Clear()
+    {
+        bulletImage.enabled = false;
+    }
+
     public IEnumerator EjectBullet()
     {
-        // Shrink and fade out
         float elapsed = 0f;
         Vector3 startScale = Vector3.one;
-        Color startColor = bulletImage.color;
         
         while (elapsed < animationDuration)
         {
@@ -29,7 +32,7 @@ public class ChamberSlot : MonoBehaviour
             float t = elapsed / animationDuration;
             
             bulletImage.transform.localScale = Vector3.Lerp(startScale, Vector3.zero, t);
-            bulletImage.color = new Color(startColor.r, startColor.g, startColor.b, 1 - t);
+            bulletImage.color = new Color(1, 1, 1, 1 - t);
             yield return null;
         }
         
@@ -40,11 +43,10 @@ public class ChamberSlot : MonoBehaviour
     {
         bulletImage.enabled = true;
         bulletImage.color = new Color(1, 1, 1, 0);
+        bulletImage.transform.localScale = Vector3.one;
         
         RectTransform rt = bulletImage.rectTransform;
         Vector3 localEndPos = rt.localPosition;
-        
-        // Convert world start to local space
         Vector3 localStartPos = rt.parent.InverseTransformPoint(worldStartPos);
         
         float elapsed = 0f;
@@ -54,8 +56,6 @@ public class ChamberSlot : MonoBehaviour
         {
             elapsed += Time.deltaTime;
             float t = elapsed / duration;
-            
-            // Smooth step for position
             float smoothT = t * t * (3f - 2f * t);
             
             rt.localPosition = Vector3.Lerp(localStartPos, localEndPos, smoothT);
