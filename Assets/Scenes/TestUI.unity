@@ -405,7 +405,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -30.68, y: 49.48}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &442168057
@@ -537,6 +537,7 @@ GameObject:
   m_Component:
   - component: {fileID: 707550904}
   - component: {fileID: 707550905}
+  - component: {fileID: 707550906}
   m_Layer: 5
   m_Name: AmmoUI
   m_TagString: Untagged
@@ -580,6 +581,22 @@ MonoBehaviour:
   gun: {fileID: 0}
   cylinder: {fileID: 807413472}
   reserveStrip: {fileID: 1317033726}
+--- !u!114 &707550906
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 707550903}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3886b7b99c7851f40baa29657e2ed3f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AmmoUITester
+  cylinder: {fileID: 807413472}
+  reserveStrip: {fileID: 1317033726}
+  testChamberCount: 6
+  testReserveAmmo: 18
 --- !u!1 &777931959
 GameObject:
   m_ObjectHideFlags: 0
@@ -614,7 +631,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -32.14, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &777931961
@@ -700,8 +717,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6210468b5f8fa97479489e764d06367c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CylinderUI
-  cogTransform: {fileID: 0}
-  chambers: []
+  cogTransform: {fileID: 696816348}
+  chambers:
+  - {fileID: 1322703634}
+  - {fileID: 1065827407}
+  - {fileID: 1381567057}
+  - {fileID: 959950551}
+  - {fileID: 1822041621}
+  - {fileID: 1818387950}
   rotationDuration: 0.25
   rotationCurve:
     serializedVersion: 2
@@ -1092,7 +1115,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 48.6}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1188042749
@@ -1282,7 +1305,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -100.71, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1354797391
@@ -1601,7 +1624,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -61.72, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1667155811
