@@ -19,14 +19,20 @@ public class CylinderUI : MonoBehaviour
     {
         degreesPerChamber = 360f / chamberCount;
         currentChamberIndex = 0;
-        
-        // Load bullets up to startingBullets count
+    
+        // Reset rotation
+        cogTransform.localEulerAngles = Vector3.zero;
+    
+        // Clear ALL chambers first, then load the correct amount
         for (int i = 0; i < chambers.Length; i++)
         {
-            if (i < startingBullets)
-                chambers[i].LoadBullet();
-            else
-                chambers[i].Clear();
+            chambers[i].Clear();
+        }
+    
+        // Now load starting bullets
+        for (int i = 0; i < Mathf.Min(startingBullets, chambers.Length); i++)
+        {
+            chambers[i].LoadBullet();
         }
     }
 

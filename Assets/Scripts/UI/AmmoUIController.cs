@@ -63,13 +63,14 @@ public class AmmoUIController : MonoBehaviour
     private IEnumerator FireSequence(int bulletsFired)
     {
         isAnimating = true;
-        
+    
         for (int i = 0; i < bulletsFired; i++)
         {
-            yield return cylinder.RotateToNext();
+            // Eject FIRST, then rotate
             yield return cylinder.RemoveCurrentBullet();
+            yield return cylinder.RotateToNext();
         }
-        
+    
         isAnimating = false;
     }
 

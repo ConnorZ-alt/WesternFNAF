@@ -596,7 +596,7 @@ MonoBehaviour:
   cylinder: {fileID: 807413472}
   reserveStrip: {fileID: 1317033726}
   testChamberCount: 6
-  testReserveAmmo: 18
+  testReserveAmmo: 7
 --- !u!1 &777931959
 GameObject:
   m_ObjectHideFlags: 0
