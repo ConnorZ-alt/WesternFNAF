@@ -855,7 +855,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f6f7de8600d10d4c9887c23797e1993, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ChamberSlot
-  bulletImage: {fileID: 0}
+  bulletImage: {fileID: 1174793982}
   animationDuration: 0.2
 --- !u!1 &994209014
 GameObject:
@@ -981,7 +981,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f6f7de8600d10d4c9887c23797e1993, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ChamberSlot
-  bulletImage: {fileID: 0}
+  bulletImage: {fileID: 994209016}
   animationDuration: 0.2
 --- !u!1 &1174793980
 GameObject:
@@ -1246,7 +1246,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f6f7de8600d10d4c9887c23797e1993, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ChamberSlot
-  bulletImage: {fileID: 0}
+  bulletImage: {fileID: 1999680960}
   animationDuration: 0.2
 --- !u!1 &1354797389
 GameObject:
@@ -1372,7 +1372,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f6f7de8600d10d4c9887c23797e1993, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ChamberSlot
-  bulletImage: {fileID: 0}
+  bulletImage: {fileID: 1867387661}
   animationDuration: 0.2
 --- !u!1 &1484161916
 GameObject:
@@ -1691,7 +1691,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f6f7de8600d10d4c9887c23797e1993, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ChamberSlot
-  bulletImage: {fileID: 0}
+  bulletImage: {fileID: 37031950}
   animationDuration: 0.2
 --- !u!1 &1822041619
 GameObject:
@@ -1742,7 +1742,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f6f7de8600d10d4c9887c23797e1993, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ChamberSlot
-  bulletImage: {fileID: 0}
+  bulletImage: {fileID: 1908735343}
   animationDuration: 0.2
 --- !u!1 &1844767532
 GameObject:
