@@ -7218,7 +7218,6 @@ MonoBehaviour:
   lookSpeed: 2
   lookXLimit: 45
   defaultHeight: 2
-  train: {fileID: 1538513254}
 --- !u!143 &2070090409
 CharacterController:
   m_ObjectHideFlags: 0

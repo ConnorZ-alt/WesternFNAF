@@ -60,6 +60,7 @@ public class TrainController : MonoBehaviour
     public event Action<float> CoalChanged;           // sends the new coal amount (0..1)
     public event Action<float> SpeedChanged;          // sends the new currentSpeed
     public event Action GoalReached;                  // fired once when we reach the goal
+    public Vector3 FrameDelta { get; private set; }
     
     // This lets us replace what happens when we reach the goal without editing movement code.
     private Action onGoalReachedCommand;
@@ -225,10 +226,9 @@ public class TrainController : MonoBehaviour
         // This moves the train using Rigidbody methods so physics stays happy.
 
         Vector3 dir = cachedDirection.sqrMagnitude > 0.0001f ? cachedDirection : transform.forward;
-
-        Vector3 nextPos = trainRb.position + dir * currentSpeed * Time.fixedDeltaTime;
-        trainRb.MovePosition(nextPos);
-
+        Vector3 delta = dir * currentSpeed * Time.fixedDeltaTime;
+        trainRb.MovePosition(trainRb.position + delta);
+        FrameDelta = delta;
         // Rotate the train so it faces the direction it is moving.
         if (dir.sqrMagnitude > 0f)
         {
@@ -236,9 +236,6 @@ public class TrainController : MonoBehaviour
             Quaternion nextRot = Quaternion.Slerp(trainRb.rotation, look, Time.fixedDeltaTime * 2f);
             trainRb.MoveRotation(nextRot);
         }
-
-        if (forcePhysicsSyncEachFixedUpdate)
-            Physics.SyncTransforms();
     }
 
     // ----------------------------

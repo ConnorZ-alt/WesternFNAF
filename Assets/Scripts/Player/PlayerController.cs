@@ -1,7 +1,8 @@
 using UnityEngine;
 
 /// <summary>
-/// PlayerController (CharacterController version)
+/// PlayerController (
+/// CharacterController version)
 /// This script lets the player:
 /// - Walk around using WASD (Horizontal/Vertical axes)
 /// - Look around using the mouse
@@ -30,15 +31,18 @@ public class PlayerController : MonoBehaviour
     // [SerializeField] private float crouchSpeed = 3f;
     // [SerializeField] private float crouchCameraOffset = 0.3f;
     // -----------------------------------------------------------
-
+    
     // Cached components/state
     private CharacterController characterController;
     private Vector3 moveWorldDirection = Vector3.zero; // where we want to move this frame (world space)
     private float pitchAngle = 0f;                     // camera up/down angle
-
+    [SerializeField] private TrainController train;
     // Defaults (so we can restore them)
     private Vector3 cameraDefaultLocalPosition;
     private Vector3 controllerDefaultCenter;
+
+    private float bufferedX = 0;
+    private float bufferedPitchAngle = 0;
 
     // Simple flag so we can freeze movement during pause
     private bool canMove = true;
@@ -77,16 +81,21 @@ public class PlayerController : MonoBehaviour
         // If the game is paused, freeze movement + looking.
         UpdatePauseState();
         if (!canMove) return;
-
-        // 1) Read movement inputs (WASD) and move the CharacterController.
-        HandleMovement();
-
-        // 2) Read mouse input and rotate camera/player.
-        HandleLook();
+        BufferLook();
 
         // ---------------- CROUCH (DISABLED) ----------------
         // HandleCrouch();
         // ---------------------------------------------------
+    }
+    private void FixedUpdate()
+    {
+        if (!canMove) return;
+        // 1) Read movement inputs (WASD) and move the CharacterController.
+        //HandleMovement();
+        HandleMovement(); 
+        
+        // 2) Read mouse input and rotate camera/player.
+        HandleLook();
     }
 
     /// <summary>
@@ -113,6 +122,7 @@ public class PlayerController : MonoBehaviour
         // These are the player’s forward/right directions in the world.
         Vector3 worldForward = transform.forward;
         Vector3 worldRight = transform.right;
+        
 
         // Unity Input axes:
         // "Vertical" is usually W/S, and "Horizontal" is usually A/D.
@@ -127,9 +137,9 @@ public class PlayerController : MonoBehaviour
         moveWorldDirection.y = 0f; // CharacterController handles gravity separately (not used here)
 
         // Actually move the player this frame.
-        characterController.Move(moveWorldDirection * Time.deltaTime);
+        characterController.Move(moveWorldDirection * Time.fixedDeltaTime + train.FrameDelta);
     }
-
+    
     /// <summary>
     /// Rotates the camera up/down (pitch) and rotates the player left/right (yaw).
     /// </summary>
@@ -138,13 +148,21 @@ public class PlayerController : MonoBehaviour
         if (!playerCamera) return;
 
         // Mouse Y makes the camera look up/down.
-        pitchAngle += -Input.GetAxis("Mouse Y") * lookSpeed;
+        pitchAngle += -bufferedPitchAngle * lookSpeed * 2;
         pitchAngle = Mathf.Clamp(pitchAngle, -lookXLimit, lookXLimit);
         playerCamera.transform.localRotation = Quaternion.Euler(pitchAngle, 0f, 0f);
 
         // Mouse X rotates the whole player left/right.
-        float yaw = Input.GetAxis("Mouse X") * lookSpeed;
-        transform.rotation *= Quaternion.Euler(0f, yaw, 0f);
+        float yaw = bufferedX * lookSpeed * 2;
+        transform.localRotation *= Quaternion.Euler(0f, yaw, 0f);
+        bufferedX = 0;
+        bufferedPitchAngle = 0;
+    }
+
+    private void BufferLook()
+    {
+        bufferedX += Input.GetAxis("Mouse X");
+        bufferedPitchAngle += Input.GetAxis("Mouse Y");
     }
 
     /// <summary>
