@@ -5946,6 +5946,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 2070090404}
   - {fileID: 950069789}
   - {fileID: 503826670}
   - {fileID: 4696422}
@@ -5953,7 +5954,6 @@ Transform:
   - {fileID: 1111816055}
   - {fileID: 741764163}
   - {fileID: 1402586474}
-  - {fileID: 2070090404}
   m_Father: {fileID: 1336932755}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1538513254
@@ -5978,6 +5978,7 @@ MonoBehaviour:
   coalSlider: {fileID: 1026648733}
   coal: 1
   currentSpeed: 0
+  playerController: {fileID: 2070090408}
   forcePhysicsSyncEachFixedUpdate: 0
 --- !u!54 &1538513255
 Rigidbody:
@@ -7218,7 +7219,6 @@ MonoBehaviour:
   lookSpeed: 2
   lookXLimit: 45
   defaultHeight: 2
-  train: {fileID: 1538513254}
 --- !u!143 &2070090409
 CharacterController:
   m_ObjectHideFlags: 0
