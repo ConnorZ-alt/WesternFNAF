@@ -204,11 +204,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2b4e6cd17cc34823acc083f4035be38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SneakCover
-  slots: []
-  drawGizmos: 1
-  freeColor: {r: 0.2, g: 1, b: 0.3, a: 0.25}
-  reservedColor: {r: 1, g: 0.3, b: 0.2, a: 0.35}
-  gizmoRadius: 0.18
 --- !u!65 &6068622
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -330,8 +325,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0f7ba5081732451381df2a5133c529f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SneakCoverSlot
-  faceHint: {fileID: 2070090404}
-  localOffset: {x: 0, y: 0, z: 0}
 --- !u!1 &96499140
 GameObject:
   m_ObjectHideFlags: 0
@@ -477,9 +470,9 @@ RectTransform:
   - {fileID: 1330335531}
   m_Father: {fileID: 313649622}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 960, y: -441.57666}
   m_SizeDelta: {x: 350, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &236293246
@@ -758,7 +751,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &313649622
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1262,8 +1255,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0f7ba5081732451381df2a5133c529f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SneakCoverSlot
-  faceHint: {fileID: 2070090404}
-  localOffset: {x: 0, y: 0, z: 0}
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
@@ -1625,11 +1616,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2b4e6cd17cc34823acc083f4035be38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SneakCover
-  slots: []
-  drawGizmos: 1
-  freeColor: {r: 0.2, g: 1, b: 0.3, a: 0.25}
-  reservedColor: {r: 1, g: 0.3, b: 0.2, a: 0.35}
-  gizmoRadius: 0.18
 --- !u!65 &469038562
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1957,11 +1943,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2b4e6cd17cc34823acc083f4035be38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SneakCover
-  slots: []
-  drawGizmos: 1
-  freeColor: {r: 0.2, g: 1, b: 0.3, a: 0.25}
-  reservedColor: {r: 1, g: 0.3, b: 0.2, a: 0.35}
-  gizmoRadius: 0.18
 --- !u!65 &544403553
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2262,9 +2243,9 @@ RectTransform:
   - {fileID: 577725481}
   m_Father: {fileID: 313649622}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 960, y: -806.38995}
   m_SizeDelta: {x: 350, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &613703061
@@ -2754,8 +2735,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0f7ba5081732451381df2a5133c529f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SneakCoverSlot
-  faceHint: {fileID: 2070090404}
-  localOffset: {x: 0, y: 0, z: 0}
 --- !u!1 &741764162
 GameObject:
   m_ObjectHideFlags: 0
@@ -2839,11 +2818,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2b4e6cd17cc34823acc083f4035be38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SneakCover
-  slots: []
-  drawGizmos: 1
-  freeColor: {r: 0.2, g: 1, b: 0.3, a: 0.25}
-  reservedColor: {r: 1, g: 0.3, b: 0.2, a: 0.35}
-  gizmoRadius: 0.18
 --- !u!65 &749272961
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2968,11 +2942,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2b4e6cd17cc34823acc083f4035be38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SneakCover
-  slots: []
-  drawGizmos: 1
-  freeColor: {r: 0.2, g: 1, b: 0.3, a: 0.25}
-  reservedColor: {r: 1, g: 0.3, b: 0.2, a: 0.35}
-  gizmoRadius: 0.18
 --- !u!65 &749934338
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3097,11 +3066,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2b4e6cd17cc34823acc083f4035be38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SneakCover
-  slots: []
-  drawGizmos: 1
-  freeColor: {r: 0.2, g: 1, b: 0.3, a: 0.25}
-  reservedColor: {r: 1, g: 0.3, b: 0.2, a: 0.35}
-  gizmoRadius: 0.18
 --- !u!65 &750977948
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3195,7 +3159,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &801537445
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3391,8 +3355,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0f7ba5081732451381df2a5133c529f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SneakCoverSlot
-  faceHint: {fileID: 2070090404}
-  localOffset: {x: 0, y: 0, z: 0}
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
@@ -3668,8 +3630,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0f7ba5081732451381df2a5133c529f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SneakCoverSlot
-  faceHint: {fileID: 2070090404}
-  localOffset: {x: 0, y: 0, z: 0}
 --- !u!1 &950069788
 GameObject:
   m_ObjectHideFlags: 0
@@ -3813,9 +3773,9 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 313649622}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 960, y: -83.98333}
   m_SizeDelta: {x: 679.5, y: 135.56}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &981138596
@@ -4542,6 +4502,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CoalSource
   playerTag: Player
   promptUserInterfaceObject: {fileID: 0}
+  forceKinematicRigidbody: 1
 --- !u!54 &1111816057
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -4916,9 +4877,9 @@ RectTransform:
   - {fileID: 1430725436}
   m_Father: {fileID: 313649622}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 960, y: -623.9833}
   m_SizeDelta: {x: 350, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1190377668
@@ -5078,6 +5039,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1198077731}
   - component: {fileID: 1198077732}
+  - component: {fileID: 1198077733}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -5112,11 +5074,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 125146e4b200a4fc8ab474df33d633dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SceneManagement
-  PauseMenu: {fileID: 313649621}
+  pauseMenu: {fileID: 313649621}
   gameOverSceneName: GameOverScreen
   gameOverSceneIndex: 3
   resultsSceneName: ResultsScreen
   resultsSceneIndex: 4
+--- !u!114 &1198077733
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1198077730}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba9636585d2804f669c461b322c46541, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BootPhysics
 --- !u!1 &1216671612
 GameObject:
   m_ObjectHideFlags: 0
@@ -5259,8 +5233,8 @@ MonoBehaviour:
   bulletRecoilKickDistance: 0.03
   shotDamage: 25
   debugForceAim: 0
-  externalShootBlockEnabled: 0
   isAimingDownSights: 0
+  externalShootBlockEnabled: 0
 --- !u!1 &1227095127
 GameObject:
   m_ObjectHideFlags: 0
@@ -5383,7 +5357,7 @@ SphereCollider:
   m_Enabled: 1
   serializedVersion: 3
   m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: -1, z: 0}
 --- !u!54 &1232451743
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -5624,8 +5598,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0f7ba5081732451381df2a5133c529f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SneakCoverSlot
-  faceHint: {fileID: 2070090404}
-  localOffset: {x: 0, y: 0, z: 0}
 --- !u!1 &1382948166
 GameObject:
   m_ObjectHideFlags: 0
@@ -5953,6 +5925,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1538513253}
   - component: {fileID: 1538513254}
+  - component: {fileID: 1538513255}
   m_Layer: 0
   m_Name: Train
   m_TagString: Untagged
@@ -5975,12 +5948,12 @@ Transform:
   m_Children:
   - {fileID: 950069789}
   - {fileID: 503826670}
-  - {fileID: 2070090404}
   - {fileID: 4696422}
   - {fileID: 470965987}
   - {fileID: 1111816055}
   - {fileID: 741764163}
   - {fileID: 1402586474}
+  - {fileID: 2070090404}
   m_Father: {fileID: 1336932755}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1538513254
@@ -5999,12 +5972,40 @@ MonoBehaviour:
   accelTime: 15
   drainPerSecond: 0.05
   slowThreshold: 0.2
-  coalAmount: 0.2
+  coalAmount: 0.5
   goal: {fileID: 1044897987}
   goalStopDistance: 2
   coalSlider: {fileID: 1026648733}
   coal: 1
   currentSpeed: 0
+  forcePhysicsSyncEachFixedUpdate: 0
+--- !u!54 &1538513255
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1538513252}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &1571700416
 GameObject:
   m_ObjectHideFlags: 0
@@ -6052,11 +6053,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2b4e6cd17cc34823acc083f4035be38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SneakCover
-  slots: []
-  drawGizmos: 1
-  freeColor: {r: 0.2, g: 1, b: 0.3, a: 0.25}
-  reservedColor: {r: 1, g: 0.3, b: 0.2, a: 0.35}
-  gizmoRadius: 0.18
 --- !u!65 &1571700419
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -6415,9 +6411,9 @@ RectTransform:
   - {fileID: 1751153306}
   m_Father: {fileID: 313649622}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 960, y: -988.79663}
   m_SizeDelta: {x: 350, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1639191932
@@ -6548,9 +6544,9 @@ RectTransform:
   - {fileID: 1586777240}
   m_Father: {fileID: 313649622}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 960, y: -259.16998}
   m_SizeDelta: {x: 350, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1709176247
@@ -7035,8 +7031,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0f7ba5081732451381df2a5133c529f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SneakCoverSlot
-  faceHint: {fileID: 2070090404}
-  localOffset: {x: 0, y: 0, z: 0}
 --- !u!4 &1964602098 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4571077814268163752, guid: 17b193d2eb19b422683be154577fac56, type: 3}
@@ -7086,8 +7080,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0f7ba5081732451381df2a5133c529f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SneakCoverSlot
-  faceHint: {fileID: 2070090404}
-  localOffset: {x: 0, y: 0, z: 0}
 --- !u!1 &2070090403
 GameObject:
   m_ObjectHideFlags: 0
@@ -7226,9 +7218,7 @@ MonoBehaviour:
   lookSpeed: 2
   lookXLimit: 45
   defaultHeight: 2
-  crouchHeight: -2
-  crouchSpeed: 2
-  crouchCameraOffset: 0.7
+  train: {fileID: 1538513254}
 --- !u!143 &2070090409
 CharacterController:
   m_ObjectHideFlags: 0
@@ -7412,11 +7402,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2b4e6cd17cc34823acc083f4035be38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SneakCover
-  slots: []
-  drawGizmos: 1
-  freeColor: {r: 0.2, g: 1, b: 0.3, a: 0.25}
-  reservedColor: {r: 1, g: 0.3, b: 0.2, a: 0.35}
-  gizmoRadius: 0.18
 --- !u!65 &2093577283
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -7545,6 +7530,10 @@ PrefabInstance:
     - target: {fileID: 4944856894899047177, guid: 17b193d2eb19b422683be154577fac56, type: 3}
       propertyPath: m_Name
       value: DynamiteBandit
+      objectReference: {fileID: 0}
+    - target: {fileID: 4944856894899047177, guid: 17b193d2eb19b422683be154577fac56, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5079860900826153066, guid: 17b193d2eb19b422683be154577fac56, type: 3}
       propertyPath: m_LocalPosition.x
