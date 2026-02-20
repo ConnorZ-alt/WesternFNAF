@@ -11,11 +11,13 @@ public class SceneManagement : MonoBehaviour
     /// </summary>
     public static event Action GameEnded;
 
+    public bool IsJumpscared = false;
+
     /// <summary>
     /// After this becomes true, the run is “over” and gameplay systems should stop doing stuff.
     /// </summary>
     public static bool HasGameEnded { get; private set; } = false;
-    
+
     private enum GameFlowState
     {
         Running, // normal gameplay
@@ -40,9 +42,19 @@ public class SceneManagement : MonoBehaviour
     public static bool isPaused;
 
     private GameFlowState state = GameFlowState.Running;
+    
+    public static SceneManagement Instance; //makes sure there is only one
 
     private void Awake()
     {
+        //Checks if there is another SceneManagement and if so destroy this one
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
         // When the scene starts, we assume we are in gameplay and not paused.
         // Also reset global end-of-run flag in case this scene is loaded again.
         HasGameEnded = false;
@@ -181,9 +193,13 @@ public class SceneManagement : MonoBehaviour
         PrepareForSceneChange();
 
         if (!string.IsNullOrEmpty(gameOverSceneName))
+        {
             SceneManager.LoadScene(gameOverSceneName);
+        }
         else if (gameOverSceneIndex >= 0)
+        {
             SceneManager.LoadScene(gameOverSceneIndex);
+        }
         else
             Debug.LogError("[SceneManagement] No GameOver scene set (name or index).");
     }
