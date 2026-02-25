@@ -685,7 +685,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::FlickerLight
   minIntensity: 0
   maxIntensity: 15
-  flickerSpeed: 1
+  flickerSpeed: 0.01
   smoothing: 10
 --- !u!1 &472516070
 GameObject:
