@@ -27,7 +27,6 @@ public class AmmoUIController : MonoBehaviour
 
     private void Start()
     {
-        // Find gun automatically if not assigned
         if (gun == null)
             gun = FindObjectOfType<ItemController>();
         
@@ -37,10 +36,8 @@ public class AmmoUIController : MonoBehaviour
             return;
         }
         
-        // Subscribe if we found it in Start
         gun.OnAmmoChanged += HandleAmmoChanged;
         
-        // Initialize with current ammo state
         lastKnownCylinder = gun.GetRoundsInCylinder();
         lastKnownReserve = gun.GetReserveAmmo();
         
@@ -50,11 +47,16 @@ public class AmmoUIController : MonoBehaviour
 
     private void HandleAmmoChanged(int cylinderRounds, int reserveRounds)
     {
-        // Calculate what changed
         int cylinderDelta = cylinderRounds - lastKnownCylinder;
         int reserveDelta = reserveRounds - lastKnownReserve;
         
-        // Stop any in-progress animation if ammo changes rapidly
+        // Capture old reserve before updating
+        int oldReserve = lastKnownReserve;
+        
+        // Update tracked state first
+        lastKnownCylinder = cylinderRounds;
+        lastKnownReserve = reserveRounds;
+        
         if (currentAnimation != null && isAnimating)
         {
             StopCoroutine(currentAnimation);
@@ -63,23 +65,17 @@ public class AmmoUIController : MonoBehaviour
         
         if (cylinderDelta < 0)
         {
-            // Bullets were fired
             currentAnimation = StartCoroutine(FireSequence(Mathf.Abs(cylinderDelta)));
         }
         else if (cylinderDelta > 0 && reserveDelta < 0)
         {
-            // Reload happened (cylinder gained, reserve lost)
-            currentAnimation = StartCoroutine(ReloadSequence(cylinderDelta));
+            // Pass the old reserve value to the coroutine
+            currentAnimation = StartCoroutine(ReloadSequence(cylinderDelta, oldReserve));
         }
         else if (reserveDelta > 0)
         {
-            // Picked up ammo (just update reserve display)
             reserveStrip.UpdateDisplay(reserveRounds);
         }
-        
-        // Update tracked state
-        lastKnownCylinder = cylinderRounds;
-        lastKnownReserve = reserveRounds;
     }
 
     private IEnumerator FireSequence(int bulletsFired)
@@ -95,7 +91,7 @@ public class AmmoUIController : MonoBehaviour
         isAnimating = false;
     }
 
-    private IEnumerator ReloadSequence(int bulletsToLoad)
+    private IEnumerator ReloadSequence(int bulletsToLoad, int startingReserve)
     {
         isAnimating = true;
         
@@ -104,8 +100,8 @@ public class AmmoUIController : MonoBehaviour
             Vector3 startPos = reserveStrip.GetNextBulletPosition();
             yield return cylinder.LoadBulletFromPosition(startPos);
             
-            // Update reserve display progressively
-            reserveStrip.UpdateDisplay(lastKnownReserve - (i + 1));
+            // Use the captured starting value
+            reserveStrip.UpdateDisplay(startingReserve - (i + 1));
             
             yield return new WaitForSeconds(0.1f);
         }
