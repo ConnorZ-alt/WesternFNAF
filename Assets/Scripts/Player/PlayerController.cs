@@ -58,6 +58,8 @@ public class PlayerController : MonoBehaviour
             cameraDefaultLocalPosition = playerCamera.transform.localPosition;
 
         controllerDefaultCenter = characterController.center;
+        
+        if (!train) train = FindObjectOfType<TrainController>();
     }
 
     private void Start()
@@ -91,7 +93,6 @@ public class PlayerController : MonoBehaviour
     {
         if (!canMove) return;
         // 1) Read movement inputs (WASD) and move the CharacterController.
-        //HandleMovement();
         HandleMovement(); 
         
         // 2) Read mouse input and rotate camera/player.
@@ -137,7 +138,8 @@ public class PlayerController : MonoBehaviour
         moveWorldDirection.y = 0f; // CharacterController handles gravity separately (not used here)
 
         // Actually move the player this frame.
-        characterController.Move(moveWorldDirection * Time.fixedDeltaTime + train.FrameDelta);
+        Vector3 trainDelta = (train != null) ? train.FrameDelta : Vector3.zero;
+        characterController.Move(moveWorldDirection * Time.fixedDeltaTime + trainDelta);
     }
     
     /// <summary>
