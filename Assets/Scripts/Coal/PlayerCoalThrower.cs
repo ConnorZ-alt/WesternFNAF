@@ -143,6 +143,9 @@ public class PlayerCoalThrower : MonoBehaviour
 
         if (IsHoldingCoal)
             return;
+        
+        if (IsAimingCoal)
+            return;
 
         if (Input.GetKeyDown(pickUpKey))
             pickupCommand?.Invoke();
@@ -155,8 +158,8 @@ public class PlayerCoalThrower : MonoBehaviour
         if (!IsHoldingCoal)
             return;
 
-        if (!Input.GetKeyDown(throwKey))
-            return;
+        
+            
 
         bool aimingNow = IsAimingCoal;
 
@@ -167,8 +170,9 @@ public class PlayerCoalThrower : MonoBehaviour
         // Block gun BEFORE throwing so Mouse0 doesn't also fire the revolver this frame.
         if (revolverItemController != null)
             revolverItemController.SetExternalShootBlock(true);
-
-        throwCommand?.Invoke();
+        
+        if (Input.GetKeyDown(throwKey))
+            throwCommand?.Invoke();
 
         // Clear the block next frame.
         if (revolverItemController != null)
