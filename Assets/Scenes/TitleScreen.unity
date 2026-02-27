@@ -776,7 +776,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FlickerLight
   minIntensity: 0
-  maxIntensity: 2.5
+  maxIntensity: 10
   minTransitionTime: 0.02
   maxTransitionTime: 0.3
   minInterval: 0.05
