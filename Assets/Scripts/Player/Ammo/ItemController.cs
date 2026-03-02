@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using System.Collections;
 
 [DisallowMultipleComponent]
 public class ItemController : MonoBehaviour
@@ -7,6 +8,7 @@ public class ItemController : MonoBehaviour
     [Header("Links")]
     [Tooltip("Player camera used for aiming/shooting raycasts")]
     [SerializeField] private Camera playerCamera;
+    [SerializeField] private PlayerCoalThrower playerCoalThrower;
 
     [Header("Revolver Ammo")]
     [Tooltip("How many bullets the cylinder can hold")]
@@ -40,6 +42,12 @@ public class ItemController : MonoBehaviour
 
     [Tooltip("Tiny camera kick back when shooting (just a small effect)")]
     [SerializeField] private float bulletRecoilKickDistance = 0.03f;
+    
+    [Tooltip("Cooldown before the gun can fire again")]
+    [SerializeField] private float cooldownlength = 0.5f;
+
+    private bool isOnCooldown = false;
+    private bool isHoldingCoal = false;
 
     [Header("Damage")]
     [Tooltip("Damage dealt to IDamageable targets when raycast hits")]
@@ -82,6 +90,24 @@ public class ItemController : MonoBehaviour
             playerCamera.fieldOfView = normalFieldOfView;
 
         RaiseAmmoChanged();
+    }
+
+    private void OnEnable()
+    {
+        if (playerCoalThrower == null)
+            playerCoalThrower = FindObjectOfType<PlayerCoalThrower>();
+        
+        playerCoalThrower.CoalPickedUp += CoalPickedUp;
+        playerCoalThrower.CoalThrown   += CoalThrown;
+    }
+    
+    private void OnDisable()
+    {
+        if (playerCoalThrower != null)
+        {
+            playerCoalThrower.CoalPickedUp -= CoalPickedUp;
+            playerCoalThrower.CoalThrown   -= CoalThrown;
+        }
     }
 
     private void Update()
@@ -155,7 +181,7 @@ public class ItemController : MonoBehaviour
         // 1) You have bullets loaded,
         // 2) You are aiming,
         // 3) Nobody blocked shooting this frame.
-        return roundsInCylinder > 0 && isAimingDownSights && !externalShootBlockEnabled;
+        return roundsInCylinder > 0 && isAimingDownSights && !externalShootBlockEnabled && !isOnCooldown && !isHoldingCoal;
     }
 
     public void Shoot()
@@ -175,13 +201,34 @@ public class ItemController : MonoBehaviour
         SpawnBulletVisual();
         DoRaycastDamage();
         ApplyCameraRecoilKick();
+        StartCoroutine(StartCooldown());
 
         // If we just used the last bullet, auto-cancel aiming.
         if (roundsInCylinder == 0)
         {
             isAimingDownSights = false;
             Debug.Log("[GUN] Cylinder empty. Aim auto-canceled.");
-        }
+        } 
+    }
+    
+    // ===================== Cooldown =====================
+
+    private IEnumerator StartCooldown()
+    {
+        isOnCooldown = true;
+        yield return new WaitForSeconds(cooldownlength);
+        isOnCooldown = false;
+    }
+    
+    // ===================== Coal =====================
+    private void CoalPickedUp(GameObject coal)
+    {
+        isHoldingCoal = true;
+    }
+
+    private void CoalThrown(Vector3 start, Vector3 target)
+    {
+        isHoldingCoal = false;
     }
 
     // ===================== Input Handling =====================

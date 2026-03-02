@@ -11,10 +11,10 @@ public class UIManager : MonoBehaviour {
         group.SetActive(false);
     }
     
-    protected IEnumerator ShowFor(GameObject group, float Time)
+    protected IEnumerator ShowFor(GameObject group, float time)
     {
         Show(group);
-        yield return new WaitForSeconds(Time);
+        yield return new WaitForSeconds(time);
         Hide(group);
     }
 }
