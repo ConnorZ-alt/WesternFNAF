@@ -36,7 +36,7 @@ public class PlayerController : MonoBehaviour
     private CharacterController characterController;
     private Vector3 moveWorldDirection = Vector3.zero; // where we want to move this frame (world space)
     private float pitchAngle = 0f;                     // camera up/down angle
-    [SerializeField] private TrainController train;
+    [SerializeField] private TrainPathFollower train;
     // Defaults (so we can restore them)
     private Vector3 cameraDefaultLocalPosition;
     private Vector3 controllerDefaultCenter;
@@ -137,8 +137,20 @@ public class PlayerController : MonoBehaviour
         moveWorldDirection.y = 0f; // CharacterController handles gravity separately (not used here)
 
         // Actually move the player this frame.
-        characterController.Move(moveWorldDirection * Time.fixedDeltaTime + train.FrameDelta);
-    }
+// 1. Apply train translation
+        Vector3 totalMove = moveWorldDirection * Time.fixedDeltaTime + train.FrameDelta;
+
+// 2. Apply train rotation around train pivot
+        Vector3 trainPivot = train.transform.position;
+
+        Vector3 offsetFromTrain = transform.position - trainPivot;
+        offsetFromTrain = train.RotationDelta * offsetFromTrain;
+
+        Vector3 rotatedPosition = trainPivot + offsetFromTrain;
+        Vector3 rotationMove = rotatedPosition - transform.position;
+
+// 3. Combine everything
+        characterController.Move(totalMove + rotationMove);    }
     
     /// <summary>
     /// Rotates the camera up/down (pitch) and rotates the player left/right (yaw).

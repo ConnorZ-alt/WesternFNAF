@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: daf93c1b3250a32409522d89c1548877
+timeCreated: 1474642633
+licenseType: Store
+DefaultImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 72231
+  packageName: Steam Locomotive
+  packageVersion: 1.0
+  assetPath: Assets/Bretwalda Steam Locomotive/Scene/scene.unity
+  uploadId: 140107
