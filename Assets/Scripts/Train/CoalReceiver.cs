@@ -89,7 +89,7 @@ public class CoalReceiver : MonoBehaviour
 
         // 3) Figure out how much coal this is worth.
         float coalAmountToAdd = GetCoalValue();
-
+        
         // 4) Observer: announce that we received coal.
         // This is how achievements/audio/UI can react without being hard-coded in here.
         CoalReceived?.Invoke(coalPiece, coalAmountToAdd);

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7820217125227432833}
   - component: {fileID: 2636711235690620028}
   - component: {fileID: 8769415070723568575}
-  - component: {fileID: -9040174778372010132}
+  - component: {fileID: 2789547983972408024}
   m_Layer: 11
   m_Name: Coal
   m_TagString: Coal
@@ -140,7 +140,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 1
---- !u!114 &-9040174778372010132
+--- !u!114 &2789547983972408024
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -149,10 +149,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 973720893336250002}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 994c89a5dcad6487881a691ded89216f, type: 3}
+  m_Script: {fileID: 11500000, guid: cc9c02e36bdbb8840a81dedf9dc69b9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CoalPiece
-  stickLayers:
-    serializedVersion: 2
-    m_Bits: 128
-  parentToHit: 1
+  destroyDelaySeconds: 4

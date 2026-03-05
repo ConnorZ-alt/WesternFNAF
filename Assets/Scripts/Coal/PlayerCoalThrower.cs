@@ -59,6 +59,10 @@ public class PlayerCoalThrower : MonoBehaviour
     public event Action<Vector3, Vector3> CoalThrown; // start position, target position
     public event Action<bool> CoalAimChanged;          // aiming on/off
     
+    private TrainPathFollower train;
+    
+    private Rigidbody flyingCoalRb;
+    
     // These are the main actions we do. By default, they call the normal methods.
     // But later, you can swap them out without rewriting this whole script.
     private Action pickupCommand;
@@ -83,6 +87,21 @@ public class PlayerCoalThrower : MonoBehaviour
 
         pickupCommand = PickUpCoal;
         throwCommand  = ThrowCoal;
+    }
+    
+    private void FixedUpdate()
+    {
+        if (train == null || flyingCoalRb == null)
+            return;
+
+        // Apply angular velocity from train rotation
+        Quaternion deltaRot = train.RotationDelta;
+        float angle;
+        Vector3 axis;
+        deltaRot.ToAngleAxis(out angle, out axis);
+
+        if (angle > 0.01f)
+            flyingCoalRb.angularVelocity = axis * angle / Time.fixedDeltaTime;
     }
 
     private void Update()
@@ -189,7 +208,7 @@ public class PlayerCoalThrower : MonoBehaviour
             return;
         }
 
-        heldCoalGameObject = Instantiate(coalPrefab, holdPoint.position, holdPoint.rotation);
+        heldCoalGameObject = Instantiate(coalPrefab, holdPoint.position, holdPoint.rotation, transform);
 
         // Freeze physics while it is held, so it doesn't fall or bounce in your hand.
         if (heldCoalGameObject.TryGetComponent<Rigidbody>(out var rb))
@@ -232,21 +251,31 @@ public class PlayerCoalThrower : MonoBehaviour
         rb.isKinematic = false;
         rb.useGravity = true;
         rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
+        
+        heldCoalGameObject.transform.SetParent(null); // unparent for physics
+        rb.isKinematic = false;
+        rb.useGravity = true;
+        // Keep a reference to apply train rotation
+        if (rb != null)
+            flyingCoalRb = rb;
+        train = GetComponentInParent<TrainPathFollower>();
+
+        Vector3 inheritedVelocity = Vector3.zero;
+
+        if (train != null)
+        {
+            inheritedVelocity = train.FrameDelta / Time.fixedDeltaTime;
+        }
 
         Vector3 start = heldCoalGameObject.transform.position;
-
-        // Pick a target point to throw at.
         Vector3 target = ChooseThrowTarget(start);
 
-        // Make sure we aren't throwing basically zero distance.
         target = EnforceMinimumFlatDistance(start, target);
 
-        // Compute the velocity needed to reach the target in time t.
         float t = Mathf.Clamp(throwDurationSeconds, 0.5f, 1.1f);
-        Vector3 v0 = CalculateBallisticVelocity(start, target, t, Physics.gravity.y);
-
-        // Apply the throw.
-        rb.linearVelocity = v0;
+        Vector3 v0 = CalculateBallisticVelocity(start, target, t);
+        // Combine train motion + throw
+        rb.linearVelocity = v0 + inheritedVelocity;
         rb.angularVelocity = UnityEngine.Random.insideUnitSphere * 6f;
 
         Debug.DrawLine(start, target, Color.yellow, 1.25f);
@@ -333,20 +362,34 @@ public class PlayerCoalThrower : MonoBehaviour
         return start + (playerCamera.transform.forward.normalized * minFlatDistance) + Vector3.up * 0.02f;
     }
 
-    private static Vector3 CalculateBallisticVelocity(Vector3 start, Vector3 end, float time, float gravityY)
+    private static Vector3 CalculateBallisticVelocity(Vector3 start, Vector3 end, float time)
     {
-        // This math gives us the starting velocity needed to reach "end" from "start"
-        // in exactly "time" seconds, using gravity.
-        //
-        // It splits the movement into:
-        // - XZ movement (left/right/forward/back)
-        // - Y movement (up/down)
+        // Ensure minimum time to avoid insanely large velocities
+        time = Mathf.Max(time, 0.1f);
 
-        Vector3 to = end - start;
-        Vector3 xz = new Vector3(to.x, 0f, to.z);
+        Vector3 displacement = end - start;
 
-        float vy = (to.y - 0.5f * gravityY * time * time) / time;
-        return (xz / time) + Vector3.up * vy;
+        // Split horizontal and vertical
+        Vector3 horizontal = new Vector3(displacement.x, 0f, displacement.z);
+        float horizontalDistance = horizontal.magnitude;
+
+        // Unity's gravity is negative, so we take Physics.gravity.y directly
+        float g = Physics.gravity.y;
+
+        // Vertical velocity needed to reach the target height in 'time' seconds
+        float vy = (displacement.y - 0.5f * g * time * time) / time;
+
+        // Horizontal velocity is just distance / time
+        Vector3 vxz = horizontal / time;
+
+        Vector3 velocity = vxz + Vector3.up * vy;
+
+        // Optional: clamp max velocity to avoid crazy throws
+        float maxVelocity = 20f; // tweak as needed
+        if (velocity.magnitude > maxVelocity)
+            velocity = velocity.normalized * maxVelocity;
+
+        return velocity;
     }
 
     // ----------------------------
