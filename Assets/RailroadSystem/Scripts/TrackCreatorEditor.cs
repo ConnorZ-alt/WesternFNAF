@@ -1,7 +1,7 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
-[CustomEditor(typeof(TrackCreator), true), CanEditMultipleObjects]
+//[CustomEditor(typeof(TrackCreator), true), CanEditMultipleObjects]
 public class TrackCreatorEditor : Editor
 {
     public override void OnInspectorGUI()
