@@ -7,7 +7,7 @@ public class TrainPathFollower : MonoBehaviour
 {
     [Header("Path Reference")]
     [SerializeField] private CinemachinePathBase path;
-    [SerializeField] private CinemachinePathBase.PositionUnits units = CinemachinePathBase.PositionUnits.Distance;
+    [SerializeField] public CinemachinePathBase.PositionUnits units = CinemachinePathBase.PositionUnits.Distance;
     [SerializeField] private bool loopPath = false;
 
     [Header("Motion")]
@@ -24,6 +24,13 @@ public class TrainPathFollower : MonoBehaviour
     private Rigidbody rb;
     private bool endedFired;
 
+    public float GetCurrentUnits() => currentUnits;
+
+    public void SetCurrentUnitsNoSnap(float newUnits)
+    {
+        currentUnits = Mathf.Max(0f, newUnits);
+    }
+    
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -38,6 +45,8 @@ public class TrainPathFollower : MonoBehaviour
             Debug.LogError("[TrainPathFollower] No path assigned.", this);
             enabled = false;
         }
+        
+        // SnapToPathNow();
     }
 
     public void SetSpeed(float newSpeed) => pathSpeed = Mathf.Max(0f, newSpeed);
@@ -46,6 +55,7 @@ public class TrainPathFollower : MonoBehaviour
     {
         currentUnits = Mathf.Max(0f, newUnits);
         endedFired = false;              // allow end event again if we restart
+        
         SnapToPathNow();
     }
 

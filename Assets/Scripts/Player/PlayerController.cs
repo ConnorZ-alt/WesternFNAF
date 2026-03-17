@@ -24,6 +24,10 @@ public class PlayerController : MonoBehaviour
 
     [Header("Controller Shape (standing)")]
     [SerializeField] private float defaultHeight = 2f;
+    
+    [SerializeField] private float groundCheckDistance = 1.2f;
+    [SerializeField] private LayerMask movingSurfaceMask = ~0; // you can narrow this later
+    // private MovingSurface currentSurface;
 
     // ---------------- CROUCH SETTINGS (DISABLED) ----------------
     // [Header("Crouch (DISABLED)")]
@@ -36,7 +40,11 @@ public class PlayerController : MonoBehaviour
     private CharacterController characterController;
     private Vector3 moveWorldDirection = Vector3.zero; // where we want to move this frame (world space)
     private float pitchAngle = 0f;                     // camera up/down angle
+    
     [SerializeField] private TrainController train;
+        
+    // [SerializeField] private TrainPathFollower train;
+
     // Defaults (so we can restore them)
     private Vector3 cameraDefaultLocalPosition;
     private Vector3 controllerDefaultCenter;
@@ -120,26 +128,29 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     private void HandleMovement()
     {
-        // These are the player’s forward/right directions in the world.
         Vector3 worldForward = transform.forward;
         Vector3 worldRight = transform.right;
-        
 
-        // Unity Input axes:
-        // "Vertical" is usually W/S, and "Horizontal" is usually A/D.
         float forwardInput = Input.GetAxis("Vertical");
         float rightInput = Input.GetAxis("Horizontal");
 
-        // Build a world-space move direction.
         float forwardSpeed = walkSpeed * forwardInput;
         float rightSpeed = walkSpeed * rightInput;
 
         moveWorldDirection = (worldForward * forwardSpeed) + (worldRight * rightSpeed);
-        moveWorldDirection.y = 0f; // CharacterController handles gravity separately (not used here)
-
+        moveWorldDirection.y = 0f;
+        
         // Actually move the player this frame.
         Vector3 trainDelta = (train != null) ? train.FrameDelta : Vector3.zero;
         characterController.Move(moveWorldDirection * Time.fixedDeltaTime + trainDelta);
+
+        Vector3 playerMove = moveWorldDirection * Time.fixedDeltaTime;
+
+        Vector3 surfaceDelta = GetSurfaceDelta();
+        Vector3 surfaceRotMove = GetSurfaceRotationMove();
+
+        characterController.Move(playerMove + surfaceDelta + surfaceRotMove);
+
     }
     
     /// <summary>
@@ -185,6 +196,45 @@ public class PlayerController : MonoBehaviour
 
         if (playerCamera)
             playerCamera.transform.localPosition = cameraDefaultLocalPosition;
+    }
+    
+    private Vector3 GetSurfaceDelta()
+    {
+        // Raycast down to see what we are standing on
+        Vector3 origin = transform.position + Vector3.up * 0.2f;
+
+        if (Physics.Raycast(origin, Vector3.down, out RaycastHit hit, groundCheckDistance, movingSurfaceMask, QueryTriggerInteraction.Ignore))
+        {
+            var surface = hit.collider.GetComponentInParent<MovingSurface>();
+            if (surface != null)
+                return surface.FrameDelta;
+        }
+
+        return Vector3.zero;
+    }
+    
+    private Vector3 GetSurfaceRotationMove()
+    {
+        Vector3 origin = transform.position + Vector3.up * 0.2f;
+
+        if (Physics.Raycast(origin, Vector3.down, out RaycastHit hit, groundCheckDistance, movingSurfaceMask, QueryTriggerInteraction.Ignore))
+        {
+            var surface = hit.collider.GetComponentInParent<MovingSurface>();
+            if (surface == null) return Vector3.zero;
+
+            // Rotate the player's offset around the surface pivot
+            Vector3 pivot = surface.transform.position;
+
+            Vector3 offset = transform.position - pivot;
+            offset = surface.RotationDelta * offset;
+
+            Vector3 rotatedPos = pivot + offset;
+
+            // We return the delta we need to apply this frame
+            return rotatedPos - transform.position;
+        }
+
+        return Vector3.zero;
     }
 
     // ---------------- CROUCH LOGIC (DISABLED) ----------------
