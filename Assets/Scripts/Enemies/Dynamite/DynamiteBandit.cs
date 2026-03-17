@@ -18,11 +18,12 @@ public class DynamiteBandit : MonoBehaviour, IDamageable
 
     [Header("References")]
     [SerializeField] private Transform trainRootTransform;      // Train root
-    [SerializeField] private BoxCollider trainDeckBounds;       // Train/PlayerBounds
+    [SerializeField] private Transform specificTarget;
     [SerializeField] private float deckYOffsetMeters = 0.0f;
 
     [SerializeField] private BanditStats banditStats;           // Stats asset
     [SerializeField] private GameObject dynamitePrefab;
+    [SerializeField] private TrainPathFollower trainPathFollower; 
 
     [SerializeField] private Transform throwOriginTransform;    // auto-wired if null
     [SerializeField] private LayerMask trainFloorMask;
@@ -164,7 +165,7 @@ public class DynamiteBandit : MonoBehaviour, IDamageable
 
     public void SetupForSpawner(
         Transform trainRootParameter,
-        BoxCollider deckBoundsParameter,
+        Transform deckBoundsParameter,
         BanditStats statsAsset,
         bool spawnOnRightSide,
         Action onFinishedCallback = null)
@@ -172,7 +173,7 @@ public class DynamiteBandit : MonoBehaviour, IDamageable
         // The spawner calls this to inject the needed references.
 
         trainRootTransform = trainRootParameter;
-        trainDeckBounds = deckBoundsParameter;
+        specificTarget = deckBoundsParameter;
         banditStats = statsAsset;
         spawnOnRight = spawnOnRightSide;
 
@@ -392,21 +393,12 @@ public class DynamiteBandit : MonoBehaviour, IDamageable
         }
     }
 
-    private float GetDeckYPosition()
-    {
-        // This gets the y-position of the deck so the bandit doesn’t float up/down.
-
-        return trainDeckBounds != null
-            ? trainDeckBounds.bounds.min.y + deckYOffsetMeters
-            : transform.position.y;
-    }
-
     private void ForceTransformYToDeck()
     {
         // This hard-locks the bandit to deck Y every frame.
 
         Vector3 pos = transform.position;
-        pos.y = GetDeckYPosition();
+        pos.y = specificTarget.position.y ;
         transform.position = pos;
     }
 
@@ -423,8 +415,7 @@ public class DynamiteBandit : MonoBehaviour, IDamageable
         );
 
         Vector3 worldPoint = trainRootTransform.TransformPoint(localPoint);
-        worldPoint.y = GetDeckYPosition();
-
+        worldPoint.y = specificTarget.position.y;
         return worldPoint;
     }
 
@@ -437,12 +428,14 @@ public class DynamiteBandit : MonoBehaviour, IDamageable
             trainVelocity = Vector3.zero;
             return;
         }
+        float dt = Time.deltaTime;
+        if (dt <= 0) return;
 
-        float dt = Mathf.Max(Time.deltaTime, 0.0001f);
-        Vector3 current = trainRootTransform.position;
-
-        trainVelocity = (current - lastTrainWorldPosition) / dt;
-        lastTrainWorldPosition = current;
+        Vector3 currentPos = trainRootTransform.position;
+        // Calculate velocity
+        trainVelocity = (currentPos - lastTrainWorldPosition) / dt;
+        // CRITICAL: Update the last position for the next frame
+        lastTrainWorldPosition = currentPos;
     }
 
     // ----------------------------
@@ -459,86 +452,77 @@ public class DynamiteBandit : MonoBehaviour, IDamageable
         if (activeDynamiteGameObject != null)
             return false;
 
-        if (!dynamitePrefab || !throwOriginTransform || !trainDeckBounds || banditStats == null)
+        if (!dynamitePrefab || !throwOriginTransform || banditStats == null)
         {
             Debug.LogWarning("[DynamiteBandit] Missing prefab/origin/bounds/stats, abort throw.", this);
             return false;
         }
 
         Vector3 landingPoint = ChooseLandingPointOnDeck();
-        Vector3 initialVelocity = ComputeInitialThrowVelocity(landingPoint);
 
+// Estimate time the dynamite will be in the air
+        float distance = Vector3.Distance(throwOriginTransform.position, landingPoint);
+        float travelTime = Mathf.Clamp(distance / 12f, 0.5f, 3.0f);        
+// Predict where the landing point will move with the train
+        //Vector3 predictedLandingPoint = landingPoint + (trainVelocity * travelTime);
+        Vector3 predictedLandingPoint = landingPoint;
         GameObject dynamiteObj = Instantiate(dynamitePrefab, throwOriginTransform.position, Quaternion.identity);
-        dynamiteObj.transform.parent = null;
-
+        
+        Physics.SyncTransforms();
+        
+        Dynamite dScript = dynamiteObj.GetComponent<Dynamite>();
         Rigidbody dynamiteRb = dynamiteObj.GetComponent<Rigidbody>();
-        if (dynamiteRb == null)
-        {
-            Debug.LogWarning("[DynamiteBandit] Dynamite prefab needs a Rigidbody.", this);
-            Destroy(dynamiteObj);
-            return false;
-        }
-
+        
         dynamiteRb.isKinematic = false;
-        dynamiteRb.useGravity = true;
-
-        // Unity uses velocity, not linearVelocity.
-        dynamiteRb.linearVelocity = initialVelocity + trainVelocity;
-        dynamiteRb.angularVelocity = Random.insideUnitSphere * 4f;
-
-        // Track it as active.
+        dynamiteRb.linearVelocity = Vector3.zero;
+        dynamiteRb.position = throwOriginTransform.position /2; // Double-down on position
+        
+        dScript.OnThrown(); 
+        dScript.InheritTrainMovement(trainPathFollower);
+        
+        dynamiteObj.transform.position = throwOriginTransform.position;
+        dynamiteRb.position = throwOriginTransform.position;
+        
+        Vector3 throwVelocity = ComputeInitialThrowVelocity(predictedLandingPoint);
+        dynamiteRb.linearVelocity = throwVelocity * 1.02f;
+        dynamiteRb.angularVelocity = Random.insideUnitSphere * 2f;
+        
         activeDynamiteGameObject = dynamiteObj;
-
         SubscribeToProjectile(dynamiteObj);
-
+        
         // Failsafe: if the projectile never calls back, clear it anyway.
         StartCoroutine(ClearActiveDynamiteFailsafe(dynamiteObj, 6f));
 
         ThrewDynamite?.Invoke();
 
         Debug.DrawLine(throwOriginTransform.position, landingPoint, Color.yellow, 1.5f);
-        Debug.DrawRay(throwOriginTransform.position, (initialVelocity + trainVelocity) * 0.25f, Color.cyan, 1.5f);
+        Debug.DrawRay(throwOriginTransform.position, (trainVelocity) * 0.25f, Color.cyan, 1.5f);
 
         return true;
     }
+    
 
     private Vector3 ChooseLandingPointOnDeck()
     {
         // This tries to pick a good landing point by raycasting down onto TrainFloor.
 
-        Vector3 pickOriginAboveDeck = trainDeckBounds.bounds.center + Vector3.up * 8f;
-
-        // Add inaccuracy so throws aren’t perfect every time.
-        pickOriginAboveDeck += new Vector3(
+        Vector3 targetPos;
+        
+        targetPos = specificTarget.position;
+        Vector3 offset = new Vector3(
             Random.Range(-banditStats.throwInaccuracy, banditStats.throwInaccuracy),
             0f,
             Random.Range(-banditStats.throwInaccuracy, banditStats.throwInaccuracy)
         );
 
-        if (Physics.Raycast(
-                pickOriginAboveDeck,
-                Vector3.down,
-                out RaycastHit floorHit,
-                30f,
-                trainFloorMask,
-                QueryTriggerInteraction.Ignore))
-        {
-            return floorHit.point + Vector3.up * 0.02f;
-        }
-
-        // Fallback: center of the deck.
-        return new Vector3(
-            trainDeckBounds.bounds.center.x,
-            trainDeckBounds.bounds.min.y + 0.02f,
-            trainDeckBounds.bounds.center.z
-        );
+        return targetPos + offset;
     }
 
     private Vector3 ComputeInitialThrowVelocity(Vector3 landingPoint)
     {
         // This chooses an arc that goes up to an apex, then down to the landing point.
 
-        float arcApexY = Mathf.Max(landingPoint.y, throwOriginTransform.position.y) + 1.2f;
+        float arcApexY = Mathf.Max(landingPoint.y, throwOriginTransform.position.y) + 2f;
         return ComputeBallisticVelocityViaApex(throwOriginTransform.position, landingPoint, arcApexY);
     }
 
@@ -666,7 +650,6 @@ public class DynamiteBandit : MonoBehaviour, IDamageable
         TryAutoWireThrowOrigin();
 
         if (trainRootTransform == null) { Debug.LogError("[DynamiteBandit] trainRootTransform not set.", this); return false; }
-        if (trainDeckBounds == null)    { Debug.LogError("[DynamiteBandit] trainDeckBounds not set.", this); return false; }
         if (throwOriginTransform == null) { Debug.LogError("[DynamiteBandit] throwOriginTransform not set.", this); return false; }
         if (dynamitePrefab == null)     { Debug.LogError("[DynamiteBandit] dynamitePrefab not set.", this); return false; }
         if (banditStats == null)        { Debug.LogError("[DynamiteBandit] banditStats not set.", this); return false; }

@@ -7,7 +7,7 @@ public class BanditSpawner : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private Transform trainRoot;
-    [SerializeField] private BoxCollider playerBounds;
+    [SerializeField] private Transform target;
     [SerializeField] private GameObject banditPrefab;
     [SerializeField] private BanditStats defaultStats;
 
@@ -195,7 +195,7 @@ public class BanditSpawner : MonoBehaviour
         };
 
         // Setup the bandit with the spawner settings.
-        bandit.SetupForSpawner(trainRoot, playerBounds, defaultStats, spawnOnRight);
+        bandit.SetupForSpawner(trainRoot, target, defaultStats, spawnOnRight);
     }
 
     // ----------------------------
@@ -231,7 +231,7 @@ public class BanditSpawner : MonoBehaviour
         );
 
         // Deck height is based on the player's bounds (train deck area).
-        float deckY = playerBounds.bounds.min.y + yOffset;
+        float deckY = target.position.y + yOffset;
 
         Vector3 worldPosition = trainRoot.TransformPoint(localOffset);
         worldPosition.y = deckY;
@@ -332,7 +332,7 @@ public class BanditSpawner : MonoBehaviour
         // If not, we return false.
 
         return trainRoot != null
-               && playerBounds != null
+               && target != null
                && banditPrefab != null
                && defaultStats != null;
     }
@@ -345,10 +345,10 @@ public class BanditSpawner : MonoBehaviour
     {
         // This draws little spheres in the editor showing spawn points.
 
-        if (trainRoot == null || playerBounds == null)
+        if (trainRoot == null || target == null)
             return;
 
-        float deckY = playerBounds.bounds.min.y + yOffset;
+        float deckY = target.position.y + yOffset;
 
         Vector3 leftLocal  = new Vector3(-Mathf.Abs(lateralOffset), 0f, -Mathf.Abs(backOffset));
         Vector3 rightLocal = new Vector3(+Mathf.Abs(lateralOffset), 0f, -Mathf.Abs(backOffset));

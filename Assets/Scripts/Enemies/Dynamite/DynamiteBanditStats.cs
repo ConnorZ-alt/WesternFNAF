@@ -21,14 +21,14 @@ public class BanditStats : EnemyStats
 
     [Tooltip("Seconds between throws (if the bandit is allowed to throw).")]
     [Min(0f)]
-    public float throwCooldown = 4.0f;
+    public float throwCooldown = 2.0f;
 
     [Tooltip("How long the dynamite stays in the air (seconds). Lower = faster throw, higher = floatier arc.")]
-    public Vector2 arcTimeRange = new Vector2(0.6f, 1.1f);
+    public Vector2 arcTimeRange = new Vector2(0.8f, 2.2f);
 
     [Tooltip("How inaccurate the throw is (meters). Higher = more random landing spots.")]
     [Min(0f)]
-    public float throwInaccuracy = 0.5f;
+    public float throwInaccuracy = 0.2f;
 
     [Header("Train Interior Clamp (landing area in train local space)")]
 

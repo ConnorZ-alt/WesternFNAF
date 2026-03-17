@@ -15,6 +15,7 @@ public class ThrowDynamite : MonoBehaviour
     [Header("Hold (when picked up)")]
     [SerializeField] private float holdDistance = 0.7f;       // how far in front of camera
     [SerializeField] private float holdHeightOffset = -0.1f;  // small vertical adjustment
+    
 
     [Header("Throw")]
     [SerializeField] private float arcTime = 0.8f; // “time to target” for ballistic throw
@@ -27,6 +28,7 @@ public class ThrowDynamite : MonoBehaviour
     private HoldState state = HoldState.Free;
     private Transform holderCameraTransform;
     private Transform holderHandAnchorTransform; // if you have a hand socket, use it
+    [SerializeField] private TrainPathFollower train; // 
 
     private void Awake()
     {
@@ -92,9 +94,17 @@ public class ThrowDynamite : MonoBehaviour
 
         // Calculate launch velocity that hits the target in arcTime seconds.
         Vector3 startPosition = transform.position;
+        Vector3 predictedTarget = worldTargetPosition;
+
+        if (train != null)
+        {
+            Vector3 trainVelocity = train.FrameDelta / Time.fixedDeltaTime;
+            predictedTarget += trainVelocity * arcTime;
+        }
+
         Vector3 initialVelocity = CalculateBallisticVelocity(
             startPosition,
-            worldTargetPosition,
+            predictedTarget,
             arcTime,
             Physics.gravity.y
         );

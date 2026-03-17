@@ -88,21 +88,6 @@ public class PlayerCoalThrower : MonoBehaviour
         pickupCommand = PickUpCoal;
         throwCommand  = ThrowCoal;
     }
-    
-    private void FixedUpdate()
-    {
-        if (train == null || flyingCoalRb == null)
-            return;
-
-        // Apply angular velocity from train rotation
-        Quaternion deltaRot = train.RotationDelta;
-        float angle;
-        Vector3 axis;
-        deltaRot.ToAngleAxis(out angle, out axis);
-
-        if (angle > 0.01f)
-            flyingCoalRb.angularVelocity = axis * angle / Time.fixedDeltaTime;
-    }
 
     private void Update()
     {
@@ -262,11 +247,6 @@ public class PlayerCoalThrower : MonoBehaviour
 
         Vector3 inheritedVelocity = Vector3.zero;
 
-        if (train != null)
-        {
-            inheritedVelocity = train.FrameDelta / Time.fixedDeltaTime;
-        }
-
         Vector3 start = heldCoalGameObject.transform.position;
         Vector3 target = ChooseThrowTarget(start);
 
@@ -276,9 +256,11 @@ public class PlayerCoalThrower : MonoBehaviour
         Vector3 v0 = CalculateBallisticVelocity(start, target, t);
         // Combine train motion + throw
         rb.linearVelocity = v0 + inheritedVelocity;
-        rb.angularVelocity = UnityEngine.Random.insideUnitSphere * 6f;
+        rb.angularVelocity = UnityEngine.Random.insideUnitSphere * -0.5f;
 
         Debug.DrawLine(start, target, Color.yellow, 1.25f);
+
+        flyingCoalRb.GetComponent<CoalPiece>().ThrowCoal(train);
 
         CoalThrown?.Invoke(start, target);
 

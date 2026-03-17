@@ -12,8 +12,7 @@ public class JumpscareHitbox : MonoBehaviour
     private bool isJumpscareTimerRunning = false;
     public void OnTriggerEnter(Collider other) 
     {
-        if (other.CompareTag("Player"))
-        {
+       
             if (timeToJumpscare == 0) // jumpscare player if there is no time before a jumpscare
             {
                 JumpscarePlayer();
@@ -21,7 +20,7 @@ public class JumpscareHitbox : MonoBehaviour
             {
                 jumpscareTimer = StartCoroutine(WaitToJumpscare(timeToJumpscare));
             }
-        }
+        
     }
     
     public void OnTriggerExit(Collider other)
