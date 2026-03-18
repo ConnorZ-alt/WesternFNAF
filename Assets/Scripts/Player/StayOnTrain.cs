@@ -196,6 +196,13 @@ public class StayOnTrainBounds : MonoBehaviour
         // We reuse the same logic as LateUpdate.
         ClampInsideBounds();
     }
+    
+    // CHATGPT HELPER FOR BRIDGE/TRAIN TRANSITION BOUNDS
+    public void SetBounds(BoxCollider newBounds)
+    {
+        if (!newBounds) return;
+        trainBounds = newBounds;
+    }
 
     // ---------------- Debug gizmos ----------------
 
