@@ -28,7 +28,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 977.51, y: 540.68, z: -17.15}
-  m_LocalScale: {x: 1, y: 1, z: 6.25}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4807380978801890364}
@@ -72,8 +72,11 @@ MonoBehaviour:
   frontAnchor: {fileID: 0}
   extraLength: 0.1
   width: 1.2
-  thickness: 0.2
+  thickness: 0.3
   lockUpVector: 1
+  walkCollider: {fileID: 472141678563429264}
+  bridgeVisual: {fileID: 4807380978801890364}
+  boundsZone: {fileID: 3634321117631977507}
 --- !u!1 &6619759525928287831
 GameObject:
   m_ObjectHideFlags: 0
@@ -85,7 +88,6 @@ GameObject:
   - component: {fileID: 4807380978801890364}
   - component: {fileID: 4494694688234719388}
   - component: {fileID: 3576013541184272994}
-  - component: {fileID: 4499860733565783044}
   m_Layer: 14
   m_Name: BridgeVisual
   m_TagString: Untagged
@@ -164,27 +166,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &4499860733565783044
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6619759525928287831}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &8116254923681203069
 GameObject:
   m_ObjectHideFlags: 0
@@ -252,3 +233,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TrainBoundsZone
   bounds: {fileID: 7801484035089470971}
+  motionSource: {fileID: 0}
