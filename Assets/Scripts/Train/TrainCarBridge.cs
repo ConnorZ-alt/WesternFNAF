@@ -1,45 +1,73 @@
 using UnityEngine;
 
-/// <summary>
-/// TrainCarBridge
-/// This keeps a bridge stuck between two train cars.
-/// The player can walk on it, but the cars won't collide with it (layer matrix handles that).
-/// </summary>
 [DisallowMultipleComponent]
 public class TrainCarBridge : MonoBehaviour
 {
     [Header("Anchors")]
-    [SerializeField] private Transform backAnchor;   // back of the front car
-    [SerializeField] private Transform frontAnchor;  // front of the back car
+    [SerializeField] private Transform backAnchor;
+    [SerializeField] private Transform frontAnchor;
 
     [Header("Sizing")]
-    [Tooltip("Extra thickness safety so small gaps don't appear.")]
     [SerializeField] private float extraLength = 0.1f;
-
-    [Tooltip("How wide the bridge is.")]
     [SerializeField] private float width = 1.2f;
-
-    [Tooltip("How thick the bridge collider is.")]
     [SerializeField] private float thickness = 0.2f;
 
     [Header("Optional")]
     [SerializeField] private bool lockUpVector = true;
 
-    private BoxCollider box;
+    [Header("References")]
+    [Tooltip("Solid collider on the ROOT that the player stands on (NOT trigger).")]
+    [SerializeField] private BoxCollider walkCollider;
+    
+    [Header("Visual (optional)")]
+    [SerializeField] private Transform bridgeVisual; // the cube child
+
+    [Tooltip("The child object that has the trigger bounds + TrainBoundsZone (your BridgeBounds).")]
+    [SerializeField] private TrainBoundsZone boundsZone;
+
+    private BoxCollider zoneTrigger;
 
     private void Awake()
     {
-        box = GetComponent<BoxCollider>();
-        if (!box) box = gameObject.AddComponent<BoxCollider>();
+        // 1) Walk collider (root)
+        if (!walkCollider) walkCollider = GetComponent<BoxCollider>();
+        if (walkCollider)
+            walkCollider.isTrigger = false;
+
+        // 2) Bounds zone is on child (BridgeBounds)
+        if (!boundsZone) boundsZone = GetComponentInChildren<TrainBoundsZone>(true);
+
+        if (boundsZone != null)
+        {
+            zoneTrigger = boundsZone.bounds;
+            if (zoneTrigger != null)
+                zoneTrigger.isTrigger = true;
+        }
+        else
+        {
+            Debug.LogError("[TrainCarBridge] Could not find TrainBoundsZone in children. Put it on BridgeBounds.", this);
+        }
+        
+        if (!bridgeVisual)
+        {
+            var child = transform.Find("BridgeVisual");
+            if (child) bridgeVisual = child;
+        }
     }
 
-    /// <summary>
-    /// Call this once after you spawn/setup cars.
-    /// </summary>
     public void SetAnchors(Transform backOfFrontCar, Transform frontOfBackCar)
     {
         backAnchor = backOfFrontCar;
         frontAnchor = frontOfBackCar;
+
+        // Assign motion source for the bridge zone
+        if (boundsZone != null)
+        {
+            TrainPathFollower source = backAnchor ? backAnchor.GetComponentInParent<TrainPathFollower>() : null;
+            if (!source && frontAnchor) source = frontAnchor.GetComponentInParent<TrainPathFollower>();
+
+            boundsZone.motionSource = source;
+        }
     }
 
     private void LateUpdate()
@@ -54,23 +82,40 @@ public class TrainCarBridge : MonoBehaviour
         float dist = forward.magnitude;
 
         if (dist < 0.001f) return;
-
         forward /= dist;
 
         transform.position = mid;
+        transform.rotation = lockUpVector
+            ? Quaternion.LookRotation(forward, Vector3.up)
+            : Quaternion.LookRotation(forward, backAnchor.up);
 
-        if (lockUpVector)
-            transform.rotation = Quaternion.LookRotation(forward, Vector3.up);
-        else
-            transform.rotation = Quaternion.LookRotation(forward, backAnchor.up);
-
-        // Resize collider + visuals so it always spans the gap
         float length = dist + extraLength;
+        
+        // IMPORTANT: never scale the root, because that multiplies collider sizes.
+        transform.localScale = Vector3.one;
 
-        // BoxCollider uses local size
-        box.size = new Vector3(width, thickness, length);
+        // Stretch the visible cube instead (so it matches the gap)
+        if (bridgeVisual)
+        {
+            Vector3 s = bridgeVisual.localScale;
+            bridgeVisual.localScale = new Vector3(s.x, s.y, length);
+            bridgeVisual.localPosition = Vector3.zero;
+            bridgeVisual.localRotation = Quaternion.identity;
+        }
 
-        // Keep collider centered
-        box.center = Vector3.zero;
+        // Resize walk collider (solid)
+        if (walkCollider)
+        {
+            walkCollider.size = new Vector3(width, thickness, length);
+            walkCollider.center = Vector3.zero;
+        }
+
+        // Resize zone trigger (bigger so the player doesn't lose it at seams)
+        if (zoneTrigger)
+        {
+            float triggerLength = length + 0.8f;   // add overlap so it extends slightly onto both cars
+            zoneTrigger.size = new Vector3(width + 0.2f, 2.0f, triggerLength);
+            zoneTrigger.center = new Vector3(0f, 1.0f, 0f);
+        }
     }
 }

@@ -1721,6 +1721,7 @@ GameObject:
   m_Component:
   - component: {fileID: 87069778}
   - component: {fileID: 87069779}
+  - component: {fileID: 87069780}
   m_Layer: 6
   m_Name: PlayerBounds
   m_TagString: Untagged
@@ -1762,8 +1763,22 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 4.15, y: 1.4, z: 15}
+  m_Size: {x: 4.15, y: 1.4, z: 15.4}
   m_Center: {x: 0, y: 1, z: 0}
+--- !u!114 &87069780
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 87069777}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ccbaba089d3d4c16a1de21471d61442, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TrainBoundsZone
+  bounds: {fileID: 87069779}
+  motionSource: {fileID: 1174254426}
 --- !u!1001 &91268694
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14981,7 +14996,7 @@ Transform:
   m_GameObject: {fileID: 706241988}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.78, y: 2.015, z: 7.508}
+  m_LocalPosition: {x: 0.78, y: 2.015, z: 7.15}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -21908,6 +21923,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7126576407593189624, guid: 8c29d5f705778a2439b9b14385dfd2a1, type: 3}
   m_PrefabInstance: {fileID: 1033151602}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1039037110 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3634321117631977507, guid: f0cf81051002d41bea8875c0fbb8824d, type: 3}
+  m_PrefabInstance: {fileID: 6938152727097755477}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ccbaba089d3d4c16a1de21471d61442, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TrainBoundsZone
 --- !u!1001 &1042620324
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -24701,7 +24727,7 @@ Transform:
   m_GameObject: {fileID: 1157928424}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.78, y: 2.015, z: 7.508}
+  m_LocalPosition: {x: 0.78, y: 2.015, z: 7.15}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -27311,6 +27337,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8063576359763186771, guid: 1dd0fd6eb1f654eada4e971b608e8f36, type: 3}
   m_PrefabInstance: {fileID: 1270768741}
   m_PrefabAsset: {fileID: 0}
+--- !u!65 &1275213562 stripped
+BoxCollider:
+  m_CorrespondingSourceObject: {fileID: 472141678563429264, guid: f0cf81051002d41bea8875c0fbb8824d, type: 3}
+  m_PrefabInstance: {fileID: 6938152727097755477}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1275213563 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8998160950094472986, guid: f0cf81051002d41bea8875c0fbb8824d, type: 3}
@@ -27322,6 +27353,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c78179c0d107248dc825cf3cc300e154, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TrainCarBridge
+--- !u!4 &1288103701 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4807380978801890364, guid: f0cf81051002d41bea8875c0fbb8824d, type: 3}
+  m_PrefabInstance: {fileID: 6938152727097755477}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1292411355
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -27409,7 +27445,7 @@ Transform:
   m_GameObject: {fileID: 1299659648}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.78, y: 2.015, z: -7.489}
+  m_LocalPosition: {x: 0.78, y: 2.015, z: -7.15}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -28212,6 +28248,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1351700701}
   - component: {fileID: 1351700702}
+  - component: {fileID: 1351700703}
   m_Layer: 6
   m_Name: PlayerBounds
   m_TagString: Untagged
@@ -28253,8 +28290,22 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 4.15, y: 1.4, z: 15}
+  m_Size: {x: 4.15, y: 1.4, z: 15.4}
   m_Center: {x: 0, y: 1, z: 0}
+--- !u!114 &1351700703
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1351700700}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ccbaba089d3d4c16a1de21471d61442, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TrainBoundsZone
+  bounds: {fileID: 1351700702}
+  motionSource: {fileID: 1638963565}
 --- !u!1001 &1357578330
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -30179,6 +30230,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1402586474}
   - component: {fileID: 1402586475}
+  - component: {fileID: 1402586476}
   m_Layer: 6
   m_Name: PlayerBounds
   m_TagString: Untagged
@@ -30220,8 +30272,22 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 4.15, y: 1.4, z: 15}
+  m_Size: {x: 4.15, y: 1.4, z: 15.4}
   m_Center: {x: 0, y: 1, z: 0}
+--- !u!114 &1402586476
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1402586473}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ccbaba089d3d4c16a1de21471d61442, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TrainBoundsZone
+  bounds: {fileID: 1402586475}
+  motionSource: {fileID: 1538513256}
 --- !u!1001 &1409399145
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -39454,7 +39520,7 @@ Transform:
   m_GameObject: {fileID: 1858490390}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.78, y: 2.015, z: -7.489}
+  m_LocalPosition: {x: 0.78, y: 2.015, z: -7.15}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -41715,6 +41781,9 @@ GameObject:
   - component: {fileID: 2070090415}
   - component: {fileID: 2070090416}
   - component: {fileID: 2070090417}
+  - component: {fileID: 2070090418}
+  - component: {fileID: 2070090419}
+  - component: {fileID: 2070090420}
   m_Layer: 9
   m_Name: Player
   m_TagString: Player
@@ -41888,7 +41957,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StayOnTrain
   trainBounds: {fileID: 1402586475}
-  edgePaddingMeters: 0.05
+  edgePaddingMeters: 0.02
   snapEpsilonMeters: 0.001
   clampYToDeck: 0
   deckYOffsetMeters: 0
@@ -41970,7 +42039,44 @@ MonoBehaviour:
   lookSpeed: 2
   lookXLimit: 45
   defaultHeight: 2
-  train: {fileID: 1538513256}
+--- !u!114 &2070090418
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2070090403}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2344d731eadb7462694301d6fe144fcc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerTrainBoundsSwitcher
+  switchCooldownSeconds: 0.15
+--- !u!114 &2070090419
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2070090403}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d61cede641e14c77be0f2b0fec179a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerTrainMotion
+--- !u!114 &2070090420
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2070090403}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b6ce98692f314be8affb7912f0a0901, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerSpawnNudge
+  nudgeUpMeters: 0.5
 --- !u!1 &2072608245
 GameObject:
   m_ObjectHideFlags: 0
@@ -43633,6 +43739,10 @@ PrefabInstance:
       value: TrainBridgeSegment
       objectReference: {fileID: 0}
     - target: {fileID: 2501329829009019478, guid: f0cf81051002d41bea8875c0fbb8824d, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2501329829009019478, guid: f0cf81051002d41bea8875c0fbb8824d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 976.01
       objectReference: {fileID: 0}
@@ -43672,11 +43782,32 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3634321117631977507, guid: f0cf81051002d41bea8875c0fbb8824d, type: 3}
+      propertyPath: motionSource
+      value: 
+      objectReference: {fileID: 1538513256}
     - target: {fileID: 4807380978801890364, guid: f0cf81051002d41bea8875c0fbb8824d, type: 3}
       propertyPath: m_LocalScale.z
       value: 0.9
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 8998160950094472986, guid: f0cf81051002d41bea8875c0fbb8824d, type: 3}
+      propertyPath: thickness
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8998160950094472986, guid: f0cf81051002d41bea8875c0fbb8824d, type: 3}
+      propertyPath: boundsZone
+      value: 
+      objectReference: {fileID: 1039037110}
+    - target: {fileID: 8998160950094472986, guid: f0cf81051002d41bea8875c0fbb8824d, type: 3}
+      propertyPath: bridgeVisual
+      value: 
+      objectReference: {fileID: 1288103701}
+    - target: {fileID: 8998160950094472986, guid: f0cf81051002d41bea8875c0fbb8824d, type: 3}
+      propertyPath: walkCollider
+      value: 
+      objectReference: {fileID: 1275213562}
+    m_RemovedComponents:
+    - {fileID: 4499860733565783044, guid: f0cf81051002d41bea8875c0fbb8824d, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
