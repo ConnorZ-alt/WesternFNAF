@@ -24008,7 +24008,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TrainCarFollower
   leader: {fileID: 1538513256}
-  followDistanceBehind: 17.5
+  followDistanceBehind: 6
   catchUpLerp: 10
 --- !u!1001 &1175389337
 PrefabInstance:
@@ -33197,8 +33197,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c013851db7cbc489382246bd905fe05b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TrainCarFollower
-  leader: {fileID: 1174254426}
-  followDistanceBehind: 17.5
+  leader: {fileID: 1538513256}
+  followDistanceBehind: 6
   catchUpLerp: 10
 --- !u!1 &1639191930
 GameObject:
@@ -34412,6 +34412,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3529307852198483092, guid: 011a442e1661fa04f9cdf0c2716bb5c7, type: 3}
   m_PrefabInstance: {fileID: 1685181220}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &1686270580 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4015579061607762980, guid: 6244709cd948e194a8d9dd70a074b1ee, type: 3}
+  m_PrefabInstance: {fileID: 4928151365893900984}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1699525940
 GameObject:
   m_ObjectHideFlags: 0
@@ -34456,11 +34461,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0f7ba5081732451381df2a5133c529f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SneakCoverSlot
---- !u!4 &1686270580 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4015579061607762980, guid: 6244709cd948e194a8d9dd70a074b1ee, type: 3}
-  m_PrefabInstance: {fileID: 4928151365893900984}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1703618853
 PrefabInstance:
   m_ObjectHideFlags: 0
