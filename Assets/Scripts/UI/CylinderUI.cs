@@ -21,7 +21,7 @@ public class CylinderUI : MonoBehaviour
         currentChamberIndex = 0;
     
         // Reset rotation
-        cogTransform.localEulerAngles = Vector3.zero;
+        cogTransform.localEulerAngles = new Vector3(0, 0, -60f);
     
         // Clear ALL chambers first, then load the correct amount
         for (int i = 0; i < chambers.Length; i++)
@@ -39,7 +39,7 @@ public class CylinderUI : MonoBehaviour
     public IEnumerator RotateToNext()
     {
         float startRotation = cogTransform.localEulerAngles.z;
-        float endRotation = startRotation - degreesPerChamber;
+        float endRotation = startRotation + degreesPerChamber;
         
         float elapsed = 0f;
         while (elapsed < rotationDuration)
