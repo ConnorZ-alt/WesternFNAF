@@ -20,6 +20,7 @@ public class SceneManagement : MonoBehaviour
 
     [Header("Pause Menu")]
     [SerializeField] private GameObject pauseMenu;
+    [SerializeField] private int optionsSceneIndex = 2;
 
     [Header("Game Over Scene")]
     [SerializeField] private string gameOverSceneName = "";
@@ -60,7 +61,8 @@ public class SceneManagement : MonoBehaviour
 
         // Only lock the cursor if we are NOT on the title/menu scene.
         // The title screen manages its own cursor state.
-        bool isMenuScene = SceneManager.GetActiveScene().buildIndex == titleSceneIndex;
+        bool isMenuScene = SceneManager.GetActiveScene().buildIndex == titleSceneIndex
+                           || SceneManager.GetActiveScene().buildIndex == optionsSceneIndex;
         if (isMenuScene)
             SetCursorForMenus();
         else
@@ -72,7 +74,7 @@ public class SceneManagement : MonoBehaviour
         if (state == GameFlowState.Ended) return;
 
         // Don't allow pausing on the title screen
-        bool isMenuScene = SceneManager.GetActiveScene().buildIndex == titleSceneIndex;
+        bool isMenuScene = SceneManager.GetActiveScene().buildIndex == titleSceneIndex || SceneManager.GetActiveScene().buildIndex == optionsSceneIndex;
         if (isMenuScene) return;
 
         if (Input.GetKeyDown(KeyCode.Escape))
