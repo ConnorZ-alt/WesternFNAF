@@ -17,7 +17,7 @@ RenderSettings:
   m_Fog: 1
   m_FogColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   m_FogMode: 3
-  m_FogDensity: 0.037
+  m_FogDensity: 0.075
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
   m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.015886439, g: 0.056780063, b: 0.16037738, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SkyboxMaterial: {fileID: 2100000, guid: d4454f71d85928744be7771e2143dab7, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -9902,8 +9902,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7adbf87812aa4a30a9fd5bff68a611f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CoalReceiver
-  trainController: {fileID: 0}
-  coalValueOverride: -1
 --- !u!1001 &473726335
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16695,8 +16693,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: New Text
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: d0936016e6b217643b23223f2f160fa0, type: 2}
-  m_sharedMaterial: {fileID: 4108927538433820046, guid: d0936016e6b217643b23223f2f160fa0, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -23379,9 +23377,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 212fdd36cb120458bb147dee6dd47873, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CoalSource
-  playerTag: Player
-  promptUserInterfaceObject: {fileID: 0}
-  forceKinematicRigidbody: 1
 --- !u!54 &1111816057
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -27321,8 +27316,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'World Ammo:'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: d0936016e6b217643b23223f2f160fa0, type: 2}
-  m_sharedMaterial: {fileID: 4108927538433820046, guid: d0936016e6b217643b23223f2f160fa0, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
