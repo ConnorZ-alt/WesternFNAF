@@ -11,7 +11,7 @@ public class TrainPathFollower : MonoBehaviour
     [SerializeField] private bool loopPath = false;
 
     [Header("Motion")]
-    [SerializeField] private float pathSpeed = 5f;
+    [SerializeField] public float pathSpeed = 5f;
     [SerializeField] private float turnLerp = 6f;
 
     [Header("Debug")]

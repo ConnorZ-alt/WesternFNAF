@@ -1,4 +1,5 @@
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 [DisallowMultipleComponent]
@@ -10,6 +11,12 @@ public class CoalPiece : MonoBehaviour
     // 1) Not consumed yet (normal)
     // 2) Consumed (we're done, don't do anything else)
     private bool consumed;
+    
+    private Rigidbody rb;
+
+    private TrainPathFollower train; 
+
+    private bool isThrown;
 
     [Header("Despawn Settings")]
     [SerializeField] private float destroyDelaySeconds = 0f;
@@ -28,6 +35,11 @@ public class CoalPiece : MonoBehaviour
     {
         DeliveredToReceiver,
         HitSomethingElse
+    }
+    
+    private void Awake()
+    {
+        rb = GetComponent<Rigidbody>();
     }
 
     private void OnValidate()
@@ -78,4 +90,28 @@ public class CoalPiece : MonoBehaviour
 
     // Optional helper if other scripts want to check state safely.
     public bool IsConsumed => consumed;
+
+    private void FixedUpdate()
+    {
+        if (isThrown)
+        {
+            Debug.DrawRay(rb.position, train.FrameDelta * 20, Color.red);
+            // 1. Move the dynamite by the same amount the train moved this frame
+            rb.MovePosition(rb.position + train.FrameDelta);
+            // 2. Rotate the dynamite's velocity vector to match the train's turning
+            // This prevents the dynamite from "drifting" off the tracks during a curve
+            Vector3 relativePos = rb.position - train.transform.position;
+            relativePos = train.RotationDelta * relativePos;
+
+            rb.MovePosition(train.transform.position + relativePos);
+
+            // 3️⃣ Rotate velocity with train
+            rb.linearVelocity = train.RotationDelta * rb.linearVelocity;        }
+    }
+
+    public void ThrowCoal(TrainPathFollower activeTrain)
+    {
+        isThrown = true;
+        train = activeTrain;
+    }
 }

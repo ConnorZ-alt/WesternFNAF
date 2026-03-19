@@ -8,10 +8,11 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     // It tracks how much HP the enemy has, and it decides when the enemy is dead.
 
     [Header("Health")]
-    [SerializeField] private float maxHP = 1f;
+    [SerializeField] protected float maxHP = 1f;
+    [SerializeField]protected bool canTakeDamage = true;
 
     [Tooltip("If true and this enemy is NOT a DynamiteBandit, we destroy this GameObject when it dies.")]
-    [SerializeField] private bool destroyOnDeath = false; // DynamiteBandit usually handles its own teardown.
+    [SerializeField] protected bool destroyOnDeath = false; // DynamiteBandit usually handles its own teardown.
 
     // Public read-only properties so other scripts can check health safely.
     public float CurrentHP { get; private set; }
@@ -19,6 +20,8 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     
     // Other scripts can “listen” for death without this script needing to know them.
     public event Action<EnemyHealth> OnDied;
+
+    
 
     private void Awake()
     {
@@ -35,6 +38,12 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     {
         CurrentHP = Mathf.Max(0f, maxHP);
         IsDead = false;
+        OnReset();
+    }
+    
+    protected virtual void OnReset()
+    {
+        
     }
 
     /// <summary>
@@ -42,18 +51,28 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     /// </summary>
     public void TakeDamage(float amount)
     {
-        // If the enemy is already dead, ignore more damage.
-        if (IsDead) return;
+        if (canTakeDamage)
+        {
+            // If the enemy is already dead, ignore more damage.
+            if (IsDead) return;
 
-        // If the damage amount is weird (0 or negative), ignore it.
-        if (amount <= 0f) return;
+            // If the damage amount is weird (0 or negative), ignore it.
+            if (amount <= 0f) return;
 
-        // Subtract HP but never go below 0.
-        CurrentHP = Mathf.Max(0f, CurrentHP - amount);
+            // Subtract HP but never go below 0.
+            CurrentHP = Mathf.Max(0f, CurrentHP - amount);
 
-        // If HP hit 0, the enemy is dead.
-        if (CurrentHP <= 0f)
-            Die();
+            OnTakeDamage();
+            
+            // If HP hit 0, the enemy is dead.
+            if (CurrentHP <= 0f)
+                Die();
+        }
+    }
+    
+    protected virtual void OnTakeDamage()
+    {
+        
     }
 
     private void Die()
@@ -76,6 +95,7 @@ public class EnemyHealth : MonoBehaviour, IDamageable
             return;
         }
 
+        OnDeath();
         // Fallback:
         // If this is NOT a bandit, we can optionally destroy it here.
         if (destroyOnDeath)
@@ -89,5 +109,10 @@ public class EnemyHealth : MonoBehaviour, IDamageable
             // (In a real game you might disable AI, play an animation, etc.)
             Debug.Log("[EnemyHealth] Enemy is dead, but not destroying (destroyOnDeath is false).");
         }
+    }
+    
+    protected virtual void OnDeath()
+    {
+        
     }
 }

@@ -19,6 +19,7 @@ public class DynamiteProjectile : MonoBehaviour
     [Header("Fuse")]
     [Tooltip("Seconds before explosion once fuse is started.")]
     [SerializeField] private float fuseSeconds = 3.5f;
+    private FixedJoint fixedJoint;
 
     [Tooltip("If true, the fuse timer pauses while the dynamite is held.")]
     [SerializeField] private bool pauseFuseWhileHeld = true;
@@ -73,15 +74,23 @@ public class DynamiteProjectile : MonoBehaviour
         col = GetComponent<Collider>();
         rend = GetComponentInChildren<Renderer>();
 
-        // Create an instanced material so we can safely change emission color.
         if (rend != null)
         {
             materialInstance = rend.material;
             materialInstance.EnableKeyword("_EMISSION");
         }
+        else
+        {
+            Debug.LogWarning("DynamiteProjectile: No renderer found on prefab.");
+        }        
+        
+        rb.interpolation = RigidbodyInterpolation.Interpolate;
+        rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
 
         remainingFuseSeconds = fuseSeconds;
         SetState(DynamiteState.Flying);
+        rb.angularDamping = 3f;
+        
     }
 
     /// <summary>
@@ -131,15 +140,15 @@ public class DynamiteProjectile : MonoBehaviour
                 break;
 
             case DynamiteState.Stuck:
-                // Stuck means it does not move and it stays attached to the surface.
+
                 if (col) col.enabled = true;
+
                 if (rb)
                 {
-                    rb.isKinematic = true;
                     rb.useGravity = false;
-                    rb.linearVelocity = Vector3.zero;
-                    rb.angularVelocity = Vector3.zero;
+                    rb.isKinematic = true;
                 }
+
                 break;
 
             case DynamiteState.Held:
@@ -147,10 +156,11 @@ public class DynamiteProjectile : MonoBehaviour
                 if (col) col.enabled = false;
                 if (rb)
                 {
-                    rb.isKinematic = true;
-                    rb.useGravity = false;
                     rb.linearVelocity = Vector3.zero;
                     rb.angularVelocity = Vector3.zero;
+
+                    rb.useGravity = false;
+                    rb.isKinematic = true;
                 }
                 break;
         }
@@ -158,16 +168,38 @@ public class DynamiteProjectile : MonoBehaviour
 
     private void StickToSurface(Collision collision)
     {
-        // “Glue” the dynamite to the surface so it rides with the train.
-        SetState(DynamiteState.Stuck);
+        if (currentState != DynamiteState.Flying)
+            return;
 
-        // Put it slightly above the contact so it doesn’t clip into the floor.
         ContactPoint contact = collision.contacts[0];
-        transform.position = contact.point + contact.normal * 0.02f;
-        transform.up = contact.normal;
 
-        // Parent to the hit object so it moves with that object (like the train deck).
-        transform.SetParent(collision.collider.transform, true);
+        // Calculate target position slightly above surface
+        Vector3 targetPos = contact.point + contact.normal * 0.02f;
+        Quaternion targetRot = Quaternion.LookRotation(transform.forward, contact.normal);
+
+        // Stop physics BEFORE switching to kinematic
+        if (rb != null)
+        {
+            // Reset velocities while still non-kinematic
+            rb.isKinematic = false;  // ensure it's non-kinematic first
+            rb.linearVelocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+            rb.useGravity = false;
+
+            // Now safe to make kinematic
+            rb.isKinematic = true;
+        }
+
+        // Move the kinematic Rigidbody safely
+        rb.MovePosition(targetPos);
+        rb.MoveRotation(targetRot);
+
+        // Parent to surface
+// StickToSurface
+        Transform trainTransform = collision.transform; // or find the actual Train parent
+        transform.SetParent(trainTransform, true); // 'true' keeps world position
+        rb.isKinematic = true;      
+        transform.position += new Vector3(0f, 2f, 0f);
     }
 
     // ----------------------------
@@ -314,18 +346,13 @@ public class DynamiteProjectile : MonoBehaviour
 
     public void Throw(Vector3 initialVelocity)
     {
-        // This “releases” the dynamite and gives it a starting velocity.
-
         transform.SetParent(null, true);
 
         SetState(DynamiteState.Flying);
 
-        // Unity uses rb.velocity (not linearVelocity).
         if (rb != null)
             rb.linearVelocity = initialVelocity;
 
-        // If fuse never started yet, start it now.
-        // (If it already started, it keeps going from remainingFuseSeconds.)
         if (!fuseStarted)
             TryStartFuse();
     }

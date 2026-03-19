@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 4205405174457425906}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.828, y: -2.82, z: -19.61}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -141,7 +141,7 @@ Transform:
   m_GameObject: {fileID: 7362535490505763678}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 979.43, y: 543.43604, z: 6.44669}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -171,7 +171,7 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 1
   m_Constraints: 0
   m_CollisionDetection: 1
@@ -242,8 +242,8 @@ MonoBehaviour:
     m_ColorSpace: -1
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
-  blinkMinHz: 2
-  blinkMaxHz: 10
+  blinkMinHertz: 2
+  blinkMaxHertz: 10
   explosionRadius: 100
   explosionForce: 400
   damage: 999
@@ -267,11 +267,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f15880576f5c4e9ab676fa88905b832, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ThrowDynamite
-  playerTag: Player
-  holdDistance: 0.7
-  holdHeightOffset: -0.1
+  holdDistance: 0
+  holdHeightOffset: 0
   arcTime: 0.8
-  maxThrowDistance: 12
+  train: {fileID: 0}
 --- !u!114 &-5772872656930473598
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -316,15 +315,15 @@ MonoBehaviour:
     m_ColorSpace: -1
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
-  blinkMinHz: 2
-  blinkMaxHz: 10
+  blinkMinHertz: 2
+  blinkMaxHertz: 10
   explosionRadius: 3
   explosionForce: 400
   damage: 999
   damageMask:
     serializedVersion: 2
     m_Bits: 4294967295
-  explodeVfx: {fileID: 0}
+  explosionVfxObject: {fileID: 0}
   stickLayers:
     serializedVersion: 2
     m_Bits: 128

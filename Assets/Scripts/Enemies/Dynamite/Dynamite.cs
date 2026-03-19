@@ -17,7 +17,7 @@ public class Dynamite : MonoBehaviour
         Stuck,  // glued to a surface
         Held    // in the player's hand (physics off)
     }
-
+    private int framesToSkip = 2; // Skip 2 frames to let physics stabilize
     // ----------------------------
     // Fuse Settings
     // ----------------------------
@@ -28,6 +28,9 @@ public class Dynamite : MonoBehaviour
 
     [Tooltip("If true, the fuse does not tick down while the player is holding it.")]
     [SerializeField] private bool pauseFuseWhileHeld = true;
+    
+    private bool hasStartedFollowing = false;
+    private float followDelayTimer = 0f;
 
     // ----------------------------
     // Blinking (Emission)
@@ -163,26 +166,18 @@ public class Dynamite : MonoBehaviour
 
     private void StickToSurface(Collision collision)
     {
-        // This glues the dynamite to the surface it hit.
-        // We turn physics off and parent it so it rides along with the train.
+        // 1. Physics off so it doesn't fight the parent's movement
+        rb.isKinematic = true; 
+        rb.interpolation = RigidbodyInterpolation.None; // Optional: stops jitter while parented
 
-        if (collision.contactCount == 0)
-            return;
-
-        // Freeze in place
-        rb.isKinematic = true;
-        rb.useGravity = false;
-        rb.linearVelocity = Vector3.zero;
-        rb.angularVelocity = Vector3.zero;
-
-        // Place just above contact point so it doesn't flicker inside the surface.
+        // 2. Position and Rotate
         ContactPoint contact = collision.contacts[0];
-        transform.position = contact.point + contact.normal * 0.02f;
-
-        // Point the dynamite "up" along the surface normal so it looks stuck.
         transform.up = contact.normal;
 
-        // Parent to the object so it moves with it.
+        float offset = col.bounds.extents.y - 4;
+        transform.position = contact.point + contact.normal * offset;
+
+        // 3. Parent it to the train (or whatever it hit)
         transform.SetParent(collision.collider.transform, true);
 
         SetState(DynamiteState.Stuck);
@@ -410,5 +405,32 @@ public class Dynamite : MonoBehaviour
 
         Gizmos.color = new Color(1f, 0.3f, 0.1f, 0.35f);
         Gizmos.DrawWireSphere(transform.position, explosionRadius);
+    }
+    private TrainPathFollower activeTrain;
+
+// Call this when throwing to "link" the dynamite to the train's movement
+    public void InheritTrainMovement(TrainPathFollower train)
+    {
+        activeTrain = train;
+        
+        followDelayTimer = 0.1f;
+    }
+
+    private void FixedUpdate()
+    {
+        if (currentState == DynamiteState.Flying && activeTrain != null)
+        {
+            if (framesToSkip > 0)
+            {
+                framesToSkip--;
+                return;
+            }
+            // 1. Move the dynamite by the same amount the train moved this frame
+            rb.position += activeTrain.FrameDelta;
+
+            // 2. Rotate the dynamite's velocity vector to match the train's turning
+            // This prevents the dynamite from "drifting" off the tracks during a curve
+            rb.linearVelocity = activeTrain.RotationDelta * rb.linearVelocity;
+        }
     }
 }
