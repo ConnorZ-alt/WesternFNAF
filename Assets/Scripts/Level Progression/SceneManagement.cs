@@ -121,6 +121,12 @@ public class SceneManagement : MonoBehaviour
         PrepareForSceneChange();
         SceneManager.LoadScene(0);
     }
+    
+    public void OnRestartButton()
+    {
+        PrepareForSceneChange();
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
 
     public void OnNewGameButton()
     {
