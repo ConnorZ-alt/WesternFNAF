@@ -10012,7 +10012,7 @@ GameObject:
   m_Component:
   - component: {fileID: 470965987}
   - component: {fileID: 470965988}
-  - component: {fileID: 470965989}
+  - component: {fileID: 470965990}
   m_Layer: 0
   m_Name: CoalReceiver
   m_TagString: Untagged
@@ -10057,7 +10057,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.2, y: 1.5, z: 0.8341037}
   m_Center: {x: 0, y: 0, z: 0.1829482}
---- !u!114 &470965989
+--- !u!114 &470965990
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -10066,9 +10066,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 470965986}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7adbf87812aa4a30a9fd5bff68a611f, type: 3}
+  m_Script: {fileID: 11500000, guid: e3a7b1ea81539ed4aaea17fc375aa569, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CoalReceiver
+  trainController: {fileID: 1538513254}
+  coalValueOverride: -1
 --- !u!1001 &473726335
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -23598,7 +23600,7 @@ GameObject:
   - component: {fileID: 1111816055}
   - component: {fileID: 1111816058}
   - component: {fileID: 1111816057}
-  - component: {fileID: 1111816056}
+  - component: {fileID: 1111816059}
   m_Layer: 0
   m_Name: CoalSource
   m_TagString: Untagged
@@ -23622,18 +23624,6 @@ Transform:
   - {fileID: 681005488}
   m_Father: {fileID: 1538513253}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1111816056
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1111816054}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 212fdd36cb120458bb147dee6dd47873, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CoalSource
 --- !u!54 &1111816057
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -23682,6 +23672,21 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1111816059
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1111816054}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d02cc993603a64b468b026ba9e9c755d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CoalSource
+  playerTag: Player
+  promptUserInterfaceObject: {fileID: 0}
+  forceKinematicRigidbody: 1
 --- !u!1 &1117015259
 GameObject:
   m_ObjectHideFlags: 0
@@ -42128,7 +42133,7 @@ MonoBehaviour:
   aimKey: 324
   coalAimUsesToggle: 1
   throwDurationSeconds: 0.75
-  fallbackReceiver: {fileID: 470965989}
+  fallbackReceiver: {fileID: 0}
   minFlatDistance: 2.5
   aimRayDistance: 60
   useAimFovCoal: 1
