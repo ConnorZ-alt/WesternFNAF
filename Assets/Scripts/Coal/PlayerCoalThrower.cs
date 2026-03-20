@@ -243,7 +243,8 @@ public class PlayerCoalThrower : MonoBehaviour
         // Keep a reference to apply train rotation
         if (rb != null)
             flyingCoalRb = rb;
-        train = GetComponentInParent<TrainPathFollower>();
+        PlayerController player = GetComponentInParent<PlayerController>();
+        train = player.CurrentTrain;
 
         Vector3 inheritedVelocity = Vector3.zero;
 
@@ -470,3 +471,5 @@ public class PlayerCoalThrower : MonoBehaviour
             isInsideCoalSource = false;
     }
 }
+
+

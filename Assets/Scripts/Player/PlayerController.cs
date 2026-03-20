@@ -1,3 +1,6 @@
+
+
+
 using UnityEngine;
 
 /// <summary>
@@ -36,7 +39,7 @@ public class PlayerController : MonoBehaviour
     private CharacterController characterController;
     private Vector3 moveWorldDirection = Vector3.zero; // where we want to move this frame (world space)
     private float pitchAngle = 0f;                     // camera up/down angle
-    // [SerializeField] private TrainPathFollower train;
+    public TrainPathFollower CurrentTrain;
     // Defaults (so we can restore them)
 
     private PlayerTrainMotion trainMotion;
@@ -145,7 +148,7 @@ public class PlayerController : MonoBehaviour
 
         // Find the current platform we are standing on (engine/car/bridge)
         TrainPathFollower src = (trainMotion != null) ? trainMotion.MotionSource : null;
-        
+        CurrentTrain = src;
         // 1) Player input movement (normal walking)
         Vector3 inputMove = moveWorldDirection * Time.fixedDeltaTime;
 
@@ -163,6 +166,8 @@ public class PlayerController : MonoBehaviour
 
             Vector3 rotatedPos = pivot + offset;
             rotationMove = rotatedPos - transform.position;
+            transform.rotation = src.RotationDelta * transform.rotation;
+
         }
 
         // 4) Combine and move
@@ -242,3 +247,4 @@ public class PlayerController : MonoBehaviour
     // }
     // ---------------------------------------------------------
 }
+
