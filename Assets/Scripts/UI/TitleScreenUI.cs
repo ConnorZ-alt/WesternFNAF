@@ -2,21 +2,6 @@ using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
-/// <summary>
-/// Title screen button animations and scene transition.
-///
-/// MANUAL SETUP IN INSPECTOR:
-/// 1. Assign all four button RectTransforms to the matching fields.
-/// 2. Wire each button's OnClick to this script's methods:
-///      NewGameButton  -> OnNewGamePressed
-///      ContinueButton -> OnContinuePressed
-///      OptionsButton  -> OnOptionsPressed
-///      QuitGameButton -> OnLeavePressed
-/// 3. Wire hover via EventTrigger on each button:
-///      PointerEnter -> OnHoverEnter_X
-///      PointerExit  -> OnHoverExit_X
-/// 4. Optionally assign FlashOverlay and BulletHoles for the transition effect.
-/// </summary>
 public class TitleScreenUI : MonoBehaviour
 {
     [Header("Buttons")]
@@ -182,12 +167,7 @@ public class TitleScreenUI : MonoBehaviour
         seq.Append(flashOverlay.DOFade(1f, transitionDuration).SetEase(Ease.InQuad));
         seq.OnComplete(() => onComplete?.Invoke());
     }
-
-    /// <summary>
-    /// Ensures the button has a full-size transparent Image that covers its entire
-    /// RectTransform, so hover and click detection work across the whole button area
-    /// and not just the tiny default sprite bounds.
-    /// </summary>
+    
     private void FixButtonHitArea(RectTransform rt)
     {
         if (rt == null) return;
