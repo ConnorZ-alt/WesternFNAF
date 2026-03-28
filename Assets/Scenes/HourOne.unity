@@ -157,6 +157,37 @@ Transform:
   - {fileID: 957294691}
   m_Father: {fileID: 368716964}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &617668
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 617669}
+  m_Layer: 0
+  m_Name: DynmaiteTarget - A
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &617669
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 617668}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 1.4899902, y: 2.0599976, z: 4.69}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1174254425}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2408054
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1178,7 +1209,7 @@ GameObject:
   - component: {fileID: 64955086}
   - component: {fileID: 64955085}
   - component: {fileID: 64955084}
-  m_Layer: 7
+  m_Layer: 15
   m_Name: TrainBody
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7003,6 +7034,37 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8063576359763186771, guid: 1dd0fd6eb1f654eada4e971b608e8f36, type: 3}
   m_PrefabInstance: {fileID: 362124212}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &362147325
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 362147326}
+  m_Layer: 0
+  m_Name: DynmaiteTarget - C
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &362147326
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 362147325}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.01, y: 2.06, z: -3.93}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1638963564}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &362832249
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8304,6 +8366,37 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7126576407593189624, guid: 8c29d5f705778a2439b9b14385dfd2a1, type: 3}
   m_PrefabInstance: {fileID: 420458305}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &423033291
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 423033292}
+  m_Layer: 7
+  m_Name: BanditAnchor
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &423033292
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 423033291}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.72, y: 2.1, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1538513253}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &424876915
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10002,6 +10095,37 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5823037892029394473, guid: 4442298d70ff92748bff47f5c0997109, type: 3}
   m_PrefabInstance: {fileID: 470214413}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &470645240
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 470645241}
+  m_Layer: 0
+  m_Name: BanditAnchor
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &470645241
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 470645240}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.72, y: 2.1, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1174254425}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &470965986
 GameObject:
   m_ObjectHideFlags: 0
@@ -17074,12 +17198,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BanditSpawner
   trainRoot: {fileID: 1538513253}
-  playerBounds: {fileID: 1402586475}
+  target: {fileID: 1526643993}
   banditPrefab: {fileID: 4944856894899047177, guid: 17b193d2eb19b422683be154577fac56, type: 3}
   defaultStats: {fileID: 11400000, guid: 3e4f54c5999254ba3bf600c57d3ac4c3, type: 2}
-  minRespawnDelay: 10
-  maxRespawnDelay: 19
-  maxAlive: 2
+  trainPathFollower: {fileID: 1538513256}
+  initialSpawnDelaySeconds: 10
+  minRespawnDelay: 2
+  maxRespawnDelay: 3
+  maxAlive: 1
   alternateSides: 1
   randomizeSide: 1
   lateralOffset: 6
@@ -17657,6 +17783,37 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 815677278}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &819362350
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 819362351}
+  m_Layer: 0
+  m_Name: DynmaiteTarget - B
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &819362351
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 819362350}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.687, y: 2.06, z: 0.09}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1638963564}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &821185671
 GameObject:
   m_ObjectHideFlags: 0
@@ -20159,7 +20316,7 @@ GameObject:
   - component: {fileID: 950069792}
   - component: {fileID: 950069791}
   - component: {fileID: 950069790}
-  m_Layer: 7
+  m_Layer: 15
   m_Name: TrainBody
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -20369,6 +20526,37 @@ Transform:
   - {fileID: 1741954539}
   m_Father: {fileID: 504360}
   m_LocalEulerAnglesHint: {x: 0, y: -155.898, z: 0}
+--- !u!1 &957448941
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 957448942}
+  m_Layer: 0
+  m_Name: DynmaiteTarget - B
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &957448942
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 957448941}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.687, y: 2.06, z: 0.93}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1174254425}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &963700105
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -21775,6 +21963,37 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2202979665483794718, guid: 7c70883d648a1654f9fe2bc2ffe1833c, type: 3}
   m_PrefabInstance: {fileID: 1008958872}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1013814703
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1013814704}
+  m_Layer: 0
+  m_Name: DynmaiteTarget - A
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1013814704
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1013814703}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.49, y: 2.06, z: 3.6}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1538513253}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1018580972
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -22363,6 +22582,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::JumpscareHitbox
   sceneManagement: {fileID: 1198077732}
+  timeToJumpscare: 0
 --- !u!1 &1044897986
 GameObject:
   m_ObjectHideFlags: 0
@@ -24125,6 +24345,37 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3529307852198483092, guid: 011a442e1661fa04f9cdf0c2716bb5c7, type: 3}
   m_PrefabInstance: {fileID: 1130004097}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1131736577
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1131736578}
+  m_Layer: 0
+  m_Name: BanditAnchor
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1131736578
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1131736577}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.72, y: 2.1, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1638963564}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1134082972
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -24854,6 +25105,37 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: abee8479561628e4b9760b8aeeab36f3, type: 3}
   m_PrefabInstance: {fileID: 1157296177}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1157719335
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1157719336}
+  m_Layer: 0
+  m_Name: DynmaiteTarget - C
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1157719336
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1157719335}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.01, y: 2.06, z: -3.93}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1174254425}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1157928424
 GameObject:
   m_ObjectHideFlags: 0
@@ -25181,6 +25463,7 @@ GameObject:
   - component: {fileID: 1174254427}
   - component: {fileID: 1174254426}
   - component: {fileID: 1174254428}
+  - component: {fileID: 1174254429}
   m_Layer: 0
   m_Name: TrainCar - Middle
   m_TagString: Untagged
@@ -25208,6 +25491,11 @@ Transform:
   - {fileID: 87069778}
   - {fileID: 706241989}
   - {fileID: 1858490391}
+  - {fileID: 617669}
+  - {fileID: 957448942}
+  - {fileID: 1157719336}
+  - {fileID: 470645241}
+  - {fileID: 2082273675}
   m_Father: {fileID: 1472998458}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1174254426
@@ -25273,6 +25561,25 @@ MonoBehaviour:
   leader: {fileID: 1538513256}
   followDistanceBehind: 17.5
   catchUpLerp: 10
+--- !u!114 &1174254429
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1174254424}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 036f0f8b341e94cebb5b248986f513f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TrainCarDynamiteTargets
+  carFollower: {fileID: 1174254426}
+  banditAnchor: {fileID: 470645241}
+  landingCollider: {fileID: 2109330677}
+  targetPoints:
+  - {fileID: 617669}
+  - {fileID: 957448942}
+  - {fileID: 1157719336}
 --- !u!1001 &1175389337
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -31212,6 +31519,73 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2202979665483794718, guid: 7c70883d648a1654f9fe2bc2ffe1833c, type: 3}
   m_PrefabInstance: {fileID: 1444920983}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1445546136
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1445546137}
+  - component: {fileID: 1445546139}
+  - component: {fileID: 1445546138}
+  m_Layer: 0
+  m_Name: TrainCarZone
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1445546137
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1445546136}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.73, y: 2.11, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1638963564}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1445546138
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1445546136}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3c88742cd5134ea68f09947e7bc7f8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TrainCarZone
+  carTargets: {fileID: 1638963568}
+--- !u!65 &1445546139
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1445546136}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 4, y: 0.1, z: 15}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1446202389
 GameObject:
   m_ObjectHideFlags: 0
@@ -31309,6 +31683,73 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AmmoPickup
   ammoAmount: 6
   playerTag: Player
+--- !u!1 &1450827472
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1450827473}
+  - component: {fileID: 1450827475}
+  - component: {fileID: 1450827474}
+  m_Layer: 0
+  m_Name: TrainCarZone
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1450827473
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1450827472}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.73, y: 2.11, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1538513253}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1450827474
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1450827472}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3c88742cd5134ea68f09947e7bc7f8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TrainCarZone
+  carTargets: {fileID: 1538513257}
+--- !u!65 &1450827475
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1450827472}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 4, y: 0.1, z: 15}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &1451533309
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -32396,6 +32837,37 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3529307852198483092, guid: 011a442e1661fa04f9cdf0c2716bb5c7, type: 3}
   m_PrefabInstance: {fileID: 1526129619}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1526643992
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1526643993}
+  m_Layer: 0
+  m_Name: DynmaiteTarget - B
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1526643993
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1526643992}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.687, y: 2.06, z: 0.93}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1538513253}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1536211263
 GameObject:
   m_ObjectHideFlags: 0
@@ -32448,6 +32920,7 @@ GameObject:
   - component: {fileID: 1538513254}
   - component: {fileID: 1538513255}
   - component: {fileID: 1538513256}
+  - component: {fileID: 1538513257}
   m_Layer: 0
   m_Name: TrainCar - Front
   m_TagString: Untagged
@@ -32476,6 +32949,11 @@ Transform:
   - {fileID: 741764163}
   - {fileID: 1402586474}
   - {fileID: 1299659649}
+  - {fileID: 1013814704}
+  - {fileID: 1526643993}
+  - {fileID: 1745313440}
+  - {fileID: 423033292}
+  - {fileID: 1450827473}
   m_Father: {fileID: 1472998458}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1538513254
@@ -32490,7 +32968,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7af8e49faabdc6846acd439ce97ca2bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TrainController
-  maxSpeed: 10
+  maxSpeed: 5
   accelTime: 5
   drainPerSecond: 0.05
   slowThreshold: 0.2
@@ -32547,6 +33025,25 @@ MonoBehaviour:
   lookAheadUnits: 2
   maxTurnDegreesPerSecond: 90
   FrameDelta: {x: 0, y: 0, z: 0}
+--- !u!114 &1538513257
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1538513252}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 036f0f8b341e94cebb5b248986f513f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TrainCarDynamiteTargets
+  carFollower: {fileID: 1538513256}
+  banditAnchor: {fileID: 423033292}
+  landingCollider: {fileID: 950069790}
+  targetPoints:
+  - {fileID: 1013814704}
+  - {fileID: 1526643993}
+  - {fileID: 1745313440}
 --- !u!1001 &1543380645
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -34558,6 +35055,7 @@ GameObject:
   - component: {fileID: 1638963566}
   - component: {fileID: 1638963565}
   - component: {fileID: 1638963567}
+  - component: {fileID: 1638963568}
   m_Layer: 0
   m_Name: TrainCar - End
   m_TagString: Untagged
@@ -34584,6 +35082,11 @@ Transform:
   - {fileID: 586901655}
   - {fileID: 1351700701}
   - {fileID: 1157928425}
+  - {fileID: 2139766197}
+  - {fileID: 819362351}
+  - {fileID: 362147326}
+  - {fileID: 1131736578}
+  - {fileID: 1445546137}
   m_Father: {fileID: 1472998458}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1638963565
@@ -34649,6 +35152,25 @@ MonoBehaviour:
   leader: {fileID: 1174254426}
   followDistanceBehind: 17.5
   catchUpLerp: 10
+--- !u!114 &1638963568
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1638963563}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 036f0f8b341e94cebb5b248986f513f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TrainCarDynamiteTargets
+  carFollower: {fileID: 1638963565}
+  banditAnchor: {fileID: 1131736578}
+  landingCollider: {fileID: 64955084}
+  targetPoints:
+  - {fileID: 2139766197}
+  - {fileID: 819362351}
+  - {fileID: 362147326}
 --- !u!1 &1639191930
 GameObject:
   m_ObjectHideFlags: 0
@@ -37073,6 +37595,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0f7ba5081732451381df2a5133c529f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SneakCoverSlot
+--- !u!1 &1745313439
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1745313440}
+  m_Layer: 0
+  m_Name: DynmaiteTarget - C
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1745313440
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1745313439}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.05, y: 2.06, z: -3.93}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1538513253}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1748115135
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -40949,11 +41502,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8063576359763186771, guid: 1dd0fd6eb1f654eada4e971b608e8f36, type: 3}
   m_PrefabInstance: {fileID: 1962589131}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &1964602098 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4571077814268163752, guid: 17b193d2eb19b422683be154577fac56, type: 3}
-  m_PrefabInstance: {fileID: 1494306077848825398}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1980920108
 GameObject:
   m_ObjectHideFlags: 0
@@ -41981,6 +42529,7 @@ GameObject:
   - component: {fileID: 2070090418}
   - component: {fileID: 2070090419}
   - component: {fileID: 2070090420}
+  - component: {fileID: 2070090421}
   m_Layer: 9
   m_Name: Player
   m_TagString: Player
@@ -42191,6 +42740,8 @@ MonoBehaviour:
   normalFov: 60
   aimFov: 45
   fovLerp: 10
+  releaseForwardDistance: 0.8
+  releaseVerticalOffset: -0.05
 --- !u!114 &2070090415
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -42236,6 +42787,7 @@ MonoBehaviour:
   lookSpeed: 2
   lookXLimit: 45
   defaultHeight: 2
+  CurrentTrain: {fileID: 0}
 --- !u!114 &2070090418
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -42274,6 +42826,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerSpawnNudge
   nudgeUpMeters: 0.5
+--- !u!114 &2070090421
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2070090403}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e04efe466ce9545d4afb20fd73aac5a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerCarTracker
 --- !u!1 &2072608245
 GameObject:
   m_ObjectHideFlags: 0
@@ -42445,6 +43009,73 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3529307852198483092, guid: 011a442e1661fa04f9cdf0c2716bb5c7, type: 3}
   m_PrefabInstance: {fileID: 2076867848}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2082273674
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2082273675}
+  - component: {fileID: 2082273677}
+  - component: {fileID: 2082273676}
+  m_Layer: 0
+  m_Name: TrainCarZone
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2082273675
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2082273674}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.73, y: 2.11, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1174254425}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2082273676
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2082273674}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3c88742cd5134ea68f09947e7bc7f8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TrainCarZone
+  carTargets: {fileID: 1174254429}
+--- !u!65 &2082273677
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2082273674}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 4, y: 0.1, z: 15}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &2082996600
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -43125,7 +43756,7 @@ GameObject:
   - component: {fileID: 2109330679}
   - component: {fileID: 2109330678}
   - component: {fileID: 2109330677}
-  m_Layer: 7
+  m_Layer: 15
   m_Name: TrainBody
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -43673,6 +44304,37 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3529307852198483092, guid: 011a442e1661fa04f9cdf0c2716bb5c7, type: 3}
   m_PrefabInstance: {fileID: 2139592920}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2139766196
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2139766197}
+  m_Layer: 0
+  m_Name: DynmaiteTarget - A
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2139766197
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2139766196}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 1.04, y: 2.0599976, z: 5.06}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1638963564}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2145972973
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -43830,44 +44492,16 @@ PrefabInstance:
     m_TransformParent: {fileID: 1103822864}
     m_Modifications:
     - target: {fileID: 1102485853316973289, guid: 17b193d2eb19b422683be154577fac56, type: 3}
-      propertyPath: maxHealth
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 1102485853316973289, guid: 17b193d2eb19b422683be154577fac56, type: 3}
-      propertyPath: trainRoot
+      propertyPath: specificTarget
       value: 
       objectReference: {fileID: 1538513253}
-    - target: {fileID: 1102485853316973289, guid: 17b193d2eb19b422683be154577fac56, type: 3}
-      propertyPath: banditStats
-      value: 
-      objectReference: {fileID: 11400000, guid: 3e4f54c5999254ba3bf600c57d3ac4c3, type: 2}
-    - target: {fileID: 1102485853316973289, guid: 17b193d2eb19b422683be154577fac56, type: 3}
-      propertyPath: playerBounds
-      value: 
-      objectReference: {fileID: 1402586475}
-    - target: {fileID: 1102485853316973289, guid: 17b193d2eb19b422683be154577fac56, type: 3}
-      propertyPath: throwCooldown
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1102485853316973289, guid: 17b193d2eb19b422683be154577fac56, type: 3}
-      propertyPath: trainDeckBounds
-      value: 
-      objectReference: {fileID: 1402586475}
     - target: {fileID: 1102485853316973289, guid: 17b193d2eb19b422683be154577fac56, type: 3}
       propertyPath: trainRootTransform
       value: 
       objectReference: {fileID: 1538513253}
     - target: {fileID: 1102485853316973289, guid: 17b193d2eb19b422683be154577fac56, type: 3}
-      propertyPath: throwCooldownSeconds
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1102485853316973289, guid: 17b193d2eb19b422683be154577fac56, type: 3}
-      propertyPath: throwOriginTransform
-      value: 
-      objectReference: {fileID: 1964602098}
-    - target: {fileID: 4571077814268163752, guid: 17b193d2eb19b422683be154577fac56, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 1.05
+      propertyPath: trainFloorMask.m_Bits
+      value: 32896
       objectReference: {fileID: 0}
     - target: {fileID: 4944856894899047177, guid: 17b193d2eb19b422683be154577fac56, type: 3}
       propertyPath: m_Name
@@ -43875,7 +44509,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4944856894899047177, guid: 17b193d2eb19b422683be154577fac56, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5079860900826153066, guid: 17b193d2eb19b422683be154577fac56, type: 3}
       propertyPath: m_LocalPosition.x
@@ -43917,8 +44551,7 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 0}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
