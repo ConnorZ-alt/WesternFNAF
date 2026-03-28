@@ -40,6 +40,8 @@ public class DynamiteProjectile : MonoBehaviour
     [Tooltip("Layers the dynamite is allowed to stick to (ex: TrainFloor).")]
     [SerializeField] private LayerMask stickLayers;
 
+    private Collider lastStuckCollider;
+
     [Tooltip("If true, the first collision on a stickable layer glues the dynamite in place.")]
     [SerializeField] private bool stickOnFirstHit = true;
 
@@ -48,9 +50,12 @@ public class DynamiteProjectile : MonoBehaviour
     private Collider col;
     private Renderer rend;
     private Material materialInstance; // instanced material so blinking doesn’t affect other objects
+    
+    private TrainPathFollower inheritedTrain;
+    private int inheritedFramesToSkip = 0;
 
     // State + fuse tracking
-    private DynamiteState currentState = DynamiteState.Flying;
+    private DynamiteState currentState = (DynamiteState)(-1);
 
     private bool fuseStarted = false;
     private float remainingFuseSeconds;
@@ -101,6 +106,30 @@ public class DynamiteProjectile : MonoBehaviour
         if (colliderToIgnore != null && col != null)
             Physics.IgnoreCollision(col, colliderToIgnore, true);
     }
+    
+    private void FixedUpdate()
+    {
+        if (currentState != DynamiteState.Flying)
+            return;
+
+        if (rb == null || rb.isKinematic)
+            return;
+
+        if (inheritedTrain == null)
+            return;
+
+        if (inheritedFramesToSkip > 0)
+        {
+            inheritedFramesToSkip--;
+            return;
+        }
+
+        Vector3 frameDelta = inheritedTrain.FrameDelta;
+        frameDelta.y = 0f;
+
+        rb.position += frameDelta;
+        rb.linearVelocity = inheritedTrain.RotationDelta * rb.linearVelocity;
+    }
 
     private void OnCollisionEnter(Collision collision)
     {
@@ -111,10 +140,16 @@ public class DynamiteProjectile : MonoBehaviour
         // Check if the other object is in our stickable layers.
         int otherLayer = collision.collider.gameObject.layer;
         bool canStick = (stickLayers.value & (1 << otherLayer)) != 0;
-
-        if (stickOnFirstHit && canStick)
+        
+        Debug.Log($"[DynamiteProjectile] Hit {collision.collider.name} on layer {LayerMask.LayerToName(collision.collider.gameObject.layer)} normal={collision.contacts[0].normal}");
+        
+        if (stickOnFirstHit && canStick && collision.contactCount > 0)
         {
-            StickToSurface(collision);
+            Vector3 hitNormal = collision.contacts[0].normal;
+
+            // Only stick to mostly upward-facing surfaces.
+            if (Vector3.Dot(hitNormal, Vector3.up) > 0.35f)
+                StickToSurface(collision);
         }
 
         // Once we hit something, the fuse should start (or continue).
@@ -123,43 +158,48 @@ public class DynamiteProjectile : MonoBehaviour
 
     private void SetState(DynamiteState newState)
     {
-        // Central place to change state so we don’t forget to set physics/collider correctly.
+        if (currentState == newState)
+            return;
+
         currentState = newState;
 
         switch (currentState)
         {
             case DynamiteState.Flying:
-                // Flying means physics is on and collider is enabled.
                 if (col) col.enabled = true;
+
                 if (rb)
                 {
                     rb.isKinematic = false;
                     rb.useGravity = true;
-                    rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
+                    rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
+                    rb.interpolation = RigidbodyInterpolation.Interpolate;
                 }
                 break;
 
             case DynamiteState.Stuck:
-
                 if (col) col.enabled = true;
 
                 if (rb)
                 {
+                    // Stop movement BEFORE going kinematic.
+                    rb.linearVelocity = Vector3.zero;
+                    rb.angularVelocity = Vector3.zero;
                     rb.useGravity = false;
+                    rb.interpolation = RigidbodyInterpolation.None;
                     rb.isKinematic = true;
                 }
-
                 break;
 
             case DynamiteState.Held:
-                // Held means it does not bump into the player and it’s locked to the hand.
                 if (col) col.enabled = false;
+
                 if (rb)
                 {
                     rb.linearVelocity = Vector3.zero;
                     rb.angularVelocity = Vector3.zero;
-
                     rb.useGravity = false;
+                    rb.interpolation = RigidbodyInterpolation.None;
                     rb.isKinematic = true;
                 }
                 break;
@@ -171,35 +211,41 @@ public class DynamiteProjectile : MonoBehaviour
         if (currentState != DynamiteState.Flying)
             return;
 
+        if (collision.contactCount == 0)
+            return;
+
         ContactPoint contact = collision.contacts[0];
 
-        // Calculate target position slightly above surface
-        Vector3 targetPos = contact.point + contact.normal * 0.02f;
-        Quaternion targetRot = Quaternion.LookRotation(transform.forward, contact.normal);
+        // Make sure any old ignored floor collision is restored first.
+        RestoreLastStuckCollision();
 
-        // Stop physics BEFORE switching to kinematic
-        if (rb != null)
-        {
-            // Reset velocities while still non-kinematic
-            rb.isKinematic = false;  // ensure it's non-kinematic first
-            rb.linearVelocity = Vector3.zero;
-            rb.angularVelocity = Vector3.zero;
-            rb.useGravity = false;
+        float stickOffset = 0.05f;
+        if (col != null)
+            stickOffset = Mathf.Max(stickOffset, col.bounds.extents.y);
 
-            // Now safe to make kinematic
-            rb.isKinematic = true;
-        }
+        Vector3 targetPos = contact.point + contact.normal * stickOffset;
 
-        // Move the kinematic Rigidbody safely
-        rb.MovePosition(targetPos);
-        rb.MoveRotation(targetRot);
+        Vector3 projectedForward = Vector3.ProjectOnPlane(transform.forward, contact.normal);
+        if (projectedForward.sqrMagnitude < 0.0001f)
+            projectedForward = Vector3.forward;
 
-        // Parent to surface
-// StickToSurface
-        Transform trainTransform = collision.transform; // or find the actual Train parent
-        transform.SetParent(trainTransform, true); // 'true' keeps world position
-        rb.isKinematic = true;      
-        transform.position += new Vector3(0f, 2f, 0f);
+        Quaternion targetRot = Quaternion.LookRotation(projectedForward.normalized, contact.normal);
+
+        // Enter stuck state first.
+        SetState(DynamiteState.Stuck);
+
+        // Parent to the moving train floor/body so it follows the train.
+        Transform stickParent = collision.rigidbody != null
+            ? collision.rigidbody.transform
+            : collision.transform;
+
+        transform.SetParent(stickParent, true);
+        transform.SetPositionAndRotation(targetPos, targetRot);
+
+        // Remember this collider in case we need to restore collision later.
+        lastStuckCollider = collision.collider;
+
+        Physics.SyncTransforms();
     }
 
     // ----------------------------
@@ -267,44 +313,54 @@ public class DynamiteProjectile : MonoBehaviour
     // Explosion
     // ----------------------------
 
-    private void Explode()
+    private void Explode() 
     {
-        // This does the explosion: VFX, push stuff, damage stuff, then destroy itself.
+    Vector3 explosionPosition = transform.position;
 
-        Vector3 explosionPosition = transform.position;
+    if (explosionVfxObject)
+        Instantiate(explosionVfxObject, explosionPosition, Quaternion.identity);
 
-        if (explosionVfxObject)
-            Instantiate(explosionVfxObject, explosionPosition, Quaternion.identity);
+    Collider[] hits = Physics.OverlapSphere(explosionPosition, explosionRadius, damageMask, QueryTriggerInteraction.Ignore);
 
-        // 1) OverlapSphere finds all colliders in a radius.
-        Collider[] hits = Physics.OverlapSphere(
-            explosionPosition,
-            explosionRadius,
-            damageMask,
-            QueryTriggerInteraction.Ignore
-        );
+    // Prevent damaging the same target multiple times if it has multiple colliders.
+    System.Collections.Generic.HashSet<IDamageable> damagedTargets = new();
+    System.Collections.Generic.HashSet<Rigidbody> pushedBodies = new();
 
-        foreach (Collider hit in hits)
+    bool playerAlreadyDamaged = false;
+
+    foreach (Collider hit in hits)
+    {
+        if (!hit)
+            continue;
+
+        Rigidbody hitBody = hit.attachedRigidbody;
+        if (hitBody != null && !pushedBodies.Contains(hitBody))
         {
-            // Push rigidbodies for “boom” feeling.
-            if (hit.attachedRigidbody)
-            {
-                hit.attachedRigidbody.AddExplosionForce(
-                    explosionForce,
-                    explosionPosition,
-                    explosionRadius,
-                    0.5f,
-                    ForceMode.Impulse
-                );
-            }
+            pushedBodies.Add(hitBody);
 
-            // Damage anything that supports IDamageable.
-            IDamageable damageable = hit.GetComponentInParent<IDamageable>();
-            if (damageable != null)
-                damageable.TakeDamage(damage);
+            hitBody.AddExplosionForce(
+                explosionForce,
+                explosionPosition,
+                explosionRadius,
+                0.5f,
+                ForceMode.Impulse
+            );
         }
 
-        // 2) Fallback for CharacterController players (sometimes not in OverlapSphere results)
+        IDamageable damageable = hit.GetComponentInParent<IDamageable>();
+        if (damageable != null && !damagedTargets.Contains(damageable))
+        {
+            damagedTargets.Add(damageable);
+            damageable.TakeDamage(damage);
+
+            if (hit.CompareTag("Player") || hit.GetComponentInParent<PlayerController>() != null)
+                playerAlreadyDamaged = true;
+        }
+    }
+
+    // Fallback for CharacterController players that might not appear in the overlap query.
+    if (!playerAlreadyDamaged)
+    {
         GameObject playerObj = GameObject.FindWithTag("Player");
         if (playerObj != null)
         {
@@ -316,9 +372,10 @@ public class DynamiteProjectile : MonoBehaviour
                     playerDamageable.TakeDamage(damage);
             }
         }
+    }
 
-        OnExploded?.Invoke();
-        Destroy(gameObject);
+    OnExploded?.Invoke();
+    Destroy(gameObject);
     }
 
     // ----------------------------
@@ -329,7 +386,7 @@ public class DynamiteProjectile : MonoBehaviour
 
     public void PickUp(Transform handTransform, Vector3 localPosition, Quaternion localRotation)
     {
-        // This “attaches” the dynamite to the player’s hand and stops physics.
+        RestoreLastStuckCollision();
 
         heldParentTransform = handTransform;
         heldLocalPosition = localPosition;
@@ -340,18 +397,42 @@ public class DynamiteProjectile : MonoBehaviour
         transform.SetParent(heldParentTransform, false);
         transform.localPosition = heldLocalPosition;
         transform.localRotation = heldLocalRotation;
-
-        // If fuse already started, it will pause naturally in the coroutine (if pauseFuseWhileHeld is true).
     }
 
     public void Throw(Vector3 initialVelocity)
     {
+        RestoreLastStuckCollision();
+
         transform.SetParent(null, true);
 
         SetState(DynamiteState.Flying);
 
         if (rb != null)
             rb.linearVelocity = initialVelocity;
+
+        if (!fuseStarted)
+            TryStartFuse();
+    }
+    
+    public void SetInheritedTrain(TrainPathFollower train)
+    {
+        inheritedTrain = train;
+        inheritedFramesToSkip = 2;
+    }
+    
+    public void Drop()
+    {
+        RestoreLastStuckCollision();
+
+        transform.SetParent(null, true);
+
+        SetState(DynamiteState.Flying);
+
+        if (rb != null)
+        {
+            rb.linearVelocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+        }
 
         if (!fuseStarted)
             TryStartFuse();
@@ -365,5 +446,14 @@ public class DynamiteProjectile : MonoBehaviour
     {
         Gizmos.color = new Color(1f, 0.3f, 0.1f, 0.4f);
         Gizmos.DrawWireSphere(transform.position, explosionRadius);
+    }
+    
+    private void RestoreLastStuckCollision()
+    {
+        if (col != null && lastStuckCollider != null)
+        {
+            Physics.IgnoreCollision(col, lastStuckCollider, false);
+            lastStuckCollider = null;
+        }
     }
 }
