@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 977110361655330096}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.828, y: -0.973, z: -6.047}
+  m_LocalPosition: {x: 2.828, y: 1.05, z: -6.047}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -78,18 +78,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BanditEnemies
   trainRootTransform: {fileID: 0}
-  trainDeckBounds: {fileID: 0}
+  specificTarget: {fileID: 0}
   deckYOffsetMeters: 0
-  usePhysics: 0
   banditStats: {fileID: 11400000, guid: 3e4f54c5999254ba3bf600c57d3ac4c3, type: 2}
   dynamitePrefab: {fileID: 7362535490505763678, guid: 3f557a767949a4548b4c89a91b2c26a7, type: 3}
-  throwOriginTransform: {fileID: 0}
+  trainPathFollower: {fileID: 0}
+  throwOriginTransform: {fileID: 4571077814268163752}
   trainFloorMask:
     serializedVersion: 2
     m_Bits: 128
-  throwCooldownSeconds: 15
+  throwCooldownSeconds: 5
   spawnOnRight: 1
-  autoRespawnEnabled: 1
   spawnYOffsetMeters: 1
   maxHealth: 100
   destroyOnFinish: 1

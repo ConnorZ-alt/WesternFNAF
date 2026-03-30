@@ -14,13 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BanditStats
   displayName: Enemy
   maxHealth: 1
-  moveSpeed: 5
-  acceleration: 10
+  moveSpeed: 8
+  acceleration: 12
   lateralOffset: 3.5
   followDistanceBack: 2
   throwCooldown: 1
   arcTimeRange: {x: 0.6, y: 1.1}
-  throwInaccuracy: 0.5
+  throwInaccuracy: 0
   minTrainX: -0.8
   maxTrainX: 0.8
   minTrainZ: -1.8
