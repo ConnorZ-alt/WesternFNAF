@@ -9,7 +9,7 @@ public class TrainBridgeManager : MonoBehaviour
     [SerializeField] private Transform car2Back;
     [SerializeField] private Transform car3Front;
 
-    private void Start()
+    private void Awake()
     {
         CreateBridge(engineBack, car2Front);
         CreateBridge(car2Back, car3Front);
