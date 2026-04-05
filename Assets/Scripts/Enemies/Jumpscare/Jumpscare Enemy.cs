@@ -23,6 +23,7 @@ public class JumpscareEnemy : EnemyHealth
     [SerializeField] public List<TrainPathFollower> trainCars;
     
     [SerializeField] public List<JumpscareHitbox>  bridgeJumpscareHitboxs;
+    [SerializeField] public float verticalOffset = 2;
     private List<int> carjumpscarePostitions = new List<int>(); //car that the jumpscare enemy would be attached to
 
     private bool isJumpscareFacingForward = true;
@@ -91,7 +92,7 @@ public class JumpscareEnemy : EnemyHealth
         }
         choice.hitbox.gameObject.SetActive(true);
         this.transform.SetParent(choice.position, true);
-        this.transform.localPosition = new Vector3(0, 2, 0);
+        this.transform.localPosition = new Vector3(0, verticalOffset, 0);
         this.transform.localRotation = Quaternion.identity;
         jumpscareAnimation.StartCrouchingAnimation();
         

@@ -27,7 +27,8 @@ public class JumpscareAnimation : MonoBehaviour
 
     public void FlipAnimation()
     {
-        jumpscareModel.Rotate(0f, 180f, 0f);
+        Vector3 rot = jumpscareModel.eulerAngles;
+        jumpscareModel.eulerAngles = new Vector3(rot.x, rot.y + 180f, rot.z);
     }
     
     private void PlayState(Animator anim, string stateName, int layer = 0)
