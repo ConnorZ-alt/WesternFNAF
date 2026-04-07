@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2674934910596034748}
   - component: {fileID: 2366296807515429483}
   - component: {fileID: 1900628648650439567}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: TempBullets
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -153,4 +153,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BulletProjectile
   speed: 50
-  lifeTime: 2
+  lifetimeSeconds: 2
