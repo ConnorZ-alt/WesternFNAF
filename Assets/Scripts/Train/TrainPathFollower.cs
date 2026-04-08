@@ -43,7 +43,7 @@ public class TrainPathFollower : MonoBehaviour
         if (!rb) rb = gameObject.AddComponent<Rigidbody>();
 
         rb.isKinematic = true;
-        rb.interpolation = RigidbodyInterpolation.Interpolate;
+        rb.interpolation = RigidbodyInterpolation.None;
         rb.collisionDetectionMode = CollisionDetectionMode.ContinuousSpeculative;
 
         if (!path)
