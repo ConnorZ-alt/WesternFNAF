@@ -12308,8 +12308,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: edd3c7953230d024ea20ef6f886b71ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FlickerLight
-  minIntensity: 0
-  maxIntensity: 3
+  minIntensity: 0.5
+  maxIntensity: 4
   minTransitionTime: 0.05
   maxTransitionTime: 0.4
   minInterval: 0.05
@@ -15485,8 +15485,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: edd3c7953230d024ea20ef6f886b71ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FlickerLight
-  minIntensity: 0
-  maxIntensity: 3
+  minIntensity: 0.5
+  maxIntensity: 4
   minTransitionTime: 0.05
   maxTransitionTime: 0.4
   minInterval: 0.05
@@ -30614,8 +30614,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: edd3c7953230d024ea20ef6f886b71ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FlickerLight
-  minIntensity: 0
-  maxIntensity: 3
+  minIntensity: 0.5
+  maxIntensity: 4
   minTransitionTime: 0.05
   maxTransitionTime: 0.4
   minInterval: 0.05
@@ -46057,8 +46057,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: edd3c7953230d024ea20ef6f886b71ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FlickerLight
-  minIntensity: 0
-  maxIntensity: 3
+  minIntensity: 0.5
+  maxIntensity: 4
   minTransitionTime: 0.05
   maxTransitionTime: 0.4
   minInterval: 0.05
@@ -55502,8 +55502,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: edd3c7953230d024ea20ef6f886b71ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FlickerLight
-  minIntensity: 0
-  maxIntensity: 3
+  minIntensity: 0.5
+  maxIntensity: 4
   minTransitionTime: 0.05
   maxTransitionTime: 0.4
   minInterval: 0.05
