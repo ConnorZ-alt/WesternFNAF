@@ -387,7 +387,12 @@ public class ItemController : MonoBehaviour
             var damageable = hitInfo.collider.GetComponentInParent<IDamageable>();
             if (damageable != null)
             {
+                Debug.Log("[GUN] Hit " + hitInfo.collider.name + " on " + hitInfo.collider.gameObject.layer);
                 damageable.TakeDamage(shotDamage);
+            }
+            else
+            {
+                Debug.Log("[GUN] Raycast hit " + hitInfo.collider.name + " but no IDamageable found."); // temp
             }
         }
     }
