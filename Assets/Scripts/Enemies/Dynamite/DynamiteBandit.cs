@@ -54,6 +54,8 @@ public class DynamiteBandit : MonoBehaviour, IDamageable
     [Header("visual")]
     [SerializeField] private Animator banditAnimator;
     [SerializeField] private Animator hourseAnimator;
+    [SerializeField] private GameObject horse;
+
     
     // Spawner, UI, audio, achievements, etc can listen without this class knowing about them.
     public event Action SignalReady;
@@ -537,7 +539,7 @@ public class DynamiteBandit : MonoBehaviour, IDamageable
             return false;
 
         // play throw animation
-        banditAnimator.SetTrigger("Throw");
+        banditAnimator.Play("Throw", 0, 0f); 
 
         return true;
     }
@@ -826,9 +828,20 @@ public class DynamiteBandit : MonoBehaviour, IDamageable
         NotifyFinishedOnce();
 
         if (destroyOnFinish)
-            Destroy(gameObject);
+            StartCoroutine(DestroyAfter());
+
         else
             gameObject.SetActive(false);
+    }
+    
+    private IEnumerator DestroyAfter()
+    {
+        hourseAnimator.Play("Die", 0, 0f); 
+        yield return new WaitForSeconds(5);
+        Debug.Log("[EnemyHealth] Destroying GameObject because destroyOnDeath is true.");
+        Destroy(horse);
+        Destroy(gameObject);
+        
     }
 
     // Let other scripts swap finish behavior if they want.
