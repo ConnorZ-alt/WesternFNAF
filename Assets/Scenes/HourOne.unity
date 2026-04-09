@@ -35363,7 +35363,7 @@ MonoBehaviour:
   reserveAmmo: 0
   muzzleTransform: {fileID: 651317148}
   muzzleFlash: {fileID: 318713409}
-  bulletPrefab: {fileID: 6564662171584112051, guid: ba06267d8bb9a44439f9fe5771d9ee2c, type: 3}
+  bulletPrefab: {fileID: 8297191405790434548, guid: 0707898d3f02d8c499685d8871d5031a, type: 3}
   muzzleFlashIntensity: 4000
   muzzleFlashdecay: 500
   bulletRecoilKickDistance: 0.03
