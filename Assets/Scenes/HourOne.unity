@@ -62889,6 +62889,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy Jumpscare Hitbox
       objectReference: {fileID: 0}
+    - target: {fileID: 4496815843825471474, guid: 4e70df4e9ce2d23409c4d016047c49b8, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7434631617956122268, guid: 4e70df4e9ce2d23409c4d016047c49b8, type: 3}
       propertyPath: m_LocalPosition.x
       value: -3.1078491
