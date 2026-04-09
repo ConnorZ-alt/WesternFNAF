@@ -34866,6 +34866,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1220283667}
   - component: {fileID: 1220283668}
+  - component: {fileID: 1220283669}
   m_Layer: 9
   m_Name: Revolver
   m_TagString: Untagged
@@ -34930,6 +34931,24 @@ MonoBehaviour:
   debugForceAim: 0
   isAimingDownSights: 0
   externalShootBlockEnabled: 0
+--- !u!114 &1220283669
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1220283666}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6681b564ff71ddb42b34d1664ed8b61e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RevolverAnimator
+  itemController: {fileID: 1220283668}
+  revolverAnimator: {fileID: 2015071584}
+  idleStateName: idle
+  pulloutStateName: pullout
+  shootStateName: shoot
+  reloadStateName: reload
 --- !u!1001 &1222014343
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -56334,21 +56353,25 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1220283667}
     m_Modifications:
+    - target: {fileID: -5644133064174452605, guid: fdbb130282e982e4aaaec112d2d27989, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 49595eb86020a874d94bed6f3c37744b, type: 2}
     - target: {fileID: 8128668236925612103, guid: fdbb130282e982e4aaaec112d2d27989, type: 3}
       propertyPath: m_Name
       value: revolver
       objectReference: {fileID: 0}
     - target: {fileID: 8897093224900880590, guid: fdbb130282e982e4aaaec112d2d27989, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -98.14349
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8897093224900880590, guid: fdbb130282e982e4aaaec112d2d27989, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -3.8464878
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8897093224900880590, guid: fdbb130282e982e4aaaec112d2d27989, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 4.073101
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8897093224900880590, guid: fdbb130282e982e4aaaec112d2d27989, type: 3}
       propertyPath: m_LocalRotation.w
@@ -56386,6 +56409,11 @@ PrefabInstance:
 --- !u!4 &2015071583 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8897093224900880590, guid: fdbb130282e982e4aaaec112d2d27989, type: 3}
+  m_PrefabInstance: {fileID: 2015071582}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &2015071584 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: -5644133064174452605, guid: fdbb130282e982e4aaaec112d2d27989, type: 3}
   m_PrefabInstance: {fileID: 2015071582}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2015548017
