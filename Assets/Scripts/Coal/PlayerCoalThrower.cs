@@ -199,6 +199,12 @@ public class PlayerCoalThrower : MonoBehaviour
         }
 
         heldCoalGameObject = Instantiate(coalPrefab, holdPoint.position, holdPoint.rotation, transform);
+        
+        // Prevent the held coal from colliding with the player immediately on spawn
+        var playerCollider = GetComponentInParent<Collider>();
+        var coalCollider = heldCoalGameObject.GetComponent<Collider>();
+        if (playerCollider != null && coalCollider != null)
+            Physics.IgnoreCollision(coalCollider, playerCollider, true);
 
         // Freeze physics while it is held, so it doesn't fall or bounce in your hand.
         if (heldCoalGameObject.TryGetComponent<Rigidbody>(out var rb))
