@@ -85,9 +85,12 @@ public class TrainCarBridge : MonoBehaviour
         forward /= dist;
 
         transform.position = mid;
-        transform.rotation = lockUpVector
+        Quaternion rot = lockUpVector
             ? Quaternion.LookRotation(forward, Vector3.up)
             : Quaternion.LookRotation(forward, backAnchor.up);
+        Vector3 euler = rot.eulerAngles;
+        euler.x = 0f;
+        transform.rotation = Quaternion.Euler(euler);
 
         float length = dist + extraLength;
         
