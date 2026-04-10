@@ -16,13 +16,13 @@ public class TrainWheelManager : MonoBehaviour
     void Update()
     {
         Vector3 delta = trainRoot.position - lastPosition;
-        float distance = delta.magnitude;
-
+        float distance = Vector3.Dot(delta, trainRoot.forward);
+        
         float angle = (distance / (2f * Mathf.PI * radius)) * 360f;
 
         foreach (var wheel in wheels)
         {
-            wheel.Rotate(Vector3.right, angle, Space.Self);
+            wheel.Rotate(Vector3.forward, angle, Space.Self);
         }
 
         lastPosition = trainRoot.position;
