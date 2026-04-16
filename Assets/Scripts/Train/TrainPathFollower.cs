@@ -175,4 +175,14 @@ public class TrainPathFollower : MonoBehaviour
         if (forward.sqrMagnitude > 0.0001f)
             rb.rotation = Quaternion.LookRotation(forward.normalized, Vector3.up);
     }
+
+    public void setCurrentUnits(float newCurrentUnits)
+    {
+        currentUnits = newCurrentUnits;
+    }
+    
+    public float getCurrentUnits()
+    {
+        return currentUnits;
+    }
 }

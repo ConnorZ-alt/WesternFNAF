@@ -10,27 +10,27 @@ public class JumpscareEnemy : EnemyHealth
 {
     //[SerializeField] public List<train Car> trainCars;
     [SerializeField] public GameObject JumpscareVisual;
-    [SerializeField] public GameObject RunningJumpscare;
+    [SerializeField] public TrainPathFollower RunningJumpscare;
     [SerializeField] public float timeToTeleport;
     [SerializeField] public PlayerController playerController;
     [SerializeField] public JumpscareAnimation jumpscareAnimation;
+    [SerializeField] private TrainController trainController;
+    [SerializeField] private TrainPathFollower backOfTrain;
+    [SerializeField] private float backOfTrainOffset;
     //[SerializeField] public  RunningJumpscare;
 
     
     [Tooltip("First postition is for is the Jumpsare enemy is ahead of the player, Second is when it is behind the player")]
     [SerializeField] public List<CarTeleportPositions> jumpscareEnemyPositions;
-    [SerializeField] public List<Vector3> jumpscareHitboxPostitions;
     [SerializeField] public List<TrainPathFollower> trainCars;
-    
     [SerializeField] public List<JumpscareHitbox>  bridgeJumpscareHitboxs;
     [SerializeField] public float verticalOffset = 2;
-    private List<int> carjumpscarePostitions = new List<int>(); //car that the jumpscare enemy would be attached to
 
     private bool isJumpscareFacingForward = true;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        RunningJumpscare.SetActive(false);
+        RunningJumpscare.gameObject.SetActive(false);
         StartCoroutine(TeleportIn());
         JumpscareHitbox[] allHitboxes = FindObjectsOfType<JumpscareHitbox>(true);
 
@@ -57,7 +57,9 @@ public class JumpscareEnemy : EnemyHealth
 
     public void StartRunning()
     {
-        RunningJumpscare.SetActive(true);
+        TeleportOut();
+        RunningJumpscare.gameObject.SetActive(true);
+        RunningJumpscare.setCurrentUnits(backOfTrain.getCurrentUnits()-backOfTrainOffset);
     }
 
     private void TeleportEnemy()
@@ -137,17 +139,24 @@ public class JumpscareEnemy : EnemyHealth
     {
         Debug.Log("jumpscare Enemy hit");
         canTakeDamage = false;
-        JumpscareVisual.SetActive(false);
-        foreach (JumpscareHitbox hitbox in bridgeJumpscareHitboxs)
-        {
-            hitbox.StopJumpscareTimer();
-            hitbox.gameObject.SetActive(false);
-        }
+
+        TeleportOut();
+        
         if (CurrentHP == 0)
         {
             
         } else {
             StartCoroutine( TeleportIn());
+        }
+    }
+
+    void TeleportOut()
+    {
+        JumpscareVisual.SetActive(false);
+        foreach (JumpscareHitbox hitbox in bridgeJumpscareHitboxs)
+        {
+            hitbox.StopJumpscareTimer();
+            hitbox.gameObject.SetActive(false);
         }
     }
     
@@ -189,6 +198,26 @@ public class JumpscareEnemy : EnemyHealth
     void OnDestroy()
     {
         StopAllCoroutines();
+    }
+
+    private void OnEnable()
+    {
+        if (trainController != null)
+            trainController.CoalChanged += OnCoalChanged;
+    }
+
+    private void OnDisable()
+    {
+        if (trainController != null)
+            trainController.CoalChanged -= OnCoalChanged;
+    }
+    
+    private void OnCoalChanged(float coal)
+    {
+        if (coal <= 0f)
+        {
+            StartRunning();
+        }
     }
 
 }
