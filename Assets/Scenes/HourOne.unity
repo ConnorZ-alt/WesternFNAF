@@ -6105,9 +6105,9 @@ RectTransform:
   - {fileID: 1330335531}
   m_Father: {fileID: 313649622}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 960, y: -441.57666}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 350, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &236293246
@@ -8604,7 +8604,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &313649622
 RectTransform:
   m_ObjectHideFlags: 0
@@ -11228,7 +11228,7 @@ Light:
   serializedVersion: 11
   m_Type: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 0.1
+  m_Intensity: 0.3
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -12415,7 +12415,7 @@ Transform:
   m_GameObject: {fileID: 441808047}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.81, z: -0.1124}
+  m_LocalPosition: {x: 0, y: 4.7, z: -0.1124}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -12434,7 +12434,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FlickerLight
   minIntensity: 0.5
-  maxIntensity: 4
+  maxIntensity: 8
   minTransitionTime: 0.05
   maxTransitionTime: 0.4
   minInterval: 0.05
@@ -12479,7 +12479,7 @@ Light:
   serializedVersion: 11
   m_Type: 2
   m_Color: {r: 1, g: 0.57471424, b: 0.12641507, a: 1}
-  m_Intensity: 1
+  m_Intensity: 1.3
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -15623,7 +15623,7 @@ Transform:
   m_GameObject: {fileID: 540194227}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.52, z: 0.2283}
+  m_LocalPosition: {x: 0, y: 4.7, z: 0.2283}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -15642,7 +15642,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FlickerLight
   minIntensity: 0.5
-  maxIntensity: 4
+  maxIntensity: 8
   minTransitionTime: 0.05
   maxTransitionTime: 0.4
   minInterval: 0.05
@@ -15687,7 +15687,7 @@ Light:
   serializedVersion: 11
   m_Type: 2
   m_Color: {r: 1, g: 0.57471424, b: 0.12641507, a: 1}
-  m_Intensity: 1
+  m_Intensity: 1.3
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -18161,9 +18161,9 @@ RectTransform:
   - {fileID: 577725481}
   m_Father: {fileID: 313649622}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 960, y: -806.38995}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 350, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &613703061
@@ -28380,9 +28380,9 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 313649622}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 960, y: -83.98333}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 679.5, y: 135.56}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &981138596
@@ -30794,7 +30794,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1070008992
 RectTransform:
   m_ObjectHideFlags: 0
@@ -31098,7 +31098,7 @@ Transform:
   m_GameObject: {fileID: 1074364370}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.81, z: 0.1918}
+  m_LocalPosition: {x: 0, y: 4.7, z: 0.1918}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -31117,7 +31117,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FlickerLight
   minIntensity: 0.5
-  maxIntensity: 4
+  maxIntensity: 8
   minTransitionTime: 0.05
   maxTransitionTime: 0.4
   minInterval: 0.05
@@ -31162,7 +31162,7 @@ Light:
   serializedVersion: 11
   m_Type: 2
   m_Color: {r: 1, g: 0.57471424, b: 0.12641507, a: 1}
-  m_Intensity: 1
+  m_Intensity: 1.3
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -32671,79 +32671,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2202979665483794718, guid: 7c70883d648a1654f9fe2bc2ffe1833c, type: 3}
   m_PrefabInstance: {fileID: 1135356408}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &1135581466
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 3723295863333372615, guid: 25694b2404ab82444babb40784a30660, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 2.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 3723295863333372615, guid: 25694b2404ab82444babb40784a30660, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 2.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 3723295863333372615, guid: 25694b2404ab82444babb40784a30660, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 2.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 3723295863333372615, guid: 25694b2404ab82444babb40784a30660, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 977.55
-      objectReference: {fileID: 0}
-    - target: {fileID: 3723295863333372615, guid: 25694b2404ab82444babb40784a30660, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 541.3
-      objectReference: {fileID: 0}
-    - target: {fileID: 3723295863333372615, guid: 25694b2404ab82444babb40784a30660, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 27.61
-      objectReference: {fileID: 0}
-    - target: {fileID: 3723295863333372615, guid: 25694b2404ab82444babb40784a30660, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 3723295863333372615, guid: 25694b2404ab82444babb40784a30660, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3723295863333372615, guid: 25694b2404ab82444babb40784a30660, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 3723295863333372615, guid: 25694b2404ab82444babb40784a30660, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3723295863333372615, guid: 25694b2404ab82444babb40784a30660, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3723295863333372615, guid: 25694b2404ab82444babb40784a30660, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 90
-      objectReference: {fileID: 0}
-    - target: {fileID: 3723295863333372615, guid: 25694b2404ab82444babb40784a30660, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4098308031087548541, guid: 25694b2404ab82444babb40784a30660, type: 3}
-      propertyPath: m_Name
-      value: trackStraight_v2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4098308031087548541, guid: 25694b2404ab82444babb40784a30660, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 25694b2404ab82444babb40784a30660, type: 3}
 --- !u!1001 &1135751154
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -35173,9 +35100,9 @@ RectTransform:
   - {fileID: 1430725436}
   m_Father: {fileID: 313649622}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 960, y: -623.9833}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 350, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1190377668
@@ -45211,7 +45138,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TrainController
   maxSpeed: 5
   accelTime: 5
-  drainPerSecond: 0.05
+  drainPerSecond: 0.03
   slowThreshold: 0.2
   coalAmount: 0.2
   pathFollower: {fileID: 1538513256}
@@ -46908,7 +46835,7 @@ Transform:
   m_GameObject: {fileID: 1601259419}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.56, y: 2.79, z: -0.28}
+  m_LocalPosition: {x: 0, y: 4, z: -0.28}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -46927,7 +46854,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FlickerLight
   minIntensity: 0.5
-  maxIntensity: 4
+  maxIntensity: 8
   minTransitionTime: 0.05
   maxTransitionTime: 0.4
   minInterval: 0.05
@@ -46972,7 +46899,7 @@ Light:
   serializedVersion: 11
   m_Type: 2
   m_Color: {r: 1, g: 0.546722, b: 0.1566037, a: 1}
-  m_Intensity: 1
+  m_Intensity: 1.1
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -50311,9 +50238,9 @@ RectTransform:
   - {fileID: 1586777240}
   m_Father: {fileID: 313649622}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 960, y: -259.16998}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 350, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1709176247
@@ -54143,7 +54070,7 @@ PrefabInstance:
       objectReference: {fileID: 1387105335}
     - target: {fileID: 1453997646458607748, guid: 6244709cd948e194a8d9dd70a074b1ee, type: 3}
       propertyPath: pathSpeed
-      value: 30
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 1453997646458607748, guid: 6244709cd948e194a8d9dd70a074b1ee, type: 3}
       propertyPath: maxTurnDegreesPerSecond
@@ -56861,7 +56788,7 @@ Transform:
   m_GameObject: {fileID: 1945390779}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.52, z: -0.19}
+  m_LocalPosition: {x: 0, y: 4.7, z: -0.19}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -56880,7 +56807,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FlickerLight
   minIntensity: 0.5
-  maxIntensity: 4
+  maxIntensity: 8
   minTransitionTime: 0.05
   maxTransitionTime: 0.4
   minInterval: 0.05
@@ -56925,7 +56852,7 @@ Light:
   serializedVersion: 11
   m_Type: 2
   m_Color: {r: 1, g: 0.57471424, b: 0.12641507, a: 1}
-  m_Intensity: 1
+  m_Intensity: 1.3
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -57071,7 +56998,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1948222375
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -64619,5 +64546,4 @@ SceneRoots:
   - {fileID: 1637776159}
   - {fileID: 1992492629}
   - {fileID: 1875722224}
-  - {fileID: 1135581466}
   - {fileID: 468976570933643272}
