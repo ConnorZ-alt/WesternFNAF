@@ -31,7 +31,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 6734965286169707330}
   m_Father: {fileID: 8225275359164992195}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &8257431034021214248
@@ -49,7 +50,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4205405174457425906}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -122,8 +123,6 @@ GameObject:
   - component: {fileID: 8225275359164992195}
   - component: {fileID: 1961509280736190958}
   - component: {fileID: 2265032315489097823}
-  - component: {fileID: 3969502977149939760}
-  - component: {fileID: 4647668864560557701}
   - component: {fileID: -5772872656930473598}
   m_Layer: 10
   m_Name: Dynamite
@@ -198,79 +197,6 @@ CapsuleCollider:
   m_Height: 1
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &3969502977149939760
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7362535490505763678}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 145efef116b974085a12be78007bba22, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Dynamite
-  fuseSeconds: 5
-  pauseFuseWhileHeld: 1
-  blinkColor:
-    serializedVersion: 2
-    key0: {r: 1, g: 1, b: 1, a: 1}
-    key1: {r: 1, g: 1, b: 1, a: 1}
-    key2: {r: 0, g: 0, b: 0, a: 0}
-    key3: {r: 0, g: 0, b: 0, a: 0}
-    key4: {r: 0, g: 0, b: 0, a: 0}
-    key5: {r: 0, g: 0, b: 0, a: 0}
-    key6: {r: 0, g: 0, b: 0, a: 0}
-    key7: {r: 0, g: 0, b: 0, a: 0}
-    ctime0: 0
-    ctime1: 65535
-    ctime2: 0
-    ctime3: 0
-    ctime4: 0
-    ctime5: 0
-    ctime6: 0
-    ctime7: 0
-    atime0: 0
-    atime1: 65535
-    atime2: 0
-    atime3: 0
-    atime4: 0
-    atime5: 0
-    atime6: 0
-    atime7: 0
-    m_Mode: 0
-    m_ColorSpace: -1
-    m_NumColorKeys: 2
-    m_NumAlphaKeys: 2
-  blinkMinHertz: 2
-  blinkMaxHertz: 10
-  explosionRadius: 100
-  explosionForce: 400
-  damage: 999
-  damageMask:
-    serializedVersion: 2
-    m_Bits: 1024
-  explodeVfx: {fileID: 0}
-  stickLayers:
-    serializedVersion: 2
-    m_Bits: 128
-  stickOnFirstHit: 1
---- !u!114 &4647668864560557701
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7362535490505763678}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0f15880576f5c4e9ab676fa88905b832, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ThrowDynamite
-  holdDistance: 0
-  holdHeightOffset: 0
-  arcTime: 0.8
-  train: {fileID: 0}
 --- !u!114 &-5772872656930473598
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -283,7 +209,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a7cf65972954417d9c3ed62d554d564, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DynamiteProjectile
-  fuseSeconds: 2.5
+  fuseSeconds: 3
   pauseFuseWhileHeld: 1
   blinkColor:
     serializedVersion: 2
@@ -326,5 +252,79 @@ MonoBehaviour:
   explosionVfxObject: {fileID: 0}
   stickLayers:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 32896
   stickOnFirstHit: 1
+--- !u!1001 &6847393724171121717
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 2805598234072292516}
+    m_Modifications:
+    - target: {fileID: 176119148538951543, guid: d759600a2732c6c40980c85a531bb7e3, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 176119148538951543, guid: d759600a2732c6c40980c85a531bb7e3, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 176119148538951543, guid: d759600a2732c6c40980c85a531bb7e3, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 176119148538951543, guid: d759600a2732c6c40980c85a531bb7e3, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.44
+      objectReference: {fileID: 0}
+    - target: {fileID: 176119148538951543, guid: d759600a2732c6c40980c85a531bb7e3, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.056958113
+      objectReference: {fileID: 0}
+    - target: {fileID: 176119148538951543, guid: d759600a2732c6c40980c85a531bb7e3, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.038260296
+      objectReference: {fileID: 0}
+    - target: {fileID: 176119148538951543, guid: d759600a2732c6c40980c85a531bb7e3, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.6932051
+      objectReference: {fileID: 0}
+    - target: {fileID: 176119148538951543, guid: d759600a2732c6c40980c85a531bb7e3, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.047605883
+      objectReference: {fileID: 0}
+    - target: {fileID: 176119148538951543, guid: d759600a2732c6c40980c85a531bb7e3, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.004240325
+      objectReference: {fileID: 0}
+    - target: {fileID: 176119148538951543, guid: d759600a2732c6c40980c85a531bb7e3, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.719154
+      objectReference: {fileID: 0}
+    - target: {fileID: 176119148538951543, guid: d759600a2732c6c40980c85a531bb7e3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 3.434
+      objectReference: {fileID: 0}
+    - target: {fileID: 176119148538951543, guid: d759600a2732c6c40980c85a531bb7e3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -4.272
+      objectReference: {fileID: 0}
+    - target: {fileID: 176119148538951543, guid: d759600a2732c6c40980c85a531bb7e3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: -92.233
+      objectReference: {fileID: 0}
+    - target: {fileID: 664953580611874253, guid: d759600a2732c6c40980c85a531bb7e3, type: 3}
+      propertyPath: m_Name
+      value: Dynamite_4
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d759600a2732c6c40980c85a531bb7e3, type: 3}
+--- !u!4 &6734965286169707330 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 176119148538951543, guid: d759600a2732c6c40980c85a531bb7e3, type: 3}
+  m_PrefabInstance: {fileID: 6847393724171121717}
+  m_PrefabAsset: {fileID: 0}

@@ -29,18 +29,18 @@ public class AmmoUIController : MonoBehaviour
     {
         if (gun == null)
             gun = FindObjectOfType<ItemController>();
-        
+
         if (gun == null)
         {
             Debug.LogError("[AmmoUIController] No ItemController found!");
             return;
         }
-        
-        gun.OnAmmoChanged += HandleAmmoChanged;
-        
+
+        // Don't subscribe here — OnEnable already handles subscription.
+        // Just initialize the display.
         lastKnownCylinder = gun.GetRoundsInCylinder();
         lastKnownReserve = gun.GetReserveAmmo();
-        
+
         cylinder.Initialize(gun.GetTotalAmmoCapacity(), lastKnownCylinder);
         reserveStrip.UpdateDisplay(lastKnownReserve);
     }

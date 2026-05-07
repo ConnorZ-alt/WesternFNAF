@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using System.Collections;
 
 [DisallowMultipleComponent]
 public class EnemyHealth : MonoBehaviour, IDamageable
@@ -13,16 +14,14 @@ public class EnemyHealth : MonoBehaviour, IDamageable
 
     [Tooltip("If true and this enemy is NOT a DynamiteBandit, we destroy this GameObject when it dies.")]
     [SerializeField] protected bool destroyOnDeath = false; // DynamiteBandit usually handles its own teardown.
-
+    
     // Public read-only properties so other scripts can check health safely.
     public float CurrentHP { get; private set; }
     public bool IsDead { get; private set; }
     
     // Other scripts can “listen” for death without this script needing to know them.
     public event Action<EnemyHealth> OnDied;
-
     
-
     private void Awake()
     {
         // Awake runs when this object is created.
@@ -74,6 +73,8 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     {
         
     }
+    
+     
 
     private void Die()
     {
@@ -115,4 +116,5 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     {
         
     }
+    
 }

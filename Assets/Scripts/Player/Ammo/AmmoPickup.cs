@@ -8,11 +8,11 @@ public class AmmoPickup : MonoBehaviour
     [SerializeField] private int ammoAmount = 6;
     [SerializeField] private string playerTag = "Player";
 
-    // Cache components so we don’t keep calling GetComponent() a bunch.
+    // Cache components so we don't keep calling GetComponent() a bunch.
     private Collider pickupCollider;
     private Rigidbody pickupRigidbody;
 
-    private bool collected; // simple “state” so we don’t collect twice by accident
+    private bool collected; // simple "state" so we don't collect twice by accident
 
     private void Reset()
     {
@@ -30,7 +30,6 @@ public class AmmoPickup : MonoBehaviour
         pickupRigidbody = GetComponent<Rigidbody>();
 
         // Safety: if this pickup is somehow placed under the Player, disable it.
-        // If it stays enabled, it might instantly pick itself up or cause bugs.
         if (transform.root.CompareTag(playerTag))
         {
             Debug.LogError("[AmmoPickup] This pickup is inside the Player hierarchy. Move it out into the scene/prefab.");
@@ -40,6 +39,13 @@ public class AmmoPickup : MonoBehaviour
 
         // Make sure collider/rigidbody settings are correct even if Inspector was changed.
         EnsureTriggerSetup();
+
+        // --- NEW: Register this pickup with the world ammo tracker ---
+        // We do this in Awake so the counter reflects all pickups in the level on game start.
+        if (WorldAmmoTracker.Instance != null)
+            WorldAmmoTracker.Instance.RegisterPickup(ammoAmount);
+        else
+            Debug.LogWarning("[AmmoPickup] No WorldAmmoTracker found. Add a WorldAmmoTracker to the scene.");
     }
 
     private void EnsureTriggerSetup()
@@ -66,7 +72,6 @@ public class AmmoPickup : MonoBehaviour
         if (!otherCollider.CompareTag(playerTag)) return;
 
         // Try to find an ItemController on the player.
-        // NOTE: Using GetComponentInChildren(true) is okay here if the player only has one gun controller.
         ItemController gun = otherCollider.GetComponentInChildren<ItemController>(true);
 
         if (gun == null)
@@ -75,10 +80,14 @@ public class AmmoPickup : MonoBehaviour
             return;
         }
 
-        // This is the “command” part: we tell the gun to add ammo.
+        // Tell the gun to add ammo.
         gun.AddAmmo(ammoAmount);
 
-        // Mark as collected so this can’t run twice (like if two colliders hit in the same frame).
+        // --- NEW: Deregister from world tracker (bullet is no longer "in the world") ---
+        if (WorldAmmoTracker.Instance != null)
+            WorldAmmoTracker.Instance.DeregisterPickup(ammoAmount);
+
+        // Mark as collected so this can't run twice.
         collected = true;
 
         // Hide the pickup right away, then destroy it.
@@ -89,7 +98,6 @@ public class AmmoPickup : MonoBehaviour
     private void HidePickupVisualsAndCollider()
     {
         // This method makes the pickup disappear instantly.
-        // We do this so the player doesn’t see it “lag” before Destroy happens.
 
         if (!pickupCollider) pickupCollider = GetComponent<Collider>();
         if (pickupCollider) pickupCollider.enabled = false;

@@ -157,30 +157,35 @@ public class PlayerCoalThrower : MonoBehaviour
 
     private void HandleThrowInput()
     {
-        // If you are holding coal and click Mouse0, try to throw it.
-
         if (!IsHoldingCoal)
             return;
 
-        
-            
+        if (!Input.GetKeyDown(throwKey))
+            return;
 
         bool aimingNow = IsAimingCoal;
 
-        // If we require aiming, you can’t throw unless you are aiming.
         if (requireAimToThrow && !aimingNow)
             return;
 
         // Block gun BEFORE throwing so Mouse0 doesn't also fire the revolver this frame.
         if (revolverItemController != null)
             revolverItemController.SetExternalShootBlock(true);
-        
-        if (Input.GetKeyDown(throwKey))
-            throwCommand?.Invoke();
 
-        // Clear the block next frame.
+        throwCommand?.Invoke();
+
+        // Always clear the block next frame, whether the throw succeeded or not.
+        StartCoroutine(ClearShootBlockNextFrame());
+    }
+    
+    private void ClearHeldCoalState()
+    {
+        heldCoalGameObject = null;
+        SetCoalAim(false);
+
+        // Safety: always ensure the shoot block is cleared when coal state is cleaned up.
         if (revolverItemController != null)
-            StartCoroutine(ClearShootBlockNextFrame());
+            revolverItemController.SetExternalShootBlock(false);
     }
 
     private void PickUpCoal()
@@ -194,6 +199,12 @@ public class PlayerCoalThrower : MonoBehaviour
         }
 
         heldCoalGameObject = Instantiate(coalPrefab, holdPoint.position, holdPoint.rotation, transform);
+        
+        // Prevent the held coal from colliding with the player immediately on spawn
+        var playerCollider = GetComponentInParent<Collider>();
+        var coalCollider = heldCoalGameObject.GetComponent<Collider>();
+        if (playerCollider != null && coalCollider != null)
+            Physics.IgnoreCollision(coalCollider, playerCollider, true);
 
         // Freeze physics while it is held, so it doesn't fall or bounce in your hand.
         if (heldCoalGameObject.TryGetComponent<Rigidbody>(out var rb))
@@ -243,7 +254,8 @@ public class PlayerCoalThrower : MonoBehaviour
         // Keep a reference to apply train rotation
         if (rb != null)
             flyingCoalRb = rb;
-        train = GetComponentInParent<TrainPathFollower>();
+        PlayerController player = GetComponentInParent<PlayerController>();
+        train = player.CurrentTrain;
 
         Vector3 inheritedVelocity = Vector3.zero;
 
@@ -412,14 +424,7 @@ public class PlayerCoalThrower : MonoBehaviour
         coalAimActive = aiming;
         CoalAimChanged?.Invoke(coalAimActive);
     }
-
-    private void ClearHeldCoalState()
-    {
-        // This clears our references after throwing or if something goes wrong.
-
-        heldCoalGameObject = null;
-        SetCoalAim(false);
-    }
+    
 
     // ----------------------------
     // Utility
@@ -470,3 +475,5 @@ public class PlayerCoalThrower : MonoBehaviour
             isInsideCoalSource = false;
     }
 }
+
+

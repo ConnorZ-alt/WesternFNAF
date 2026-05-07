@@ -1,3 +1,6 @@
+
+
+
 using UnityEngine;
 
 /// <summary>
@@ -36,8 +39,11 @@ public class PlayerController : MonoBehaviour
     private CharacterController characterController;
     private Vector3 moveWorldDirection = Vector3.zero; // where we want to move this frame (world space)
     private float pitchAngle = 0f;                     // camera up/down angle
-    [SerializeField] private TrainPathFollower train;
+    public TrainPathFollower CurrentTrain;
     // Defaults (so we can restore them)
+
+    private PlayerTrainMotion trainMotion;
+    
     private Vector3 cameraDefaultLocalPosition;
     private Vector3 controllerDefaultCenter;
 
@@ -58,6 +64,8 @@ public class PlayerController : MonoBehaviour
             cameraDefaultLocalPosition = playerCamera.transform.localPosition;
 
         controllerDefaultCenter = characterController.center;
+        
+        trainMotion = GetComponent<PlayerTrainMotion>();
     }
 
     private void Start()
@@ -137,20 +145,34 @@ public class PlayerController : MonoBehaviour
         moveWorldDirection.y = 0f; // CharacterController handles gravity separately (not used here)
 
         // Actually move the player this frame.
-// 1. Apply train translation
-        Vector3 totalMove = moveWorldDirection * Time.fixedDeltaTime + train.FrameDelta;
 
-// 2. Apply train rotation around train pivot
-        Vector3 trainPivot = train.transform.position;
+        // Find the current platform we are standing on (engine/car/bridge)
+        TrainPathFollower src = (trainMotion != null) ? trainMotion.MotionSource : null;
+        CurrentTrain = src;
+        // 1) Player input movement (normal walking)
+        Vector3 inputMove = moveWorldDirection * Time.fixedDeltaTime;
 
-        Vector3 offsetFromTrain = transform.position - trainPivot;
-        offsetFromTrain = train.RotationDelta * offsetFromTrain;
+        // 2) Platform translation (how much the car moved this tick)
+        Vector3 platformDelta = (src != null) ? src.FrameDelta : Vector3.zero;
 
-        Vector3 rotatedPosition = trainPivot + offsetFromTrain;
-        Vector3 rotationMove = rotatedPosition - transform.position;
+        // 3) Platform rotation (rotate player around the car pivot)
+        Vector3 rotationMove = Vector3.zero;
+        if (src != null)
+        {
+            Vector3 pivot = src.transform.position;
 
-// 3. Combine everything
-        characterController.Move(totalMove + rotationMove);    }
+            Vector3 offset = transform.position - pivot;
+            offset = src.RotationDelta * offset;
+
+            Vector3 rotatedPos = pivot + offset;
+            rotationMove = rotatedPos - transform.position;
+            transform.rotation = src.RotationDelta * transform.rotation;
+
+        }
+
+        // 4) Combine and move
+        characterController.Move(inputMove + platformDelta + rotationMove);    
+    }
     
     /// <summary>
     /// Rotates the camera up/down (pitch) and rotates the player left/right (yaw).
@@ -225,3 +247,4 @@ public class PlayerController : MonoBehaviour
     // }
     // ---------------------------------------------------------
 }
+

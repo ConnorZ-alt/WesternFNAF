@@ -38,7 +38,10 @@ public class ItemController : MonoBehaviour
 
     [Header("Bullet Visual (optional)")]
     [SerializeField] private Transform muzzleTransform;
+    [SerializeField] private Light muzzleFlash;
     [SerializeField] private GameObject bulletPrefab;
+    [SerializeField] private float muzzleFlashIntensity;
+    [SerializeField] private float muzzleFlashdecay;
 
     [Tooltip("Tiny camera kick back when shooting (just a small effect)")]
     [SerializeField] private float bulletRecoilKickDistance = 0.03f;
@@ -119,6 +122,18 @@ public class ItemController : MonoBehaviour
         HandleReloadInput();
         HandleShootInput();
         UpdateAimFieldOfView();
+    }
+
+    private void FixedUpdate()
+    {
+        if (muzzleFlash.intensity > 0)
+        {
+            muzzleFlash.intensity -= muzzleFlashdecay;
+            if (muzzleFlash.intensity < 0)
+            {
+                muzzleFlash.intensity = 0;
+            }
+        }
     }
 
     // ===================== Public API =====================
@@ -354,6 +369,7 @@ public class ItemController : MonoBehaviour
             return;
         }
 
+        muzzleFlash.intensity = muzzleFlashIntensity;
         Instantiate(bulletPrefab, muzzleTransform.position, muzzleTransform.rotation);
     }
 
@@ -371,7 +387,12 @@ public class ItemController : MonoBehaviour
             var damageable = hitInfo.collider.GetComponentInParent<IDamageable>();
             if (damageable != null)
             {
+                Debug.Log("[GUN] Hit " + hitInfo.collider.name + " on " + hitInfo.collider.gameObject.layer);
                 damageable.TakeDamage(shotDamage);
+            }
+            else
+            {
+                Debug.Log("[GUN] Raycast hit " + hitInfo.collider.name + " but no IDamageable found."); // temp
             }
         }
     }

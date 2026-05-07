@@ -6,26 +6,35 @@ public class JumpscareHitbox : MonoBehaviour
 {
     public SceneManagement sceneManagement;
     
-    public float timeToJumpscare;
+    public float timeToJumpscare = 2f;
     
     private Coroutine jumpscareTimer;
     private bool isJumpscareTimerRunning = false;
+    public bool isBridgeHitbox = false; // 
+    public JumpscareAnimation jumpscareAnimation;
     public void OnTriggerEnter(Collider other) 
     {
-       
+        Debug.Log("Something entered trigger: " + other.name);
+
+        if (!other.CompareTag("Player")) return;
+  
             if (timeToJumpscare == 0) // jumpscare player if there is no time before a jumpscare
             {
                 JumpscarePlayer();
             } else if (!isJumpscareTimerRunning) // starts jumpscare timmer if one is not running
             {
                 jumpscareTimer = StartCoroutine(WaitToJumpscare(timeToJumpscare));
+                if (isBridgeHitbox)
+                {
+                    jumpscareAnimation.StartJumpscareLungeAnimation();
+                }
             }
         
     }
     
     public void OnTriggerExit(Collider other)
     {
-        StopJumpscareTimer();
+       StopJumpscareTimer();
     }
     
     protected IEnumerator WaitToJumpscare(float time)
@@ -39,7 +48,7 @@ public class JumpscareHitbox : MonoBehaviour
     {
         isJumpscareTimerRunning = false;
         sceneManagement.IsJumpscared = true;
-        sceneManagement.OnGameOver();
+       sceneManagement.OnGameOver();
     }
 
     public void StopJumpscareTimer()
@@ -47,7 +56,13 @@ public class JumpscareHitbox : MonoBehaviour
         if (isJumpscareTimerRunning)
         {
             StopCoroutine(jumpscareTimer);
+            jumpscareAnimation.Stop();
+            isJumpscareTimerRunning = false;
         } 
+    }
+    void Start()
+    {
+        sceneManagement = FindObjectOfType<SceneManagement>();
     }
 }
 

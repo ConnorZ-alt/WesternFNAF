@@ -24,6 +24,14 @@ public class DynamiteBandit : MonoBehaviour, IDamageable
     [SerializeField] private BanditStats banditStats;           // Stats asset
     [SerializeField] private GameObject dynamitePrefab;
     [SerializeField] private TrainPathFollower trainPathFollower; 
+    [SerializeField] private Transform hourseTransform;
+
+    // private PlayerController playerController;
+    // private TrainCarDynamiteTargets[] allCarTargets;
+    private TrainPathFollower currentThrowTargetFollower;
+    
+    private PlayerCarTracker playerCarTracker;
+    private TrainCarDynamiteTargets currentTargetCar;
 
     [SerializeField] private Transform throwOriginTransform;    // auto-wired if null
     [SerializeField] private LayerMask trainFloorMask;
@@ -42,6 +50,12 @@ public class DynamiteBandit : MonoBehaviour, IDamageable
     [Header("Debug")]
     [SerializeField] private bool debugPaceForever = true;
     [SerializeField] private bool skipApproach = false;
+    
+    [Header("visual")]
+    [SerializeField] private Animator banditAnimator;
+    [SerializeField] private Animator hourseAnimator;
+    [SerializeField] private GameObject horse;
+
     
     // Spawner, UI, audio, achievements, etc can listen without this class knowing about them.
     public event Action SignalReady;
@@ -114,6 +128,8 @@ public class DynamiteBandit : MonoBehaviour, IDamageable
 
     private IEnumerator Start()
     {
+        Debug.Log($"[DynamiteBandit] Start on {name}. setupReceived={setupReceived}", this);
+        
         // Start is a coroutine here so we can wait a few frames for setup injection.
         // This avoids “script order” bugs when a spawner configures the bandit right after spawning.
 
@@ -168,21 +184,20 @@ public class DynamiteBandit : MonoBehaviour, IDamageable
         Transform deckBoundsParameter,
         BanditStats statsAsset,
         bool spawnOnRightSide,
+        TrainPathFollower trainFollowerParameter,
         Action onFinishedCallback = null)
     {
-        // The spawner calls this to inject the needed references.
-
         trainRootTransform = trainRootParameter;
         specificTarget = deckBoundsParameter;
         banditStats = statsAsset;
         spawnOnRight = spawnOnRightSide;
+        trainPathFollower = trainFollowerParameter;
 
-        // Keep your callback behavior.
-        onFinished = onFinishedCallback;
+        if (onFinishedCallback != null)
+            onFinished = onFinishedCallback;
 
         setupReceived = true;
 
-        // Try again now that we’re fully placed in the scene.
         TryAutoWireThrowOrigin();
     }
 
@@ -291,8 +306,8 @@ public class DynamiteBandit : MonoBehaviour, IDamageable
         while (!shuttingDown && currentState == BanditState.Approaching)
         {
             Vector3 target = GetDesiredAlongsideWorldPosition();
-            transform.position = Vector3.MoveTowards(
-                transform.position,
+            hourseTransform.position = Vector3.MoveTowards(
+                hourseTransform.position,
                 target,
                 banditStats.moveSpeed * Time.deltaTime
             );
@@ -300,7 +315,7 @@ public class DynamiteBandit : MonoBehaviour, IDamageable
             ForceTransformYToDeck();
             FaceTrain();
 
-            if (Vector3.Distance(transform.position, target) < 0.2f)
+            if (Vector3.Distance(hourseTransform.position, target) < 0.2f)
                 yield break;
 
             yield return null;
@@ -319,8 +334,9 @@ public class DynamiteBandit : MonoBehaviour, IDamageable
             // Throw if cooldown is done and we don’t have an active dynamite out.
             if (activeDynamiteGameObject == null && Time.time >= nextThrowTimeSeconds)
             {
-                bool threw = TryThrowDynamiteOnce();
-
+                
+                bool threw = TryThrowDynamiteAnimation();
+                
                 // If throw worked, use normal cooldown. If not, retry soon.
                 nextThrowTimeSeconds = Time.time + (threw ? throwCooldownSeconds : 1.0f);
             }
@@ -334,11 +350,11 @@ public class DynamiteBandit : MonoBehaviour, IDamageable
         // Back away for a short time, then finish.
 
         float elapsed = 0f;
-        Vector3 retreatDir = (transform.position - trainRootTransform.position).normalized;
+        Vector3 retreatDir = (hourseTransform.position - hourseTransform.position).normalized;
 
         while (!shuttingDown && currentState == BanditState.Retreating && elapsed < 2.5f)
         {
-            transform.position += retreatDir * (banditStats.moveSpeed * 1.3f * Time.deltaTime);
+            hourseTransform.position += retreatDir * (banditStats.moveSpeed * 1.3f * Time.deltaTime);
             ForceTransformYToDeck();
             elapsed += Time.deltaTime;
             yield return null;
@@ -366,8 +382,8 @@ public class DynamiteBandit : MonoBehaviour, IDamageable
         // Smoothly follow the alongside position so the bandit looks like it’s keeping up.
 
         Vector3 target = GetDesiredAlongsideWorldPosition();
-        transform.position = Vector3.Lerp(
-            transform.position,
+        hourseTransform.position = Vector3.Lerp(
+            hourseTransform.position,
             target,
             banditStats.acceleration * Time.deltaTime
         );
@@ -378,9 +394,13 @@ public class DynamiteBandit : MonoBehaviour, IDamageable
 
     private void FaceTrain()
     {
-        // Rotate toward the train so it looks like the bandit is focused on it.
+        TrainCarDynamiteTargets activeCar = GetActivePlayerCarTargets();
 
-        Vector3 toTrain = trainRootTransform.position - transform.position;
+        Transform anchor = (activeCar != null && activeCar.BanditAnchor != null)
+            ? activeCar.BanditAnchor
+            : trainRootTransform;
+
+        Vector3 toTrain = anchor.position - hourseTransform.position;
         toTrain.y = 0f;
 
         if (toTrain.sqrMagnitude > 0.001f)
@@ -395,27 +415,31 @@ public class DynamiteBandit : MonoBehaviour, IDamageable
 
     private void ForceTransformYToDeck()
     {
-        // This hard-locks the bandit to deck Y every frame.
+        Vector3 pos = hourseTransform.position;
 
-        Vector3 pos = transform.position;
-        pos.y = specificTarget.position.y ;
-        transform.position = pos;
+        TrainCarDynamiteTargets activeCar = GetActivePlayerCarTargets();
+
+        if (activeCar != null && activeCar.BanditAnchor != null)
+            pos.y = activeCar.BanditAnchor.position.y;
+        else if (specificTarget != null)
+            pos.y = specificTarget.position.y;
+
+        hourseTransform.position = pos;
     }
 
     private Vector3 GetDesiredAlongsideWorldPosition()
     {
-        // This computes where the bandit wants to be relative to the train (left/right and behind).
+        TrainCarDynamiteTargets activeCar = GetActivePlayerCarTargets();
+
+        Transform anchor = (activeCar != null && activeCar.BanditAnchor != null)
+            ? activeCar.BanditAnchor
+            : trainRootTransform;
 
         float sideSign = spawnOnRight ? +1f : -1f;
 
-        Vector3 localPoint = new Vector3(
-            banditStats.lateralOffset * sideSign,
-            0f,
-            -banditStats.followDistanceBack
-        );
+        Vector3 worldPoint = anchor.position + anchor.right * (banditStats.lateralOffset * sideSign);
+        worldPoint.y = anchor.position.y;
 
-        Vector3 worldPoint = trainRootTransform.TransformPoint(localPoint);
-        worldPoint.y = specificTarget.position.y;
         return worldPoint;
     }
 
@@ -442,80 +466,167 @@ public class DynamiteBandit : MonoBehaviour, IDamageable
     // Throwing
     // ----------------------------
 
-    private bool TryThrowDynamiteOnce()
+    public void SpawnDynamiteFromAnimation()
     {
         // This spawns and throws one dynamite if we’re allowed to.
-
-        if (shuttingDown)
-            return false;
-
-        if (activeDynamiteGameObject != null)
-            return false;
-
+        
         if (!dynamitePrefab || !throwOriginTransform || banditStats == null)
         {
-            Debug.LogWarning("[DynamiteBandit] Missing prefab/origin/bounds/stats, abort throw.", this);
-            return false;
+            Debug.LogWarning("[DynamiteBandit] Missing prefab/origin/stats, abort throw.", this);
+            return;
         }
 
         Vector3 landingPoint = ChooseLandingPointOnDeck();
 
-// Estimate time the dynamite will be in the air
-        float distance = Vector3.Distance(throwOriginTransform.position, landingPoint);
-        float travelTime = Mathf.Clamp(distance / 12f, 0.5f, 3.0f);        
-// Predict where the landing point will move with the train
-        //Vector3 predictedLandingPoint = landingPoint + (trainVelocity * travelTime);
+        // For Step 3 cleanup, keep throw prediction simple.
         Vector3 predictedLandingPoint = landingPoint;
-        GameObject dynamiteObj = Instantiate(dynamitePrefab, throwOriginTransform.position, Quaternion.identity);
-        
-        Physics.SyncTransforms();
-        
-        Dynamite dScript = dynamiteObj.GetComponent<Dynamite>();
+
+        GameObject dynamiteObj = Instantiate(
+            dynamitePrefab,
+            throwOriginTransform.position,
+            Quaternion.identity
+        );
+
+        DynamiteProjectile projectile = dynamiteObj.GetComponent<DynamiteProjectile>();
         Rigidbody dynamiteRb = dynamiteObj.GetComponent<Rigidbody>();
+
+        if (projectile == null || dynamiteRb == null)
+        {
+            Debug.LogError("[DynamiteBandit] Dynamite prefab is missing DynamiteProjectile or Rigidbody.", this);
+            Destroy(dynamiteObj);
+            return;
+        }
+
+        // Ignore collision with the bandit itself.
+        IgnoreProjectileCollisionWithBandit(dynamiteObj);
+        projectile.SetInheritedTrain(currentThrowTargetFollower != null ? currentThrowTargetFollower : trainPathFollower);
         
-        dynamiteRb.isKinematic = false;
-        dynamiteRb.linearVelocity = Vector3.zero;
-        dynamiteRb.position = throwOriginTransform.position /2; // Double-down on position
+        Vector3 throwVelocity = ComputeInitialThrowVelocity(predictedLandingPoint) * 1.02f;
         
-        dScript.OnThrown(); 
-        dScript.InheritTrainMovement(trainPathFollower);
-        
-        dynamiteObj.transform.position = throwOriginTransform.position;
-        dynamiteRb.position = throwOriginTransform.position;
-        
-        Vector3 throwVelocity = ComputeInitialThrowVelocity(predictedLandingPoint);
-        dynamiteRb.linearVelocity = throwVelocity * 1.02f;
+        // Inherit the train's movement so the projectile stays with the moving train better.
+        // Vector3 inheritedTrainVelocity = trainVelocity;
+        // inheritedTrainVelocity.y = 0f;
+        // throwVelocity += inheritedTrainVelocity;
+
+        // Use the projectile’s own API.
+        projectile.Throw(throwVelocity);
+
+        // Optional spin for visual effect.
         dynamiteRb.angularVelocity = Random.insideUnitSphere * 2f;
-        
+
         activeDynamiteGameObject = dynamiteObj;
-        SubscribeToProjectile(dynamiteObj);
-        
+        SubscribeToProjectile(projectile);
+
         // Failsafe: if the projectile never calls back, clear it anyway.
         StartCoroutine(ClearActiveDynamiteFailsafe(dynamiteObj, 6f));
 
         ThrewDynamite?.Invoke();
 
         Debug.DrawLine(throwOriginTransform.position, landingPoint, Color.yellow, 1.5f);
-        Debug.DrawRay(throwOriginTransform.position, (trainVelocity) * 0.25f, Color.cyan, 1.5f);
+
+        return;
+    }
+
+    private bool TryThrowDynamiteAnimation()
+    {
+        if (shuttingDown)
+            return false;
+
+        if (activeDynamiteGameObject != null)
+            return false;
+
+        if (banditAnimator == null)
+            return false;
+
+        // play throw animation
+        banditAnimator.Play("Throw", 0, 0f); 
 
         return true;
     }
     
+    private void IgnoreProjectileCollisionWithBandit(GameObject projectileObj)
+    {
+        Collider[] banditColliders = GetComponentsInChildren<Collider>(true);
+        Collider[] projectileColliders = projectileObj.GetComponentsInChildren<Collider>(true);
+
+        foreach (Collider banditCol in banditColliders)
+        {
+            if (banditCol == null) continue;
+
+            foreach (Collider projectileCol in projectileColliders)
+            {
+                if (projectileCol == null) continue;
+                Physics.IgnoreCollision(projectileCol, banditCol, true);
+            }
+        }
+    }
 
     private Vector3 ChooseLandingPointOnDeck()
     {
-        // This tries to pick a good landing point by raycasting down onto TrainFloor.
+        currentThrowTargetFollower = trainPathFollower;
+        currentTargetCar = GetActivePlayerCarTargets();
 
-        Vector3 targetPos;
-        
-        targetPos = specificTarget.position;
-        Vector3 offset = new Vector3(
-            Random.Range(-banditStats.throwInaccuracy, banditStats.throwInaccuracy),
-            0f,
-            Random.Range(-banditStats.throwInaccuracy, banditStats.throwInaccuracy)
-        );
+        if (currentTargetCar != null && currentTargetCar.HasTargets)
+        {
+            Transform chosenPoint = currentTargetCar.GetRandomTargetPoint();
+            if (chosenPoint != null)
+            {
+                currentThrowTargetFollower = currentTargetCar.CarFollower;
 
-        return targetPos + offset;
+                Debug.Log($"[DynamiteBandit] Using player car: {currentTargetCar.name}, target point: {chosenPoint.name}", this);
+
+                if (currentTargetCar.LandingCollider != null)
+                {
+                    // Sample from above the intended target point.
+                    Vector3 samplePoint = chosenPoint.position + Vector3.up * 2f;
+
+                    // ClosestPoint projects that sample onto the actual deck collider surface.
+                    Vector3 landingPoint = currentTargetCar.LandingCollider.ClosestPoint(samplePoint);
+
+                    // If ClosestPoint returns something meaningful, use it.
+                    if ((landingPoint - samplePoint).sqrMagnitude > 0.0001f)
+                        return landingPoint + Vector3.up * 0.05f;
+                }
+
+                Debug.LogWarning($"[DynamiteBandit] Falling back: {currentTargetCar.name} has no valid landing collider.", this);
+                return GetFallbackLandingPoint();
+            }
+        }
+
+        Debug.LogWarning("[DynamiteBandit] Falling back: no active player car target.", this);
+        return GetFallbackLandingPoint();
+    }
+    
+    private Vector3 GetFallbackLandingPoint()
+    {
+        currentThrowTargetFollower = trainPathFollower;
+
+        if (specificTarget != null)
+        {
+            Vector3 right = trainRootTransform != null ? trainRootTransform.right : Vector3.right;
+            Vector3 forward = trainRootTransform != null ? trainRootTransform.forward : Vector3.forward;
+
+            float offsetX = Random.Range(-banditStats.throwInaccuracy, banditStats.throwInaccuracy);
+            float offsetZ = Random.Range(-banditStats.throwInaccuracy, banditStats.throwInaccuracy);
+
+            Vector3 offset = (right * offsetX) + (forward * offsetZ);
+            Vector3 rayStart = specificTarget.position + offset + Vector3.up * 3f;
+
+            if (Physics.Raycast(
+                    rayStart,
+                    Vector3.down,
+                    out RaycastHit fallbackHit,
+                    10f,
+                    trainFloorMask,
+                    QueryTriggerInteraction.Ignore))
+            {
+                return fallbackHit.point + Vector3.up * 0.05f;
+            }
+
+            return specificTarget.position + offset;
+        }
+
+        return hourseTransform.position;
     }
 
     private Vector3 ComputeInitialThrowVelocity(Vector3 landingPoint)
@@ -526,19 +637,15 @@ public class DynamiteBandit : MonoBehaviour, IDamageable
         return ComputeBallisticVelocityViaApex(throwOriginTransform.position, landingPoint, arcApexY);
     }
 
-    private void SubscribeToProjectile(GameObject dynamiteObj)
+    private void SubscribeToProjectile(DynamiteProjectile projectile)
     {
         // This hooks into the projectile so we know when it explodes.
 
         UnsubscribeProjectile();
 
-        activeProjectile = dynamiteObj.GetComponent<DynamiteProjectile>();
+        activeProjectile = projectile;
         if (activeProjectile != null)
-        {
-            Collider myCollider = GetComponentInChildren<Collider>();
-            activeProjectile.Initialize(myCollider);
             activeProjectile.OnExploded += HandleProjectileExploded;
-        }
     }
 
     private void HandleProjectileExploded()
@@ -629,7 +736,7 @@ public class DynamiteBandit : MonoBehaviour, IDamageable
 
         lastTrainWorldPosition = trainRootTransform != null
             ? trainRootTransform.position
-            : transform.position;
+            : hourseTransform.position;
     }
 
     private void SignalReadyOnce()
@@ -645,14 +752,43 @@ public class DynamiteBandit : MonoBehaviour, IDamageable
 
     private bool ValidateSetup()
     {
-        // This checks that the bandit has the minimum things it needs to function.
-
         TryAutoWireThrowOrigin();
 
-        if (trainRootTransform == null) { Debug.LogError("[DynamiteBandit] trainRootTransform not set.", this); return false; }
-        if (throwOriginTransform == null) { Debug.LogError("[DynamiteBandit] throwOriginTransform not set.", this); return false; }
-        if (dynamitePrefab == null)     { Debug.LogError("[DynamiteBandit] dynamitePrefab not set.", this); return false; }
-        if (banditStats == null)        { Debug.LogError("[DynamiteBandit] banditStats not set.", this); return false; }
+        if (trainRootTransform == null)
+        {
+            Debug.LogError("[DynamiteBandit] trainRootTransform not set.", this);
+            return false;
+        }
+
+        if (specificTarget == null)
+        {
+            Debug.LogError("[DynamiteBandit] specificTarget not set.", this);
+            return false;
+        }
+
+        if (trainPathFollower == null)
+        {
+            Debug.LogError("[DynamiteBandit] trainPathFollower not set.", this);
+            return false;
+        }
+
+        if (throwOriginTransform == null)
+        {
+            Debug.LogError("[DynamiteBandit] throwOriginTransform not set.", this);
+            return false;
+        }
+
+        if (dynamitePrefab == null)
+        {
+            Debug.LogError("[DynamiteBandit] dynamitePrefab not set.", this);
+            return false;
+        }
+
+        if (banditStats == null)
+        {
+            Debug.LogError("[DynamiteBandit] banditStats not set.", this);
+            return false;
+        }
 
         return true;
     }
@@ -692,9 +828,20 @@ public class DynamiteBandit : MonoBehaviour, IDamageable
         NotifyFinishedOnce();
 
         if (destroyOnFinish)
-            Destroy(gameObject);
+            StartCoroutine(DestroyAfter());
+
         else
             gameObject.SetActive(false);
+    }
+    
+    private IEnumerator DestroyAfter()
+    {
+        hourseAnimator.Play("Die", 0, 0f); 
+        yield return new WaitForSeconds(5);
+        Debug.Log("[EnemyHealth] Destroying GameObject because destroyOnDeath is true.");
+        Destroy(horse);
+        Destroy(gameObject);
+        
     }
 
     // Let other scripts swap finish behavior if they want.
@@ -711,6 +858,57 @@ public class DynamiteBandit : MonoBehaviour, IDamageable
             Gizmos.DrawSphere(throwOriginTransform.position, 0.06f);
 
         Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(transform.position, 0.25f);
+        Gizmos.DrawWireSphere(hourseTransform.position, 0.25f);
+    }
+    
+    private void EnsureSceneReferences()
+    {
+        if (playerCarTracker == null)
+            playerCarTracker = FindFirstObjectByType<PlayerCarTracker>();
+    }
+    
+    // private bool TryGetPlayerCurrentCarTargets(out TrainCarDynamiteTargets result)
+    // {
+    //     result = null;
+    //
+    //     EnsureSceneReferences();
+    //
+    //     if (playerController == null || playerController.CurrentTrain == null)
+    //         return false;
+    //
+    //     TrainPathFollower playerCurrentFollower = playerController.CurrentTrain;
+    //
+    //     foreach (TrainCarDynamiteTargets carTargets in allCarTargets)
+    //     {
+    //         if (carTargets == null)
+    //             continue;
+    //
+    //         if (carTargets.CarFollower == playerCurrentFollower)
+    //         {
+    //             result = carTargets;
+    //             return true;
+    //         }
+    //     }
+    //
+    //     return false;
+    // }
+    
+    private TrainCarDynamiteTargets GetActivePlayerCarTargets()
+    {
+        EnsureSceneReferences();
+
+        if (playerCarTracker == null)
+        {
+            Debug.LogWarning("[DynamiteBandit] No PlayerCarTracker found.", this);
+            return null;
+        }
+
+        if (playerCarTracker.CurrentCarTargets == null)
+        {
+            Debug.LogWarning("[DynamiteBandit] PlayerCarTracker has no current car yet.", this);
+            return null;
+        }
+
+        return playerCarTracker.CurrentCarTargets;
     }
 }
