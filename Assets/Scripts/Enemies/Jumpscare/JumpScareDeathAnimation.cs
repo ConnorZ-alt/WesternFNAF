@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class JumpScareAnimation : UIManager
 {
-   public GameObject deathUI;
+   //public GameObject deathUI;
    public GameObject jumpscareAnimation;
    public float time;
    public SceneManagement sceneManagement;

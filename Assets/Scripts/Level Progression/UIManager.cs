@@ -13,8 +13,8 @@ public class UIManager : MonoBehaviour {
     
     protected IEnumerator ShowFor(GameObject group, float time)
     {
-        Show(group);
-        yield return new WaitForSeconds(time);
         Hide(group);
+        yield return new WaitForSeconds(time);
+        Show(group);
     }
 }
