@@ -34616,9 +34616,9 @@ MonoBehaviour:
   units: 1
   loopPath: 0
   pathSpeed: 5
-  turnLerp: 6
+  turnLerp: 4
   currentUnits: 0
-  lookAheadUnits: 2
+  lookAheadUnits: 6
   maxTurnDegreesPerSecond: 90
   FrameDelta: {x: 0, y: 0, z: 0}
 --- !u!54 &1174254427
@@ -45134,9 +45134,9 @@ MonoBehaviour:
   units: 1
   loopPath: 0
   pathSpeed: 5
-  turnLerp: 6
+  turnLerp: 4
   currentUnits: 50
-  lookAheadUnits: 2
+  lookAheadUnits: 6
   maxTurnDegreesPerSecond: 90
   FrameDelta: {x: 0, y: 0, z: 0}
 --- !u!114 &1538513257
@@ -48182,9 +48182,9 @@ MonoBehaviour:
   units: 1
   loopPath: 0
   pathSpeed: 5
-  turnLerp: 6
+  turnLerp: 4
   currentUnits: 0
-  lookAheadUnits: 2
+  lookAheadUnits: 6
   maxTurnDegreesPerSecond: 90
   FrameDelta: {x: 0, y: 0, z: 0}
 --- !u!54 &1638963566

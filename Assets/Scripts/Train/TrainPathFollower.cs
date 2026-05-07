@@ -113,7 +113,6 @@ public class TrainPathFollower : MonoBehaviour
         
         rb.MovePosition(pos);
         
-        // -------- REPLACE ROTATION SECTION WITH THIS --------
         float ahead = currentUnits + lookAheadUnits;
         float maxUnits = maxU;
 
@@ -131,9 +130,12 @@ public class TrainPathFollower : MonoBehaviour
         if (forward.sqrMagnitude > 0.0001f)
         {
             Quaternion targetRot = Quaternion.LookRotation(forward.normalized, Vector3.up);
-            float maxStep = maxTurnDegreesPerSecond * Time.fixedDeltaTime;
-            Quaternion limited = Quaternion.RotateTowards(rb.rotation, targetRot, maxStep);
-            rb.MoveRotation(limited);
+            Quaternion smoothRot = Quaternion.Slerp(
+                rb.rotation,
+                targetRot,
+                turnLerp * Time.fixedDeltaTime
+            );
+            rb.MoveRotation(smoothRot);
             RotationDelta = rb.rotation * Quaternion.Inverse(lastRotation);
             lastRotation = rb.rotation;
         }
